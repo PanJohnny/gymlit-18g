@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Elektronická kronika">
+	<main>
+        <script is:inline src="/cookieUtil.js"></script>
+        <span class="text-gradient" id="class"></span>
+        <script is:inline>
+
+            // get hash
+            if (hasCookie("category") && hasCookie("class")) {
+                window.location.href = "/open/" + getCookie("category")
+            } else if (hasCookie("class")) {
+                window.location.href = "/select/category#" + getCookie("class")
+            } else {
+                window.location.href = "/select/class"
+            }
+        </script>
+	</main>
+</Layout>

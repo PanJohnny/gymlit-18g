@@ -1,0 +1,31 @@
+---
+---
+
+<main>
+    <h1>Editor</h1>
+    <input type="text" placeholder="Profesor" id="prof"/>
+    <textarea name="citát" id="cit" placeholder="Citát" cols="30" rows="10"></textarea>
+    <input type="button" value="Save" id="save">
+    <hr>
+    <textarea name="output" id="out" placeholder="Výstup" cols="50" rows="20"></textarea>
+    <script is:inline src="/cookieUtil.js"></script>
+
+    <script is:inline>
+        if (!hasCookie("auth"))
+            window.location.href = "/";
+        const prof = document.getElementById('prof')
+        const cit = document.getElementById('cit')
+        const out = document.getElementById('out')
+        document.getElementById('save').addEventListener("click", async (event) => {
+            var lines = cit.value.split("\n")
+            var l = []
+            // filter lines if line is empty remove it
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i]
+                if(line)
+                    l.push(line.trim())
+            }
+            out.innerText = '"' + prof.value + '"' + ": " + JSON.stringify(l);
+        })
+    </script>
+</main>

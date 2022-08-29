@@ -1,0 +1,21 @@
+---
+const { frontmatter } = Astro.props;
+---
+
+<html>
+    <head>
+        <!-- Primary Meta Tags -->
+        <title>Události | {frontmatter.class}</title>
+    </head>
+
+    <body>
+        <h1>Události ze třídy {frontmatter.class}</h1>
+        <slot />
+    </body>
+</html>
+
+<style>
+    html {
+		font-family: system-ui, sans-serif;
+    }
+</style>

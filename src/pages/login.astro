@@ -1,0 +1,35 @@
+---
+---
+
+<main>
+    <h1>Login</h1>
+    <input type="text" placeholder="Username" id="username"/>
+    <input type="password" id="password" placeholder="Password">
+    <input type="button" value="Login" id="login">
+    <script is:inline src="/cookieUtil.js"></script>
+
+    <script is:inline>
+        if (hasCookie("auth"))
+            window.location.href = "/";
+        const username = document.getElementById('username')
+        const password = document.getElementById('password')
+        document.getElementById('login').addEventListener("click", async (event) => {
+            fetch("/api/login", {
+                method: "GET",
+                headers: {
+                    "username": username.value,
+                    "password": password.value
+                }
+            }).then((data) => data.text()).then((text) => {
+                if (text.startsWith("{")) {
+                    const json = JSON.parse(text)
+
+                    setCookie("auth", json.secret, 7)
+                    window.alert("Přihlášeno!")
+                    window.location.href = "/"
+                } else
+                    window.alert(text)
+            })
+        })
+    </script>
+</main>

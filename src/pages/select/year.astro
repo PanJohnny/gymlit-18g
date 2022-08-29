@@ -1,13 +1,15 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Elektronická kronika">
 	<main>
-		<h1><span class="text-gradient">Elektronická kronika</span></h1>
-		<Card title="Začít číst" body="Otevřete kroniku a nahlédněte dovnitř" href="/select/year"></Card>
-		<Card title="Znovu otevřít" body="Začít kde jste skončili naposledy (pokud jsou tato data uložena v cookies)" href="/select/last"></Card>
+		<h1><span class="text-gradient">Vyberte školní rok</span></h1>
+		<Card title="2018/2019" body="Zápisy z primy" href="/select/category#1"></Card>
+		<Card title="2019/2020" body="Zápisy ze sekundy" href="/select/category#2"></Card>
+		<Card title="2020/2021" body="Zápisy z tercie" href="/select/category#3"></Card>
+		<Card title="2021/2022" body="Zápisy z kvarty" href="/select/category#4"></Card>
 	</main>
 </Layout>
 

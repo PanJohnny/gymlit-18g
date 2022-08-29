@@ -1,13 +1,26 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Elektronická kronika">
 	<main>
-		<h1><span class="text-gradient">Elektronická kronika</span></h1>
-		<Card title="Začít číst" body="Otevřete kroniku a nahlédněte dovnitř" href="/select/year"></Card>
-		<Card title="Znovu otevřít" body="Začít kde jste skončili naposledy (pokud jsou tato data uložena v cookies)" href="/select/last"></Card>
+        <script is:inline src="/cookieUtil.js"></script>
+		<h1><span class="text-gradient">Vyberte kategorii</span></h1>
+        <span class="text-gradient" id="class"></span>
+        <script is:inline>
+            // get hash
+            if (window.location.hash.length > 1) {
+                const c = document.location.hash.charAt(1);
+                document.getElementById("class").innerText = "Třída: " + c + ". G"
+                setCookie("class", c, 1);
+            } else {
+                window.location.href = "/select/year"
+            }
+        </script>
+		<Card title="Události" body="Věci které se staly v tomto školním roce" href="/open/events"></Card>
+		<Card title="Hlášky" body="Vaše oblíbené hlášky učitelů" href="/open/catchphrases"></Card>
+		<Card title="Média" body="Galerie obrázků a videí" href="/open/gallery"></Card>
 	</main>
 </Layout>
 
