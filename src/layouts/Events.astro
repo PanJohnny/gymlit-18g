@@ -1,5 +1,5 @@
 ---
-const { frontmatter } = Astro.props;
+const { frontmatter } = Astro.props.frontmatter || Astro.props;
 ---
 
 <html>
@@ -17,5 +17,9 @@ const { frontmatter } = Astro.props;
 <style>
     html {
 		font-family: system-ui, sans-serif;
+    }
+
+    body {
+        margin: 0;
     }
 </style>

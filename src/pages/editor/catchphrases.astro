@@ -84,13 +84,26 @@ if (auth != import.meta.env.SECRET) {
         document
             .getElementById("copy")
             .addEventListener("click", async (event) => {
-                navigator.clipboard.writeText(document.getElementById("out").innerText)
+                navigator.clipboard.writeText(
+                    document.getElementById("out").innerText
+                );
             });
 
-            document
+        document
             .getElementById("copy")
             .addEventListener("click", async (event) => {
-                navigator.clipboard.writeText(document.getElementById("out").innerText)
+                navigator.clipboard.writeText(
+                    document.getElementById("out").innerText
+                );
             });
     </script>
 </main>
+
+<style>
+    main {
+		margin: auto;
+		padding: 1em;
+		max-width: 60ch;
+        font-family: system-ui, sans-serif;
+	}
+</style>
