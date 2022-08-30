@@ -13,9 +13,9 @@ if(auth != import.meta.env.SECRET) {
     <h1>Editor</h1>
     <input type="text" placeholder="Ivan Soukup" id="prof"/>
     <input type="button" value="Generovat" id="save">
-    <hr>
-    <textarea name="output" id="out" placeholder="Output" cols="115" rows="10"></textarea>
-    
+    <input type="button" value="Kopírovat" id="copy" />
+    <hr />
+    <pre id="out">Zde se zobrazí výstup</pre>
 
     <script is:inline>
         const prof = document.getElementById('prof')
@@ -27,5 +27,22 @@ if(auth != import.meta.env.SECRET) {
                 out.innerText = '"' + (split[0].substring(0, 3) + split[1].charAt(0)).toLowerCase() + '": ' + '"' + prof.value.trim() +'"' 
             }
         })
+
+        document
+            .getElementById("copy")
+            .addEventListener("click", async (event) => {
+                navigator.clipboard.writeText(
+                    document.getElementById("out").innerText
+                );
+            });
     </script>
 </main>
+
+<style>
+    main {
+		margin: auto;
+		padding: 1em;
+		max-width: 60ch;
+        font-family: system-ui, sans-serif;
+	}
+</style>

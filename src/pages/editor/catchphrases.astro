@@ -88,14 +88,6 @@ if (auth != import.meta.env.SECRET) {
                     document.getElementById("out").innerText
                 );
             });
-
-        document
-            .getElementById("copy")
-            .addEventListener("click", async (event) => {
-                navigator.clipboard.writeText(
-                    document.getElementById("out").innerText
-                );
-            });
     </script>
 </main>
 
