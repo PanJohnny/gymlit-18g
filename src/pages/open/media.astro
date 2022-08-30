@@ -6,8 +6,12 @@ import Layout from "../../layouts/Layout.astro";
 	<main>
         <script is:inline src="/cookieUtil.js"></script>
         <script is:inline>
-            setCookie("category", "events", 1);
-			window.location.href = "/events/"+getCookie("class")
+            setCookie("category", "media", 1);
+            if (!hasCookie("class"))
+                window.location.href = "/select/class"
+            fetch("/media.json").then((data) => data.json()).then((json)=> {
+                window.location.href = json[getCookie("class")]
+            })
         </script>
 	</main>
 </Layout>

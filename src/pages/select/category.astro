@@ -23,8 +23,22 @@ import Card from "../../components/Card.astro";
         </script>
 		<Card title="Události" body="Věci které se staly v tomto školním roce" href="/open/events"></Card>
 		<Card title="Hlášky" body="Vaše oblíbené hlášky učitelů" href="/open/catchphrases"></Card>
-		<Card title="Média" body="Galerie obrázků a videí" href="/open/gallery"></Card>
+		<Card title="Média" body="Galerie obrázků a videí" href="/open/media"></Card>
+		<Card title="Upravit" body="Upravte data" href="/open/edit"></Card>
 	</main>
+
+	<script is:inline>
+		if (!hasCookie("auth")) {
+			const array = document.getElementsByClassName("link-card")
+			for (let index = 0; index < array.length; index++) {
+				const element = array[index];
+				
+				if (element.getElementsByTagName("a")[0].getAttribute("href") == "/open/edit") {
+					element.style = "display: none;"
+				}
+			}
+		}
+	</script>
 </Layout>
 
 <style>

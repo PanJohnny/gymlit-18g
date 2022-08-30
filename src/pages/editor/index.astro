@@ -1,0 +1,46 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+import { getCookie } from "../../cookies.js";
+
+const auth = getCookie("auth", Astro.request.headers);
+if (auth != import.meta.env.SECRET) {
+    return Astro.redirect("/login");
+}
+---
+
+<Layout title="Editor">
+    <main>
+        <script is:inline src="/cookieUtil.js"></script>
+        <h1><span class="text-gradient">Vyberte kategorii</span></h1>
+        <span class="text-gradient" id="class"></span>
+
+        <Card
+            title="Nástroj hlášek"
+            body="Přidejte hlášku k učitely a ročníku"
+            href="/editor/catchphrases"
+        />
+        <Card
+            title="Nástroj učitelů"
+            body="Přidejte učitele do sboru"
+            href="/editor/teacher"
+        />
+        <Card
+            title="Jak upravit hlášky"
+            body="Přečťete si jak upravit hlášky"
+            href="https://github.com/PanJohnny/gymlit-18g/tree/main/guides/CATCHPHRASES.md"
+        />
+        <Card
+            title="Jak upravit události"
+            body="Přečťete si jak upravit události"
+            href="https://github.com/PanJohnny/gymlit-18g/tree/main/guides/EVENTS.md"
+        />
+        <Card
+            title="Jak upravit učitele"
+            body="Přečťete si jak upravit učitele"
+            href="https://github.com/PanJohnny/gymlit-18g/tree/main/TEACHERS.md"
+        />
+        
+
+    </main>
+</Layout>

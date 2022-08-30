@@ -1,33 +1,96 @@
 ---
+import { getCookie } from "../../cookies.js";
+import teachers from "../../../public/teachers.json";
+
+const auth = getCookie("auth", Astro.request.headers);
+if (auth != import.meta.env.SECRET) {
+    return Astro.redirect("/login");
+}
 ---
+
 <head>
     <title>Editor</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8" />
 </head>
 <main>
     <h1>Editor</h1>
-    <input type="text" placeholder="Profesor" id="prof"/>
-    <textarea name="citát" id="cit" placeholder="Catchphrases" cols="115" rows="10"></textarea>
-    <input type="button" value="Generovat" id="save">
-    <hr>
-    <textarea name="output" id="out" placeholder="Output" cols="115" rows="10"></textarea>
-    <script is:inline src="/cookieUtil.js"></script>
+    <select name="teacher" id="teach">
+        <option value="-1" selected>Vyberte učitele</option>
+        {
+            Object.keys(teachers).map((key) => (
+                <option value={key}>{teachers[key]}</option>
+            ))
+        }
+    </select>
+    <select name="class" id="class">
+        <option value="-1" selected>Vyberte ročník</option>
+        <option value="1">1. G</option>
+        <option value="2">2. G</option>
+        <option value="3">3. G</option>
+        <option value="4">4. G</option>
+        <option value="5">5. G</option>
+        <option value="6">6. G</option>
+        <option value="7">7. G</option>
+        <option value="8">8. G</option>
+    </select>
+    <textarea
+        name="citát"
+        id="cit"
+        placeholder="Catchphrases"
+        cols="115"
+        rows="10"></textarea>
+    <input type="button" value="Generovat" id="save" />
+    <input type="button" value="Kopírovat" id="copy" />
+    <hr />
+    <pre id="out">Zde se zobrazí výstup</pre>
 
     <script is:inline>
-        if (!hasCookie("auth"))
-            window.location.href = "/";
-        const prof = document.getElementById('prof')
-        const cit = document.getElementById('cit')
-        const out = document.getElementById('out')
-        document.getElementById('save').addEventListener("click", async (event) => {
-            var lines = cit.value.split("\n")
-            var l = []
-            // filter lines if line is empty remove it
-            for (var i = 0; i < lines.length; i++) {
-                var line = lines[i]
-                if(line.trim().length != 0)
-                    l.push(line.trim())
-            }
-            out.innerText = '"' + prof.value + '"' + ": " + JSON.stringify(l);
-        })
+        document
+            .getElementById("save")
+            .addEventListener("click", async (event) => {
+                const cit = document.getElementById("cit");
+                const out = document.getElementById("out");
+                const teach = document.getElementById("teach");
+                const c = document.getElementById("class");
+                if (teach.value == "-1") {
+                    window.alert("Vyberte učitele");
+                    return;
+                } else if (c.value == -1) {
+                    window.alert("Vyberte ročník");
+                    return;
+                }
+
+                var response = await fetch(
+                    "/catchphrases/" + c.value + ".json"
+                );
+                const json = await response.json();
+                var t = json[teach.value];
+                if (!t) {
+                    window.alert("tento učitel ještě nebyl zmíněn");
+                    t = [];
+                }
+                var lines = cit.value.split("\n");
+                // filter lines if line is empty remove it
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    if (line.trim().length != 0 && !t.includes(line.trim()))
+                        t.push(line.trim());
+                }
+                json[teach.value] = t;
+                out.innerText = JSON.stringify(json, null, "\t");
+            });
+
+        document
+            .getElementById("copy")
+            .addEventListener("click", async (event) => {
+                navigator.clipboard.writeText(document.getElementById("out").innerText)
+            });
+
+            document
+            .getElementById("copy")
+            .addEventListener("click", async (event) => {
+                navigator.clipboard.writeText(document.getElementById("out").innerText)
+            });
     </script>
 </main>

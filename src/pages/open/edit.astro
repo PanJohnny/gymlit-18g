@@ -1,0 +1,137 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+import { getCookie } from "../../cookies.js"
+
+const auth = getCookie("auth", Astro.request.headers)
+if(auth != import.meta.env.SECRET) {
+    return Astro.redirect("/login")
+}
+---
+
+<Layout title="Editor">
+    <main>
+        <script is:inline src="/cookieUtil.js"></script>
+        <h1><span class="text-gradient">Vyberte kategorii</span></h1>
+        <span class="text-gradient" id="class"></span>
+
+        <Card
+            title="Upravit události"
+            body="Upravte události vybraného ročníku"
+            href="#event"
+        />
+        <Card
+            title="Upravit hlášky"
+            body="Upravte hlášky vybraného ročníku"
+            href="#catch"
+        />
+        <Card
+            title="Upravit učitele"
+            body="Přidat, nebo odebrat učitele"
+            href="#teach"
+        />
+        <Card
+            title="Otevřít dokumentaci"
+            body="Přečíst si jak na to"
+            href="https://github.com/PanJohnny/gymlit-18g/tree/main/guides"
+        />
+        <Card
+            title="Otevřít nástroje"
+            body="Otevřte nástroje, které Vám pomůžou"
+            href="/editór"
+        />
+
+        <script is:inline>
+            setCookie("category", "edit", 1);
+            if (!hasCookie("class")) {
+                window.location.href = "/select/year";
+            }
+            const editEvent =
+                "https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/" +
+                getCookie("class") +
+                ".md";
+            const editCathphrase =
+                "https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/" +
+                getCookie("class") +
+                ".json";
+            const editTeachers =
+                "https://github.com/PanJohnny/gymlit-18g/edit/main/public/teachers.json";
+
+            const cards = document.getElementsByClassName("link-card");
+            for (let index = 0; index < cards.length; index++) {
+                const card = cards[index];
+                const a = card.getElementsByTagName("a")[0];
+                var href = a.getAttribute("href");
+                if (href == "#teach") {
+                    href = editTeachers;
+                } else if (href == "#catch") {
+                    href = editCathphrase;
+                } else if (href == "#event") {
+                    href = editEvent;
+                }
+
+                a.setAttribute("href", href);
+            }
+        </script>
+    </main>
+</Layout>
+
+<style>
+    :root {
+        --astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
+    }
+
+    h1 {
+        margin: 2rem 0;
+    }
+
+    main {
+        margin: auto;
+        padding: 1em;
+        max-width: 60ch;
+    }
+
+    .text-gradient {
+        font-weight: 900;
+        background-image: var(--astro-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 100% 200%;
+        background-position-y: 100%;
+        border-radius: 0.4rem;
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%,
+        100% {
+            background-position-y: 0%;
+        }
+        50% {
+            background-position-y: 80%;
+        }
+    }
+
+    .instructions {
+        line-height: 1.6;
+        margin: 1rem 0;
+        background: #4f39fa;
+        padding: 1rem;
+        border-radius: 0.4rem;
+        color: var(--color-bg);
+    }
+
+    .instructions code {
+        font-size: 0.875em;
+        border: 0.1em solid var(--color-border);
+        border-radius: 4px;
+        padding: 0.15em 0.25em;
+    }
+
+    .link-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+        gap: 1rem;
+        padding: 0;
+    }
+</style>
