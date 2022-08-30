@@ -7,7 +7,7 @@ const teachers = JSON.parse(
 );
 ---
 
-<Layout title="Elektronická kronika">
+<Layout title="Online kronika">
 	<main>
 		<script is:inline src="/cookieUtil.js"></script>
 
@@ -18,6 +18,9 @@ const teachers = JSON.parse(
 			setCookie("category", "catchphrases", 1);
 			document.getElementById("class").innerText =
 				"Třída: " + getCookie("class") + ". G";
+			if (getCookie("class") == "0") {
+				document.getElementById("class").innerText = "Všechny ročníky";
+			}
 		</script>
 		{
 			// go through teachers and add Card for every key
@@ -30,29 +33,31 @@ const teachers = JSON.parse(
 			))
 		}
 		<script is:inline>
-			// remove teachers not in the group
-			const cards = document.getElementsByClassName("link-card");
-			fetch("/catchphrases/" + getCookie("class") + ".json")
-				.then((data) => data.json())
-				.then((json) => {
-					for (let index = 0; index < cards.length; index++) {
-						const element = cards[index];
-						const a = element.getElementsByTagName("a")[0];
-						const id = a.getAttribute("href").split("#")[1];
+			if (getCookie("class") != "0") {
+				// remove teachers not in the group
+				const cards = document.getElementsByClassName("link-card");
+				fetch("/catchphrases/" + getCookie("class") + ".json")
+					.then((data) => data.json())
+					.then((json) => {
+						for (let index = 0; index < cards.length; index++) {
+							const element = cards[index];
+							const a = element.getElementsByTagName("a")[0];
+							const id = a.getAttribute("href").split("#")[1];
 
-						var has = false;
-						Object.keys(json).map((key) => {
-							if (key == id) {
-								has = true;
-								return;
+							var has = false;
+							Object.keys(json).map((key) => {
+								if (key == id) {
+									has = true;
+									return;
+								}
+							});
+
+							if (!has) {
+								element.style = "display: none";
 							}
-						});
-
-						if (!has) {
-							element.style = "display: none"
 						}
-					}
-				});
+					});
+			}
 		</script>
 	</main>
 </Layout>

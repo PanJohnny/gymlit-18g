@@ -13,6 +13,9 @@ import Card from "../../components/Card.astro";
             if (window.location.hash.length > 1) {
                 const c = document.location.hash.charAt(1);
                 document.getElementById("class").innerText = "Třída: " + c + ". G"
+				if (c=="0") {
+					document.getElementById("class").innerText = "Všechny ročníky"
+				}
                 setCookie("class", c, 1);
             } else {
                 window.location.href = "/select/year"
