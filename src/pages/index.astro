@@ -19,7 +19,7 @@ import Card from "../components/Card.astro";
 
 			if(!hasCookie("cookie")) {
 				if (window.confirm("Pro sprádvné fungování této stránky prosím povolte cookies. Chcete povolit cookies?")) {
-					setCookie("cookie", "true", 48)
+					setCookieForce("cookie", "true", 48)
 				}
 			}
 		</script>
