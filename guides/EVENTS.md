@@ -7,8 +7,8 @@ Každá událost je [markdown soubor (syntax: https://www.markdownguide.org/basi
 Na začátku souboru je místo obehnané `---` které neupravujte, ale udává základní proměnné pro webovou stránku. Hlava tedy vypadá nějak takhle:
 ``` 
 ---
-template: ../../layouts/Events.astro
-class: x. G
+layout: ../../layouts/Events.astro
+class: Oktáva
 ---
 ```
 
