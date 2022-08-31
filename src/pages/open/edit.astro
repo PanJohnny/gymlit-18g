@@ -1,12 +1,30 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
-import { getCookie } from "../../cookies.js"
+import { canUseCookies, parseCookies, sendCookie } from "../../cookies.js";
 
-const auth = getCookie("auth", Astro.request.headers)
-if(auth != import.meta.env.SECRET) {
-    return Astro.redirect("/login")
+const cookies = parseCookies(Astro.request.headers);
+
+if (!cookies.has("class")) return Astro.redirect("/select/year");
+
+if (canUseCookies(Astro.request.headers))
+    sendCookie("category", "catchphrases", 1, Astro.response.headers);
+
+const auth = cookies.get("auth");
+if (auth != import.meta.env.SECRET) {
+    return Astro.redirect("/login");
 }
+
+const editEvent =
+    "https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/" +
+    cookies.get("class") +
+    ".md";
+const editCathphrase =
+    "https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/" +
+    cookies.get("class") +
+    ".json";
+const editTeachers =
+    "https://github.com/PanJohnny/gymlit-18g/edit/main/public/teachers.json";
 ---
 
 <Layout title="Editor">
@@ -18,17 +36,17 @@ if(auth != import.meta.env.SECRET) {
         <Card
             title="Upravit události"
             body="Upravte události vybraného ročníku"
-            href="#event"
+            href={editEvent}
         />
         <Card
             title="Upravit hlášky"
             body="Upravte hlášky vybraného ročníku"
-            href="#catch"
+            href={editCathphrase}
         />
         <Card
             title="Upravit učitele"
             body="Přidat, nebo odebrat učitele"
-            href="#teach"
+            href={editTeachers}
         />
         <Card
             title="Otevřít dokumentaci"
@@ -40,39 +58,6 @@ if(auth != import.meta.env.SECRET) {
             body="Otevřte nástroje, které Vám pomůžou"
             href="/editor"
         />
-
-        <script is:inline>
-            setCookie("category", "edit", 1);
-            if (!hasCookie("class")) {
-                window.location.href = "/select/year";
-            }
-            const editEvent =
-                "https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/" +
-                getCookie("class") +
-                ".md";
-            const editCathphrase =
-                "https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/" +
-                getCookie("class") +
-                ".json";
-            const editTeachers =
-                "https://github.com/PanJohnny/gymlit-18g/edit/main/public/teachers.json";
-
-            const cards = document.getElementsByClassName("link-card");
-            for (let index = 0; index < cards.length; index++) {
-                const card = cards[index];
-                const a = card.getElementsByTagName("a")[0];
-                var href = a.getAttribute("href");
-                if (href == "#teach") {
-                    href = editTeachers;
-                } else if (href == "#catch") {
-                    href = editCathphrase;
-                } else if (href == "#event") {
-                    href = editEvent;
-                }
-
-                a.setAttribute("href", href);
-            }
-        </script>
     </main>
 </Layout>
 

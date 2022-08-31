@@ -1,0 +1,23 @@
+---
+export interface Props {
+    href: string;
+}
+
+const { href } = Astro.props as Props;
+---
+
+<html>
+    <head>
+        <title>Redirecting...</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta http-equiv="refresh" content={"0; url="+href}>
+    </head>
+
+    <body>
+        <main>
+            <a href={href}>
+                Přeměrovávám na {href}, pokud nejste po chvíli přesměrovaní klkněte sem
+            </a>
+        </main> 
+    </body>
+</html>

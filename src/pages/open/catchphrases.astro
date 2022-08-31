@@ -2,60 +2,56 @@
 import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
 import teachers from "../../../public/teachers.json";
+const phrases = await Astro.glob("../../../public/catchphrases/*.json");
+import { canUseCookies, parseCookies, sendCookie } from "../../cookies.js";
+
+const cookies = parseCookies(Astro.request.headers);
+
+if (!cookies.has("class")) return Astro.redirect("/select/year");
+
+if (canUseCookies(Astro.request.headers))
+	sendCookie("category", "catchphrases", 1, Astro.response.headers);
+
+var className = "Třída: " + cookies.get("class") + ". G";
+
+if (cookies.get("class") == "0") className = "Všechny třídy";
+var keys = [];
+if (cookies.get("class") != "0") {
+	keys = Object.keys(phrases.at(parseInt(cookies.get("class")) - 1))
+}
+function valid(key:string) {
+	if (keys.length == 0) {
+		return true;
+	} else {
+		if (keys.includes(key)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
 ---
 
 <Layout title="Online kronika">
 	<main>
-		<script is:inline src="/cookieUtil.js"></script>
-
 		<h1><span class="text-gradient">Vyberte učitele</span></h1>
-		<span class="text-gradient" id="class"></span>
-		<script is:inline>
-			if (!hasCookie("class")) window.location.href = "/select/year";
-			setCookie("category", "catchphrases", 1);
-			document.getElementById("class").innerText =
-				"Třída: " + getCookie("class") + ". G";
-			if (getCookie("class") == "0") {
-				document.getElementById("class").innerText = "Všechny ročníky";
-			}
-		</script>
+		<span class="text-gradient" id="class">
+			{className}
+		</span>
 		{
 			// go through teachers and add Card for every key
-			Object.keys(teachers).map((key) => (
-				<Card
-					title={teachers[key]}
-					body={"Hlášky učitele (zkratka jména: " + key + ")"}
-					href={"/open/teacher#" + key}
-				/>
-			))
+			Object.keys(teachers).map((key) => {
+				if (valid(key)) {
+					return (
+						<Card
+							title={teachers[key]}
+							body={"Hlášky učitele (zkratka jména: " + key + ")"}
+							href={"/open/teacher#" + key}
+						/>
+					);
+				}
+			})
 		}
-		<script is:inline>
-			if (getCookie("class") != "0") {
-				// remove teachers not in the group
-				const cards = document.getElementsByClassName("link-card");
-				fetch("/catchphrases/" + getCookie("class") + ".json")
-					.then((data) => data.json())
-					.then((json) => {
-						for (let index = 0; index < cards.length; index++) {
-							const element = cards[index];
-							const a = element.getElementsByTagName("a")[0];
-							const id = a.getAttribute("href").split("#")[1];
-
-							var has = false;
-							Object.keys(json).map((key) => {
-								if (key == id) {
-									has = true;
-									return;
-								}
-							});
-
-							if (!has) {
-								element.style = "display: none";
-							}
-						}
-					});
-			}
-		</script>
 	</main>
 </Layout>
 

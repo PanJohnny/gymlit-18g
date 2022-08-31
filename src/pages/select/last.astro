@@ -1,21 +1,18 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Redirect from "../../layouts/Redirect.astro";
+import { parseCookies } from "../../cookies.js";
+
+const cookies = parseCookies(Astro.request.headers);
+var href:string;
+if (cookies.has("category") && cookies.has("class")) {
+    href = "/open/" + cookies.get("category");
+} else if (hasCookie("class")) {
+    href = "/select/category#" + cookies.get("class");
+} else {
+    href = "/select/year";
+}
+
+return Astro.redirect(href)
 ---
 
-<Layout title="Elektronická kronika">
-	<main>
-        <script is:inline src="/cookieUtil.js"></script>
-        <span class="text-gradient" id="class"></span>
-        <script is:inline>
-
-            // get hash
-            if (hasCookie("category") && hasCookie("class")) {
-                window.location.href = "/open/" + getCookie("category")
-            } else if (hasCookie("class")) {
-                window.location.href = "/select/category#" + getCookie("class")
-            } else {
-                window.location.href = "/select/year"
-            }
-        </script>
-	</main>
-</Layout>
+<Redirect href={href}></Redirect>
