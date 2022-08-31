@@ -5,6 +5,9 @@ import Card from "../components/Card.astro";
 
 <Layout title="Online kronika">
 	<main>
+		<noscript>
+			Varování: tato stránka pro své fungování vyžaduje javascript
+		</noscript>
 		<h1><span class="text-gradient">Online kronika</span></h1>
 		<script is:inline src="/cookieUtil.js"></script>
 		<Card title="Začít číst" body="Otevřete kroniku a nahlédněte dovnitř" href="/select/year"></Card>
