@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
+import {hasCookie} from "../cookies.js"
 ---
 
 <Layout title="Online kronika">
@@ -12,8 +13,13 @@ import Card from "../components/Card.astro";
 		<script is:inline src="/cookieUtil.js"></script>
 		<Card title="Začít číst" body="Otevřete kroniku a nahlédněte dovnitř" href="/select/year"></Card>
 		<Card title="Znovu otevřít" body="Začít kde jste skončili naposledy (pokud jsou tato data uložena v cookies)" href="/select/last"></Card>
-		<a class="text-gradient" href="/login" id="login">Přihlásit se</a>
-		<span id="info" class="text-gradient"></span>
+		{
+			hasCookie("cookie", Astro.request.headers) ? (
+				<Card title="Nastavení" body="Přenastavte některé možnosti podle svého gusta" href="/settings" />
+			) : {}
+		}
+		<a class="text-gradient" href="/login" id="login">Přihlásit se <br /></a>
+		<span id="info" class="text-gradient">Novinka: černý režim a nastavení</span>
 		<script is:inline>
 			if (hasCookie("auth")) {
 				document.getElementById("login").style = "display: none;"

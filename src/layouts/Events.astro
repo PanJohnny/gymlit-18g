@@ -15,12 +15,25 @@ const { frontmatter } = Astro.props;
 </html>
 
 <style>
+    :root {
+        --color-text: hsl(12, 5%, 4%);
+		--color-bg: hsl(10, 21%, 95%);
+    }
+
     html {
 		font-family: system-ui, sans-serif;
+        color: var(--color-text);
+        background-color: var(--color-bg);
     }
 
     body {
         margin: 0;
         font-size: 1.2em;
     }
+
+    @media (prefers-color-scheme: dark) {
+		html {
+			filter: invert(1);
+		}
+	}
 </style>

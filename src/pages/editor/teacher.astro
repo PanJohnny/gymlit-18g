@@ -40,10 +40,32 @@ if(auth != import.meta.env.SECRET) {
 </main>
 
 <style>
-    main {
-		margin: auto;
-		padding: 1em;
-		max-width: 60ch;
+    :root {
+        --color-text: hsl(12, 5%, 4%);
+        --color-bg: hsl(10, 21%, 95%);
+    }
+
+    html {
         font-family: system-ui, sans-serif;
-	}
+        color: var(--color-text);
+        background-color: var(--color-bg);
+        font-size: 150%;
+    }
+
+    body {
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html {
+            filter: invert(1);
+        }
+    }
+    main {
+        margin: auto;
+        padding: 1em;
+        max-width: 60ch;
+        font-family: system-ui, sans-serif;
+    }
 </style>
