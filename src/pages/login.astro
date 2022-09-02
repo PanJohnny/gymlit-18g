@@ -1,35 +1,71 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import { parseCookies } from "../cookies.js";
+
+const cookies = parseCookies(Astro.request.headers);
+
+if (cookies.has("auth")) return Astro.redirect("/");
 ---
 
-<main>
-    <h1>Login</h1>
-    <input type="text" placeholder="Username" id="username"/>
-    <input type="password" id="password" placeholder="Password">
-    <input type="button" value="Login" id="login">
-    <script is:inline src="/cookieUtil.js"></script>
+<Layout title="Přihlásit se">
+    <main>
+        <h1 class="text-gradient">Přihlásit se</h1>
+        <input type="text" placeholder="Username" id="username" />
+        <input type="password" id="password" placeholder="Password" />
+        <input type="button" value="Login" id="login" />
+        <script is:inline src="/cookieUtil.js"></script>
 
-    <script is:inline>
-        if (hasCookie("auth"))
-            window.location.href = "/";
-        const username = document.getElementById('username')
-        const password = document.getElementById('password')
-        document.getElementById('login').addEventListener("click", async (event) => {
-            fetch("/api/login", {
-                method: "GET",
-                headers: {
-                    "username": username.value,
-                    "password": password.value
-                }
-            }).then((data) => data.text()).then((text) => {
-                if (text.startsWith("{")) {
-                    const json = JSON.parse(text)
+        <script is:inline>
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            document
+                .getElementById("login")
+                .addEventListener("click", async (event) => {
+                    fetch("/api/login", {
+                        method: "GET",
+                        headers: {
+                            username: username.value,
+                            password: password.value,
+                        },
+                    })
+                        .then((data) => data.text())
+                        .then((text) => {
+                            if (text.startsWith("{")) {
+                                const json = JSON.parse(text);
 
-                    setCookie("auth", json.secret, 7)
-                    window.alert("Přihlášeno!")
-                    window.location.href = "/"
-                } else
-                    window.alert(text)
-            })
-        })
-    </script>
-</main>
+                                setCookie("auth", json.secret, 7);
+                                window.alert("Přihlášeno!");
+                                window.location.href = "/";
+                            } else window.alert(text);
+                        });
+                });
+        </script>
+    </main>
+</Layout>
+
+<style>
+    :root {
+        --astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
+    }
+
+    h1 {
+        margin: 2rem 0;
+    }
+
+    main {
+        margin: auto;
+        padding: 1em;
+        max-width: 60ch;
+    }
+
+    .text-gradient {
+        font-weight: 900;
+        background-image: var(--astro-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 100% 200%;
+        background-position-y: 100%;
+        border-radius: 0.4rem;
+        animation: pulse 4s ease-in-out infinite;
+    }
+</style>
