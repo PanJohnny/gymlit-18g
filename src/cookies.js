@@ -19,6 +19,8 @@ export function getCookie(name, headers) {
 export function parseCookies(headers) {
     const cookies = new Cookies()
     const c = headers.get("cookie")
+    if (c==null)
+        return cookies
     const cooks = c.split(";")
 
     cooks.forEach((cok) => {
