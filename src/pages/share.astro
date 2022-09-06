@@ -12,6 +12,17 @@
     <meta name="generator" content={Astro.generator} />
     <script src="/cookieUtil.js" is:inline> </script>
     <script is:inline>
+        if (!hasCookie("cookie")) {
+            if (
+                window.confirm(
+                    "Pro sprádvné fungování této stránky prosím povolte cookies. Chcete povolit cookies?"
+                )
+            ) {
+                setCookieForce("cookie", "true", 48);
+            }
+        }
+    </script>
+    <script is:inline>
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
 
@@ -35,7 +46,7 @@
 
 <body>
     <noscript>
-        This page does not work without JavScript please leave it
+        This page does not work without JavaScript please leave it
     </noscript>
 </body>
 
