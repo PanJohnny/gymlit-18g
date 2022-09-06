@@ -18,13 +18,18 @@
         const c = params["c"]
         const category = params["t"]
 
+        var hash = params["h"]
+
+        if (!hash)
+            hash = ""
+
         if (!c || !category) {
             window.alert("Invalid share link")
             window.location.href = "/"
         }
         setCookie("class", c, 1)
         setCookie("category", category, 1)
-        window.location.href = "/select/last"
+        window.location.href = "/open/" + category + "#" + "hash"
     </script>
 </head>
 
