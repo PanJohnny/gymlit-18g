@@ -1,11 +1,43 @@
 {
-    "hans": ["Říká Jáchymovi opakovaně \"Jonáš\"","\"Takže milánkové, takhle by to tedy nešlo.\" paní profesorka Šafaříková po té, co viděla Egorův sešit."],
-    "hanv": ["\"Tak tohle je jednoduché, tohle věděl i Tobiáš.\"","\"Nevyrušuji tě náhodou Tobiáši?\" Ani moc ne.\" - Tobiáš, R.I.P. Ferda mravenec (mravenčí mazlíček Tobiáše), rozdrcen při biologii paní profesorkou Vrbeckou.","\"Hele Matěji nemusíš se u toho T-ballu tak snažit. Nech holky uběhnout aspoň jedno kolo.\" - paní profesorka Vrbecká po té, co Matěj zhatil 3. pokus na obsazení mety."],
-    "lenr": ["\"A co kdybych měl samé jedničky a jednu pětku z hudebky?\" „Tak bych se zasloužila o to, aby tě vyhodili.\" (paní profesorka Říhová na Tobiase)"],
-    "jitp": ["\"Já tě ztuhnu, to bude fofr!\"","Bety a Josefína: \"Dobrý den paní profesorko, omlouváme se, že jdeme pozdě, byla zácpa.\" Paní profesorka Puchmajerová: \"Já vám dám zácpu, až z toho bude průjem\""],
-    "ilos": ["\"On jak je ten Karel menšího vzrůstu, snadno se přehlédne\"","A co jsi z tohoto textu odvodil?\"","Ondřej Fikr: \"Že život je sviňa.\"","Tobias: Já vím, že to bude znít bizarně, ale sešit jsem měl ve skříňce na klíč a ten klič se uvnitř zlomil.\" (Tobiášova výmluva proč nemá sešit)","","Paní učitelko, Egor je lopata!\"- komentář Ondřeje Fikra"],
-    "zuzk": ["Říká Tobiasovi \"Matyas\"","A co kdybych si chtěl trojku opravit?\"- Egor, \"Trojku nikdo nedostal ANI TY!\"- paní profesorka Klopacz","\"To je sice hezké, ale nikoho to nezajímá...\" paní profesorka Klopacz na Tobiase po dalším fun-factu. (jeden z prvních učitelů, kteří byli na Tobiase s touto věcí upřímní)."],
-    "jitk": ["\"Tvůj sešit je jak divoká džungle\" - paní profesorka Krajčová na Egorův sešit"],
-    "verk": ["\"Tobiasi ty jsi ukecanější než ženský.\"","Ondra (na hodině): \"S prominutím Tobias je č*r*k a neumí prohrávat!\""],
-    "janb": ["\"Sklapni Egore, nikdo se tě na nic neptal!\""]
+	"hans": [
+		"Říká Jáchymovi opakovaně \"Jonáš\"",
+		"\"Takže milánkové, takhle by to tedy nešlo.\" paní profesorka Šafaříková po té, co viděla Egorův sešit."
+	],
+	"hanv": [
+		"\"Tak tohle je jednoduché, tohle věděl i Tobiáš.\"",
+		"\"Nevyrušuji tě náhodou Tobiáši?\" Ani moc ne.\" - Tobiáš, R.I.P. Ferda mravenec (mravenčí mazlíček Tobiáše), rozdrcen při biologii paní profesorkou Vrbeckou.",
+		"\"Hele Matěji nemusíš se u toho T-ballu tak snažit. Nech holky uběhnout aspoň jedno kolo.\" - paní profesorka Vrbecká po té, co Matěj zhatil 3. pokus na obsazení mety."
+	],
+	"lenr": [
+		"\"A co kdybych měl samé jedničky a jednu pětku z hudebky?\" „Tak bych se zasloužila o to, aby tě vyhodili.\" (paní profesorka Říhová na Tobiase)"
+	],
+	"jitp": [
+		"\"Já tě ztuhnu, to bude fofr!\"",
+		"Bety a Josefína: \"Dobrý den paní profesorko, omlouváme se, že jdeme pozdě, byla zácpa.\" Paní profesorka Puchmajerová: \"Já vám dám zácpu, až z toho bude průjem\"",
+		"\"Půjdeme na oběd jako lidi a ne jako 3. G\"",
+		"\"Dojde i na druhou metu?\" zareagoval Kryštof Klíma na vzdělávací pořad Rande s fyzikou, načež paní profesorka Puchmajerová pořad vypla."
+	],
+	"ilos": [
+		"\"On jak je ten Karel menšího vzrůstu, snadno se přehlédne\"",
+		"A co jsi z tohoto textu odvodil?\"",
+		"Ondřej Fikr: \"Že život je sviňa.\"",
+		"Tobias: Já vím, že to bude znít bizarně, ale sešit jsem měl ve skříňce na klíč a ten klič se uvnitř zlomil.\" (Tobiášova výmluva proč nemá sešit)",
+		"",
+		"Paní učitelko, Egor je lopata!\"- komentář Ondřeje Fikra"
+	],
+	"zuzk": [
+		"Říká Tobiasovi \"Matyas\"",
+		"A co kdybych si chtěl trojku opravit?\"- Egor, \"Trojku nikdo nedostal ANI TY!\"- paní profesorka Klopacz",
+		"\"To je sice hezké, ale nikoho to nezajímá...\" paní profesorka Klopacz na Tobiase po dalším fun-factu. (jeden z prvních učitelů, kteří byli na Tobiase s touto věcí upřímní)."
+	],
+	"jitk": [
+		"\"Tvůj sešit je jak divoká džungle\" - paní profesorka Krajčová na Egorův sešit"
+	],
+	"verk": [
+		"\"Tobiasi ty jsi ukecanější než ženský.\"",
+		"Ondra (na hodině): \"S prominutím Tobias je č*r*k a neumí prohrávat!\""
+	],
+	"janb": [
+		"\"Sklapni Egore, nikdo se tě na nic neptal!\""
+	]
 }

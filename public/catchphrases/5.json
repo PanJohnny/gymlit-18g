@@ -1,3 +1,30 @@
 {
-    "janl": ["\"Chlapce už znám, ale dívky poznám při zkoušení.\"","\"Karel se choval jako dospělý již v sekundě.\""]
+	"janl": [
+		"\"Chlapce už znám, ale dívky poznám při zkoušení.\"",
+		"\"Karel se choval jako dospělý již v sekundě.\"",
+		"\"Tady byli bolševici, tam jsou bolševici a všecko špatně.\"",
+		"\"Protože žena je taky člověk\"",
+		"\"Přijdeš na zkoušení se sešitem, já tě vyzkouším. Ty poté odejdeš a pak se nachlastáš...\"",
+		"\"Já nevím, jak to ten Ježíš vymýšlel, že bakterie se nebudou vrtět, ale točit. Nebo snad Lenin... on byl taky chytrý člověk.\""
+	],
+	"stef": [
+		"\"Ta lavice stála víc než ty!\"",
+		"\"Tak chytří, aby jste si mohli povídat nejste!\"",
+		"\"Naty, měla by si své sestře vyčinit...\""
+	],
+	"iver": [
+		"\"Brambora a brambora jsou dvě brambory a ne odmocnina z 12!\""
+	],
+	"svap": [
+		"\"Vše, no jo vše, takže vše.\"",
+		"\"Svět se zbláznil a já proti tomu bojuju!\"",
+		"\"Zíváš, protože si unavený nebo protože tě unavuji já?\""
+	],
+	"marw": [
+		"[de facto] = de facto",
+		"[na uandrajfu] = na OneDrivu"
+	],
+	"ladc": [
+		"Když z toho tabletu sundáš ten obal, tak tam vzadu bude takový ochroustaný jablíčko."
+	]
 }
