@@ -10,7 +10,8 @@ const { frontmatter } = Astro.props;
 
     <body>
         <h1>{frontmatter.class}</h1>
-        <slot />
+            <slot />
+        
     </body>
 </html>
 
@@ -29,6 +30,7 @@ const { frontmatter } = Astro.props;
     body {
         margin: 0;
         font-size: 1.2em;
+        margin-left: 0.5em;
     }
 
     @media (prefers-color-scheme: dark) {

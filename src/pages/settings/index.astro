@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
-import {hasCookie, sendCookie} from "../../cookies.js"
 ---
 
 <Layout title="Nastavení">
@@ -12,7 +11,7 @@ import {hasCookie, sendCookie} from "../../cookies.js"
 		</p>
     <Card title="Vymazat data" body="Vymažte veškerá cookies" href="/settings/apply#cookies" />
 	{
-		hasCookie("auth", Astro.request.headers) ? (
+		Astro.cookies.has("auth") ? (
 			<Card title="Odhlásit se" body="Odhlašte se z administrátorského účtu" href="/settings/apply#logout" />
 		) : {}
 	}

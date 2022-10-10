@@ -1,44 +1,31 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
+const params = Astro.url.searchParams
+const c = params.get("year")
+
+if (!c || !/[0-8]/g.test(c) || c.length != 1) {
+	return Astro.redirect('/select/year?redirect_reason=invalid.year')
+}
+
+const cname = c != "0" ? "Třída: " + c + ". G" : "Třída: 1.G - 8.G"
+
+function cURL(url) {
+	return url + "?year=" + c
+}
 ---
 
 <Layout title="Elektronická kronika">
 	<main>
-        <script is:inline src="/cookieUtil.js"></script>
 		<h1><span class="text-gradient">Vyberte kategorii</span></h1>
-        <span class="text-gradient" id="class"></span>
-        <script is:inline>
-            // get hash
-            if (window.location.hash.length > 1) {
-                const c = document.location.hash.charAt(1);
-                document.getElementById("class").innerText = "Třída: " + c + ". G"
-				if (c=="0") {
-					document.getElementById("class").innerText = "Všechny ročníky"
-				}
-                setCookie("class", c, 1);
-            } else {
-                window.location.href = "/select/year"
-            }
-        </script>
-		<Card title="Události" body="Věci které se staly v tomto školním roce" href="/open/events"></Card>
-		<Card title="Hlášky" body="Vaše oblíbené hlášky učitelů" href="/open/catchphrases"></Card>
-		<Card title="Média" body="Galerie obrázků a videí" href="/open/media"></Card>
-		<Card title="Upravit" body="Upravte data" href="/open/edit"></Card>
-	</main>
-
-	<script is:inline>
-		if (!hasCookie("auth")) {
-			const array = document.getElementsByClassName("link-card")
-			for (let index = 0; index < array.length; index++) {
-				const element = array[index];
-				
-				if (element.getElementsByTagName("a")[0].getAttribute("href") == "/open/edit") {
-					element.style = "display: none;"
-				}
-			}
+        <span class="text-gradient" id="class">{cname}</span>
+		<Card title="Události" body="Věci které se staly v tomto školním roce" href={cURL("/open/events")}></Card>
+		<Card title="Hlášky" body="Vaše oblíbené hlášky učitelů" href={cURL("/open/catchphrases")}></Card>
+		<Card title="Média" body="Galerie obrázků a videí" href={cURL("/open/media")}></Card>
+		{
+			Astro.cookies.has('auth') ? (<Card title="Upravit" body="Upravte data" href="/open/edit"></Card>) : ""
 		}
-	</script>
+	</main>
 </Layout>
 
 <style>

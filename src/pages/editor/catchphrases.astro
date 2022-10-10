@@ -1,8 +1,7 @@
 ---
-import { getCookie } from "../../cookies.js";
 import teachers from "../../../public/teachers.json";
 
-const auth = getCookie("auth", Astro.request.headers);
+const auth = Astro.cookies.get("auth").value
 if (auth != import.meta.env.SECRET) {
     return Astro.redirect("/login");
 }

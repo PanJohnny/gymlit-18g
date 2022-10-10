@@ -1,27 +1,28 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
-import { canUseCookies, parseCookies, sendCookie } from "../../cookies.js";
+import {createExpires, validYear} from "../../utils"
 
-const cookies = parseCookies(Astro.request.headers);
+const params = Astro.url.searchParams
 
-if (!cookies.has("class")) return Astro.redirect("/select/year");
+if (!params.has("year") || !validYear(params.get("year"))) {
+	return Astro.redirect('/select/year?redirect_reason=invalid.year')
+}
 
-if (canUseCookies(Astro.request.headers))
-    sendCookie("category", "catchphrases", 1, Astro.response.headers);
+Astro.cookies.set("last", Astro.url.href, {expires: createExpires(1)})
 
-const auth = cookies.get("auth");
+const auth = Astro.cookies.get("auth").value;
 if (auth != import.meta.env.SECRET) {
     return Astro.redirect("/login");
 }
 
 const editEvent =
     "https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/" +
-    cookies.get("class") +
+    params.get("class") +
     ".md";
 const editCathphrase =
     "https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/" +
-    cookies.get("class") +
+    params.get("class") +
     ".json";
 const editTeachers =
     "https://github.com/PanJohnny/gymlit-18g/edit/main/public/teachers.json";

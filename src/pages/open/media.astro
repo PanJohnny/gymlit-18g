@@ -1,19 +1,14 @@
 ---
 import media from "../../data/media.json";
-import {canUseCookies, parseCookies, sendCookie} from "../../cookies.js"
-import Redirect from "../../layouts/Redirect.astro";
+import {createExpires, validYear} from "../../utils"
 
-const cookies = parseCookies(Astro.request.headers)
+const params = Astro.url.searchParams
 
-if (!cookies.has("class")) {
-	return Astro.redirect("/select/year")
+if (!params.has("year") || !validYear(params.get("year"))) {
+	return Astro.redirect('/select/year?redirect_reason=invalid.year')
 }
 
-if (canUseCookies(Astro.request.headers))
-	sendCookie("category", "media", 1, Astro.response.headers)
+Astro.cookies.set("last", Astro.url.href, {expires: createExpires(1)})
 
-const redirect = media[cookies.get("class")]
-return Astro.redirect(redirect)
+return Astro.redirect(media[params.get("year")])
 ---
-
-<Redirect href={redirect}></Redirect>

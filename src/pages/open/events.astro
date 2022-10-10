@@ -1,19 +1,13 @@
 ---
-import {canUseCookies, sendCookie, getCookie} from "../../cookies.js"
-import Redirect from "../../layouts/Redirect.astro";
+import {createExpires, validYear} from "../../utils"
 
-const c = getCookie("class", Astro.request.headers)
-if (!c) {
-	return Astro.redirect("/select/year")
+const params = Astro.url.searchParams
+
+if (!params.has("year") || !validYear(params.get("year"))) {
+	return Astro.redirect('/select/year?redirect_reason=invalid.year')
 }
 
-if (canUseCookies(Astro.request.headers))
-	sendCookie("category", "events", 1, Astro.response.headers)
+Astro.cookies.set("last", Astro.url.href, {expires: createExpires(1)})
 
-const href = "/events/"+c
-return Astro.redirect(href)
+return Astro.redirect("/events/"+params.get("year"))
 ---
-
-<Redirect href={href}>
-
-</Redirect>

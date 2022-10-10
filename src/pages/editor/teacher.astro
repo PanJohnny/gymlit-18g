@@ -1,7 +1,5 @@
 ---
-import { getCookie } from "../../cookies.js"
-
-const auth = getCookie("auth", Astro.request.headers)
+const auth = Astro.cookies.get("auth").value
 if(auth != import.meta.env.SECRET) {
     return Astro.redirect("/login")
 }

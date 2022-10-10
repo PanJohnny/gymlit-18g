@@ -1,10 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { parseCookies } from "../cookies.js";
 
-const cookies = parseCookies(Astro.request.headers);
-
-if (cookies.has("auth")) return Astro.redirect("/");
+if (Astro.cookies.has("auth")) return Astro.redirect("/");
 ---
 
 <Layout title="Přihlásit se">

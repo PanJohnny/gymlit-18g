@@ -1,78 +1,61 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { createExpires, className, validYear } from "../../utils";
+import teachers from "../../../public/teachers.json";
+
+const params = Astro.url.searchParams;
+
+if (!params.has("year") || !validYear(params.get("year"))) {
+    return Astro.redirect("/select/year?redirect_reason=invalid.year");
+}
+
+const year = params.get("year");
+
+Astro.cookies.set("last", Astro.url.href, { expires: createExpires(1) });
+
+if (!params.has("id"))
+    return Astro.redirect("/select/year?redirect_reason=invalid.teacher_id");
+
+// get teacher id
+const id = params.get("id");
+const teacher = teachers[id];
+
+if (!teacher) return Astro.redirect("/select/category");
+
+let json: Array<string> = [];
+if (year == "0") {
+    await Astro.glob("../../../public/catchphrases/*.json").then((arr) => {
+        arr.forEach((a) => {
+            if (Object.keys(a).includes(id))
+                a[id].forEach((d: string) => {
+                    json.push(d);
+                });
+        });
+    });
+} else {
+    await fetch(Astro.url.protocol + "//" 
+     + Astro.url.host + "/catchphrases/" + year + ".json")
+        .then((response) => response.json())
+        .then((a:object) => {
+            if (Object.keys(a).includes(id))
+                a[id].forEach((d: string) => {
+                    json.push(d);
+                });
+        });
+}
+
+if (json.length == 0) {
+    return Astro.redirect("/open/catchphrases?redirect_reason=no.catchphrases")
+}
 ---
 
-<Layout title="Online kronika">
+<Layout title={teacher + " @ Online Kronika"}>
     <main>
-        <script is:inline src="/cookieUtil.js"></script>
-        <h1><span class="text-gradient" id="title"></span></h1>
-        <span class="text-gradient" id="class"></span>
-        <div id="phrases"></div>
-        <script is:inline>
-            if (!hasCookie("class")) window.location.href = "/select/year";
-            if (window.location.hash.length > 1) {
-                setCookie("category", "catchphrases", 1);
-                document.getElementById("class").innerText =
-                    "Třída: " + getCookie("class") + ". G";
-                if (getCookie("class") == "0") {
-                    document.getElementById("class").innerText =
-                        "Všechny ročníky";
-                }
-                fetch("/teachers.json")
-                    .then((data) => data.json())
-                    .then((json) => {
-                        if (!json[window.location.hash.substring(1)])
-                            window.location.href = "/open/catchphrases";
-                        document.getElementById("title").innerText =
-                            json[window.location.hash.substring(1)];
-                    });
-                const phrases = document.getElementById("phrases");
-                if (getCookie("class") != "0") {
-                    fetch("/catchphrases/" + getCookie("class") + ".json")
-                        .then((data) => data.json())
-                        .then((json) => {
-                            const a = json[window.location.hash.substring(1)];
-                            if (a) {
-                                for (let i = 0; i < a.length; i++) {
-                                    phrases.innerHTML +=
-                                        '<div class="ph">' +
-                                        a[i] +
-                                        "</div>" +
-                                        "<br>";
-                                }
-                            } else {
-                                window.location.href = "/open/catchphrases";
-                            }
-                        });
-                } else {
-                    for (let x = 1; x < 8; x++) {
-                        fetch("/catchphrases/" + x + ".json")
-                        .then((data) => data.json())
-                        .then((json) => {
-                            const a = json[window.location.hash.substring(1)];
-                            if (a) {
-                                phrases.innerHTML +=
-                                        '<div><b>' +
-                                        x +
-                                        ". G</b></div>" +
-                                        "<br>";
-                                for (let i = 0; i < a.length; i++) {
-                                    phrases.innerHTML +=
-                                        '<div class="ph">' +
-                                        a[i] +
-                                        "</div>" +
-                                        "<br>";
-                                }
-                            } else {
-                                // window.location.href = "/open/catchphrases";
-                            }
-                        });
-                    }
-                }
-            } else {
-                window.location.href = "/open/catchphrases";
-            }
-        </script>
+        <h1><span class="text-gradient" id="title">{teacher}</span></h1>
+        <span class="text-gradient" id="class">{className(year)}</span>
+        <div id="phrases">
+            {json.map((el: string) => (<div class="ph">{el}</div>))}
+        </div>
     </main>
 </Layout>
 
@@ -83,6 +66,10 @@ import Layout from "../../layouts/Layout.astro";
 
     h1 {
         margin: 2rem 0;
+    }
+
+    .ph {
+        margin-bottom: 1em;
     }
 
     main {

@@ -1,18 +1,8 @@
 ---
-import Redirect from "../../layouts/Redirect.astro";
-import { parseCookies } from "../../cookies.js";
+console.log(Astro.cookies.get("last"));
 
-const cookies = parseCookies(Astro.request.headers);
-var href:string;
-if (cookies.has("category") && cookies.has("class")) {
-    href = "/open/" + cookies.get("category");
-} else if (cookies.has("class")) {
-    href = "/select/category#" + cookies.get("class");
-} else {
-    href = "/select/year";
-}
-
-return Astro.redirect(href)
+if (Astro.cookies.has("last"))
+    return Astro.redirect(Astro.cookies.get("last").value)
+else
+    return Astro.redirect("/")
 ---
-
-<Redirect href={href}></Redirect>

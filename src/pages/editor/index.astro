@@ -1,9 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
-import { getCookie } from "../../cookies.js";
 
-const auth = getCookie("auth", Astro.request.headers);
+const auth = Astro.cookies.get("auth").value
 if (auth != import.meta.env.SECRET) {
     return Astro.redirect("/login");
 }

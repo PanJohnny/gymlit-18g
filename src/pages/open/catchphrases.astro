@@ -3,21 +3,21 @@ import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
 import teachers from "../../../public/teachers.json";
 const phrases = await Astro.glob("../../../public/catchphrases/*.json");
-import { canUseCookies, parseCookies, sendCookie } from "../../cookies.js";
+import { className, createExpires, validYear } from "../../utils";
 
-const cookies = parseCookies(Astro.request.headers);
+const params = Astro.url.searchParams
 
-if (!cookies.has("class")) return Astro.redirect("/select/year");
+if (!params.has("year") || !validYear(params.get("year"))) {
+	return Astro.redirect('/select/year?redirect_reason=invalid.year')
+}
 
-if (canUseCookies(Astro.request.headers))
-	sendCookie("category", "catchphrases", 1, Astro.response.headers);
+const year = params.get("year")
 
-var className = "Třída: " + cookies.get("class") + ". G";
+Astro.cookies.set("last", Astro.url.href, {expires: createExpires(1)})
 
-if (cookies.get("class") == "0") className = "Všechny třídy";
 var keys = [];
-if (cookies.get("class") != "0") {
-	keys = Object.keys(phrases.at(parseInt(cookies.get("class")) - 1))
+if (year != "0") {
+	keys = Object.keys(phrases.at(parseInt(year) - 1))
 }
 function valid(key:string) {
 	if (keys.length == 0) {
@@ -36,7 +36,7 @@ function valid(key:string) {
 	<main>
 		<h1><span class="text-gradient">Vyberte učitele</span></h1>
 		<span class="text-gradient" id="class">
-			{className}
+			{className(year)}
 		</span>
 		{
 			// go through teachers and add Card for every key
@@ -46,7 +46,7 @@ function valid(key:string) {
 						<Card
 							title={teachers[key]}
 							body={"Hlášky učitele (zkratka jména: " + key + ")"}
-							href={"/open/teacher#" + key}
+							href={"/open/teacher?year="+year+"&id=" + key}
 						/>
 					);
 				}
