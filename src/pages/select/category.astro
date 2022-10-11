@@ -23,7 +23,7 @@ function cURL(url) {
 		<Card title="Hlášky" body="Vaše oblíbené hlášky učitelů" href={cURL("/open/catchphrases")}></Card>
 		<Card title="Média" body="Galerie obrázků a videí" href={cURL("/open/media")}></Card>
 		{
-			Astro.cookies.has('auth') ? (<Card title="Upravit" body="Upravte data" href="/open/edit"></Card>) : ""
+			Astro.cookies.has('auth') ? (<Card title="Upravit" body="Upravte data" href={cURL("/open/edit")}></Card>) : ""
 		}
 	</main>
 </Layout>
