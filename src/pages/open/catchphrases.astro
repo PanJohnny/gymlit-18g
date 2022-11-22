@@ -30,9 +30,11 @@ function valid(key:string) {
 		}
 	}
 }
+
+const yString = year != 0 ? " "+year+". G" : "e všech ročníků"
 ---
 
-<Layout title="Online kronika">
+<Layout title={"Citáty z" + yString + " | " + "Online kronika"}>
 	<main>
 		<h1><span class="text-gradient">Vyberte učitele</span></h1>
 		<span class="text-gradient" id="class">
