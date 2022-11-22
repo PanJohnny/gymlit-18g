@@ -1,6 +1,4 @@
 ---
-console.log(Astro.cookies.get("last"));
-
 if (Astro.cookies.has("last"))
     return Astro.redirect(Astro.cookies.get("last").value)
 else

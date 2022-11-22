@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { createExpires, className, validYear } from "../../utils";
+import { cookieOptions, className, validYear } from "../../utils";
 import teachers from "../../../public/teachers.json";
 
 const params = Astro.url.searchParams;
@@ -11,7 +11,7 @@ if (!params.has("year") || !validYear(params.get("year"))) {
 
 const year = params.get("year");
 
-Astro.cookies.set("last", Astro.url.href, { expires: createExpires(1) });
+Astro.cookies.set("last", Astro.url.href, cookieOptions);
 
 if (!params.has("id"))
     return Astro.redirect("/select/year?redirect_reason=invalid.teacher_id");

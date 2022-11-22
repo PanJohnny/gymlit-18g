@@ -12,13 +12,11 @@ import Card from "../components/Card.astro";
 			body="Otevřete kroniku a nahlédněte dovnitř"
 			href="/select/year"
 		/>
-		<div class="out-of-order">
-			<Card
-				title="Znovu otevřít"
-				body="Začít kde jste skončili naposledy (pokud jsou tato data uložena v cookies)"
-				href="/select/last"
-			/>
-		</div>
+		<Card
+			title="Znovu otevřít"
+			body="Začít kde jste skončili naposledy (pokud jsou tato data uložena v cookies)"
+			href="/select/last"
+		/>
 		{
 			Astro.cookies.has("cookie") ? (
 				<Card
@@ -29,6 +27,10 @@ import Card from "../components/Card.astro";
 			) : null
 		}
 
+		<span id="info" class="text-gradient"
+			>Novinka: už znova funguje editování obsahu a nový obsah se přidává</span
+		>
+
 		{
 			!Astro.cookies.has("auth") ? (
 				<a class="text-gradient" href="/login" id="login">
@@ -36,9 +38,6 @@ import Card from "../components/Card.astro";
 				</a>
 			) : null
 		}
-		<span id="info" class="text-gradient"
-			>Novinka: rychlejší načítání pomocí SSR</span
-		>
 	</main>
 </Layout>
 
@@ -101,12 +100,9 @@ import Card from "../components/Card.astro";
 		padding: 0;
 	}
 
-	:global(.out-of-order > *){
-		pointer-events: none;
-		filter: blur(2px);
-	}
-
-	.out-of-order::before {
-		content: "Tato možnost je dočasně nedostupná";
+	:global(#login) {
+		position: fixed;
+		bottom: 10px;
+		right: 10px;
 	}
 </style>

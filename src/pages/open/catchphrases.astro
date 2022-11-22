@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
 import teachers from "../../../public/teachers.json";
 const phrases = await Astro.glob("../../../public/catchphrases/*.json");
-import { className, createExpires, validYear } from "../../utils";
+import { className, cookieOptions, validYear } from "../../utils";
 
 const params = Astro.url.searchParams
 
@@ -13,7 +13,7 @@ if (!params.has("year") || !validYear(params.get("year"))) {
 
 const year = params.get("year")
 
-Astro.cookies.set("last", Astro.url.href, {expires: createExpires(1)})
+Astro.cookies.set("last", Astro.url.href, cookieOptions)
 
 var keys = [];
 if (year != "0") {

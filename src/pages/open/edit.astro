@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
-import {createExpires, validYear} from "../../utils"
+import {cookieOptions, validYear} from "../../utils"
 
 const params = Astro.url.searchParams
 
@@ -9,7 +9,7 @@ if (!params.has("year") || !validYear(params.get("year"))) {
 	return Astro.redirect('/select/year?redirect_reason=invalid.year')
 }
 
-Astro.cookies.set("last", Astro.url.href, {expires: createExpires(1)})
+Astro.cookies.set("last", Astro.url.href, cookieOptions)
 
 const auth = Astro.cookies.get("auth").value;
 if (auth != import.meta.env.SECRET) {

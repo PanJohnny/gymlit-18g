@@ -1,5 +1,5 @@
 ---
-import {createExpires, validYear} from "../../utils"
+import {cookieOptions, validYear} from "../../utils"
 
 const params = Astro.url.searchParams
 
@@ -7,7 +7,7 @@ if (!params.has("year") || !validYear(params.get("year"))) {
 	return Astro.redirect('/select/year?redirect_reason=invalid.year')
 }
 
-Astro.cookies.set("last", Astro.url.href, {expires: createExpires(1)})
+Astro.cookies.set("last", Astro.url.href, cookieOptions)
 
 return Astro.redirect("/events/"+params.get("year"))
 ---
