@@ -39,6 +39,14 @@ if (auth != import.meta.env.SECRET) {
         placeholder="Catchphrases"
         cols="115"
         rows="10"></textarea>
+    <aside>Zadej citáty a odděl je <code>&</code> znakem. Např: <pre>
+            "Být či nebýt" (kontext)
+            &
+            "Máte rád nutelu?" - Ondra
+            "Nenávídím vás Ondřeji" - Svap
+            &
+            "Zmrdi!"
+        </pre></aside>
     <input type="button" value="Generovat" id="save" />
     <input type="button" value="Kopírovat" id="copy" />
     <hr />
@@ -69,7 +77,7 @@ if (auth != import.meta.env.SECRET) {
                     window.alert("tento učitel ještě nebyl zmíněn");
                     t = [];
                 }
-                var lines = cit.value.split("\n");
+                var lines = cit.value.split("&");
                 // filter lines if line is empty remove it
                 for (var i = 0; i < lines.length; i++) {
                     var line = lines[i];
