@@ -1,0 +1,99 @@
+---
+import BetaLayout from "../../layouts/beta/BetaLayout.astro";
+import teachers from "../../../public/teachers.json";
+const catchphrases = await Astro.glob("../../../public/catchphrases/*.json");
+
+const cpp = {};
+
+Object.keys(teachers).forEach(t => {
+    cpp[t] = 0;
+})
+
+catchphrases.forEach(phrases => {
+    Object.keys(phrases).forEach(id => {
+        cpp[id] += phrases[id].length;
+    })
+});
+
+let sortable = [];
+for (var vehicle in cpp) {
+    sortable.push([vehicle, cpp[vehicle]]);
+}
+
+sortable.sort(function(a, b) {
+    return b[1] - a[1];
+});
+
+sortable.pop();
+
+const series = sortable.map(s => s[1]);
+
+let catchCount = 0;
+
+series.forEach(s => {
+    catchCount += s;
+});
+
+const cpy = [];
+
+let i = 0;
+catchphrases.forEach(phrases => {
+    cpy.push(0);
+    
+    Object.values(phrases).forEach(v => {
+        if (v != undefined && v.length != undefined)
+            cpy[i] += v.length;
+    })
+
+    i++;
+});
+---
+
+<BetaLayout title="Statistiky" description="Statistiky - gymlit18g BETA">
+    <div class="header">
+        <h1>Statistiky</h1>
+    </div>
+
+    <div class="body">
+        <div id="zakladni">
+            <h2>Nejupovídanější profesor</h2>
+            <h3>{teachers[sortable[0][0]]}</h3>
+            <h2>Počet zapsaných hlášek</h2>
+            <h3>{catchCount}</h3>
+            <h2>Počet evidovaných učitelů</h2>
+            <h3>{Object.keys(teachers).length}</h3>
+            <h2>Informace o sekci</h2>
+            Vítejte na této stránce. Zde se můžete dozvědět statistiky ohledně hlášek. Přibudou ještě statistiky ohledně zápisů do kroniky a další... Možná tu uvidíte grafy 👀.
+        </div>
+        <div id="hlaskynaucitele">
+            <h2>Hlášky na učitele</h2>
+            <ol>
+                {sortable.map((arr) => <li>{teachers[arr[0]] + ": " + arr[1]}</li>)}
+            </ol>
+        </div>
+        <div id="hlaskynarocnik">
+            <h2>Hlášky na ročník</h2>
+            <ol>
+                {cpy.map((val) => <li>{"G: " + val}</li>)}
+            </ol>
+        </div>
+        <div id="ucitele">
+            <h2>Evidovaní učitelé</h2>
+            <ol>
+                {Object.values(teachers).map((teach) => <li>{teach}</li>)}
+            </ol>
+        </div>
+    </div>
+</BetaLayout>
+
+<style>
+    .body {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .body > div {
+        flex: 1 0 21%;
+        padding: 1em;
+    }
+</style>

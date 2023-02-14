@@ -1,0 +1,86 @@
+---
+import Sidebar from '../../components/Sidebar.astro';
+
+interface Props {
+    title: string;
+    description: string;
+}
+
+const props = Astro.props as Props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{props.title}</title>
+        <meta name="title" content={props.title} />
+        <meta name="description" content={props.description} />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={Astro.url.href} />
+        <meta property="og:title" content={props.title} />
+        <meta property="og:description" content={props.description} />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary" />
+        <meta property="twitter:url" content={Astro.url.href} />
+        <meta property="twitter:title" content={props.title} />
+        <meta property="twitter:description" content={props.description} />
+    </head>
+    <body> 
+        <main>
+            <Sidebar />
+            <div class="main">
+                <slot />
+            </div>
+        </main>
+    </body>
+</html>
+
+<style>
+    :root {
+        --dark: #02182B;
+        --light: #EEEEFF;
+        --border: #508991;
+        --decoration: #99F7AB;
+
+        --background: var(--light);
+        --text-color: var(--dark);
+
+        --bg-unused: var(--text-color);
+        --text-unused: var(--background);
+    }
+
+    html {
+		font-family: system-ui, sans-serif;
+        margin: 2em;
+        text-decoration-color: var(--decoration);
+        border-color: var(--border);
+        outline-color: var(--decoration);
+	}
+
+    .dark {
+        background-color: var(--dark);
+        color: var(--light);
+
+        --background: var(--dark);
+        --text-color: var(--light);
+    }
+
+    .light {
+        background-color: var(--light);
+        color: var(--dark);
+
+        --background: var(--light);
+        --text-color: var(--dark);
+    }
+
+    .main {
+        margin-left: var(--sidebar-width);
+        padding-left: 1em;
+    }
+</style>
