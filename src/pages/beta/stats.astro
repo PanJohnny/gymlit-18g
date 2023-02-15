@@ -49,11 +49,7 @@ catchphrases.forEach(phrases => {
 });
 ---
 
-<BetaLayout title="Statistiky" description="Statistiky - gymlit18g BETA">
-    <div class="header">
-        <h1>Statistiky</h1>
-    </div>
-
+<BetaLayout title="[BETA] Statistiky" description="Statistiky o hláškách učitelů a další...">
     <div class="body">
         <div id="zakladni">
             <h2>Nejupovídanější profesor</h2>
@@ -74,7 +70,7 @@ catchphrases.forEach(phrases => {
         <div id="hlaskynarocnik">
             <h2>Hlášky na ročník</h2>
             <ol>
-                {cpy.map((val) => <li>{"G: " + val}</li>)}
+                {cpy.map((val) => <li class="yearlyc">{val}</li>)}
             </ol>
         </div>
         <div id="ucitele">
@@ -95,5 +91,9 @@ catchphrases.forEach(phrases => {
     .body > div {
         flex: 1 0 21%;
         padding: 1em;
+    }
+
+    .yearlyc::before {
+        content: " G: ";
     }
 </style>

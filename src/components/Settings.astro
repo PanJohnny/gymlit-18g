@@ -1,0 +1,61 @@
+---
+interface Props {
+    visible?:boolean
+}
+
+const {visible} = Astro.props as Props;
+
+let v = "true";
+
+if (!visible) {
+    v = "false";
+}
+---
+
+<div class="settings inverted" data-visible={v}>
+    <h2>Nastavení</h2>
+    <div>
+        <label><input type="checkbox" id="darkMode"> Tmavý režim</label>
+    </div>
+    <span class="toggle" id="doneSettings">Hotovo</span>
+</div>
+
+<style>
+    .settings {
+        position: fixed;
+        z-index: 2;
+        border-style: solid;
+        border-radius: 10px;
+        border-color: var(--border-color);
+        padding: 1em;
+        border-width: 2px;
+
+        top: 40vh;
+        left: 50vw;
+        transform: translate(-50%, -50%);
+    }
+
+    .settings[data-visible="false"] {
+        display: none;
+    }
+</style>
+
+<script>
+    function closeSettings() {
+        document.querySelector(".settings").setAttribute("data-visible", "false");
+    }
+
+    document.querySelector("#doneSettings").addEventListener("click", closeSettings);
+
+    document.querySelector("#darkMode").addEventListener("change", (e) => {
+        if (e.currentTarget["checked"]) {
+            document.querySelector("html").className = "dark";
+            localStorage.setItem("mode", "dark");
+        } else {
+            document.querySelector("html").className = "light";
+            localStorage.setItem("mode", "light");
+        }
+    });
+
+    document.querySelector("#darkMode")["checked"] = localStorage.getItem("mode") == "dark";
+</script>

@@ -1,4 +1,5 @@
 ---
+import Settings from '../../components/Settings.astro';
 import Sidebar from '../../components/Sidebar.astro';
 
 interface Props {
@@ -34,7 +35,12 @@ const props = Astro.props as Props;
     <body> 
         <main>
             <Sidebar />
+            <Settings />
             <div class="main">
+                <div class="header"> 
+                    <h1><span class="toggle hamburger hidden" id="h1burger">☰</span> {props.title}</h1>
+                    <h4>{props.description}</h4>
+                </div>
                 <slot />
             </div>
         </main>
@@ -63,7 +69,7 @@ const props = Astro.props as Props;
         outline-color: var(--decoration);
 	}
 
-    .dark {
+    :global(.dark) {
         background-color: var(--dark);
         color: var(--light);
 
@@ -71,12 +77,17 @@ const props = Astro.props as Props;
         --text-color: var(--light);
     }
 
-    .light {
+    :global(.light) {
         background-color: var(--light);
         color: var(--dark);
 
         --background: var(--light);
         --text-color: var(--dark);
+    }
+
+    :global(.inverted) {
+        background-color: var(--bg-unused);
+        color: var(--text-unused);
     }
 
     .main {
@@ -93,4 +104,27 @@ const props = Astro.props as Props;
             display: none;
         }
     }
+
+    :global(.toggle) {
+        cursor: pointer;
+    }
+
+    :global(.toggle:hover) {
+        color: var(--decoration);
+    }
+
+    :global(.no-margin-left) {
+        margin-left: 0px;
+    }
+
+    :global(.hidden) {
+        display: none;
+    }
 </style>
+
+<script>
+    if (localStorage.getItem("mode"))
+        document.querySelector("html").className = localStorage.getItem("mode");
+    if (window.innerWidth <= 500)
+        document.querySelector("#h1burger").classList.remove("hidden");
+</script>
