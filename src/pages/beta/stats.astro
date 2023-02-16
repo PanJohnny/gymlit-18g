@@ -47,6 +47,8 @@ catchphrases.forEach(phrases => {
 
     i++;
 });
+
+const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/analytics/all").then(a => a.json());
 ---
 
 <BetaLayout title="[BETA] Statistiky" description="Statistiky o hláškách učitelů a další...">
@@ -76,7 +78,13 @@ catchphrases.forEach(phrases => {
         <div id="ucitele">
             <h2>Evidovaní učitelé</h2>
             <ol>
-                {Object.values(teachers).map((teach) => <li>{teach}</li>)}
+                {Object.keys(teachers).map((k) => <a href={"/beta/summary/" + k}><li>{teachers[k]}</li></a>)}
+            </ol>
+        </div>
+        <div id="pages">
+            <h2>Navštěvovanost stránek</h2>
+            <ol>
+                {pages.map((page) => <li>{page.page + " " + page.visits + " návštěv (návštěvníků: " + page.visitors.length + ")"}</li>)}
             </ol>
         </div>
     </div>

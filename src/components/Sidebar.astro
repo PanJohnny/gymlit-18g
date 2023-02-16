@@ -1,4 +1,5 @@
 ---
+import teachers from "../../public/teachers.json";
 ---
 
 <div class="sidebar dark" data-collapsed={false}>
@@ -15,37 +16,68 @@
                     </summary>
                     <ul>
                         <li>
-                            <a href="/select/category?year=1" title="2018/2019"
-                                >Prima</a>
+                            <a href="/beta/summary/year/1" title="2018/2019"
+                                >Prima</a
+                            >
                         </li>
                         <li>
-                            <a href="/select/category?year=2" title="2019/2020"
-                                >Sekunda</a>
+                            <a href="/beta/summary/year/2" title="2019/2020"
+                                >Sekunda</a
+                            >
                         </li>
                         <li>
-                            <a href="/select/category?year=3" title="2020/2021"
-                                >Tercie</a>
+                            <a href="/beta/summary/year/3" title="2020/2021"
+                                >Tercie</a
+                            >
                         </li>
                         <li>
-                            <a href="/select/category?year=4" title="2021/2022"
-                                >Kvarta</a>
+                            <a href="/beta/summary/year/4" title="2021/2022"
+                                >Kvarta</a
+                            >
                         </li>
                         <li>
-                            <a href="/select/category?year=5" title="2022/2023"
-                                >Kvinta</a>
+                            <a href="/beta/summary/year/5" title="2022/2023"
+                                >Kvinta</a
+                            >
                         </li>
                         <li>
-                            <a href="/select/category?year=6" title="2023/2024"
-                                >Sexta</a>
+                            <a href="/beta/summary/year/6" title="2023/2024"
+                                >Sexta</a
+                            >
                         </li>
                         <li>
-                            <a href="/select/category?year=7" title="2024/2025"
-                                >Septima</a>
+                            <a href="/beta/summary/year/7" title="2024/2025"
+                                >Septima</a
+                            >
                         </li>
                         <li>
-                            <a href="/select/category?year=8" title="2025/2026"
-                                >Oktáva</a>
+                            <a href="/beta/summary/year/8" title="2025/2026"
+                                >Oktáva</a
+                            >
                         </li>
+                        <li>
+                            <a href="/beta/summary/year/0" title="2018-2026"
+                                >Vše</a
+                            >
+                        </li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>
+                        <h3>Učitelé</h3>
+                    </summary>
+                    <ul>
+                        {
+                            Object.keys(teachers).map((key) => (
+                                <li>
+                                    <a href={"/beta/summary/teacher/" + key}>
+                                        {teachers[key]}
+                                    </a>
+                                </li>
+                            ))
+                        }
                     </ul>
                 </details>
             </li>
@@ -138,6 +170,10 @@
         bottom: 2em;
     }
 
+    summary::-webkit-details-marker {
+        display: none; /* Chrome */
+    }
+
     @media (max-width: 600px) {
         :root {
             --sidebar-width: 30vw;
@@ -151,6 +187,16 @@
 
         .sidebar {
             width: 100%;
+        }
+    }
+
+    @media print {
+        .lower {
+            display: none;
+        }
+
+        .sidebar {
+            border: none;
         }
     }
 </style>
@@ -169,9 +215,10 @@
 
     sizeCheck();
 
-    document
-        .querySelector('a[href="' + location.pathname + '"]')
-        .classList.add("current");
+    const current = document.querySelector(
+        'a[href="' + location.pathname + '"]'
+    );
+    if (current) current.classList.add("current");
 
     document.querySelector("#settingsToggle").addEventListener("click", (e) => {
         document
@@ -182,6 +229,14 @@
     document
         .querySelectorAll(".hamburger")
         .forEach((el) => el.addEventListener("click", toggleSidebar));
+    if (
+        current.parentElement.parentElement.parentElement.nodeName == "DETAILS"
+    ) {
+        current.parentElement.parentElement.parentElement.setAttribute(
+            "open",
+            "true"
+        );
+    }
 
     function toggleSidebar() {
         if (

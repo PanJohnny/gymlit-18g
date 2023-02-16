@@ -1,6 +1,6 @@
 ---
-import Settings from '../../components/Settings.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import Settings from "../../components/Settings.astro";
+import Sidebar from "../../components/Sidebar.astro";
 
 interface Props {
     title: string;
@@ -32,13 +32,18 @@ const props = Astro.props as Props;
         <meta property="twitter:title" content={props.title} />
         <meta property="twitter:description" content={props.description} />
     </head>
-    <body> 
+    <body>
         <main>
             <Sidebar />
             <Settings />
             <div class="main">
-                <div class="header"> 
-                    <h1><span class="toggle hamburger hidden" id="h1burger">☰</span> {props.title}</h1>
+                <div class="header">
+                    <h1>
+                        <span class="toggle hamburger hidden" id="h1burger"
+                            >☰</span
+                        >
+                        {props.title}
+                    </h1>
                     <h4>{props.description}</h4>
                 </div>
                 <slot />
@@ -49,10 +54,10 @@ const props = Astro.props as Props;
 
 <style>
     :root {
-        --dark: #02182B;
-        --light: #EEEEFF;
+        --dark: #02182b;
+        --light: #eeeeff;
         --border: #508991;
-        --decoration: #99F7AB;
+        --decoration: #99f7ab;
 
         --background: var(--light);
         --text-color: var(--dark);
@@ -62,12 +67,12 @@ const props = Astro.props as Props;
     }
 
     html {
-		font-family: system-ui, sans-serif;
+        font-family: system-ui, sans-serif;
         margin: 2em;
         text-decoration-color: var(--decoration);
         border-color: var(--border);
         outline-color: var(--decoration);
-	}
+    }
 
     :global(.dark) {
         background-color: var(--dark);
@@ -94,7 +99,7 @@ const props = Astro.props as Props;
         margin-left: var(--sidebar-width);
         padding-left: 1em;
     }
-    
+
     @media print {
         :root {
             --sidebar-width: 0px;
@@ -127,4 +132,26 @@ const props = Astro.props as Props;
         document.querySelector("html").className = localStorage.getItem("mode");
     if (window.innerWidth <= 500)
         document.querySelector("#h1burger").classList.remove("hidden");
+
+    window.addEventListener("load", async () => {
+        // Analytics
+        let userId = localStorage.getItem("analyticsId");
+
+        if (!userId) {
+            userId =
+                new Date(Date.now()).toISOString() +
+                Date.now().toString(36) +
+                Math.random().toString(36).substring(2);
+            localStorage.setItem("analyticsId", userId);
+        }
+
+        await fetch("/api/analytics?site=" + encodeURI(location.pathname), {
+            headers: {
+                "User-Identifier": userId,
+            },
+            method: "POST",
+        }).catch((err) => {
+            console.error("Failed to send analytics data " + err);
+        });
+    });
 </script>

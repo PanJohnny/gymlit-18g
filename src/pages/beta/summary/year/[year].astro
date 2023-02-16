@@ -1,0 +1,63 @@
+---
+import BetaLayout from "../../../../layouts/beta/BetaLayout.astro";
+import teachers from "../../../../../public/teachers.json";
+
+const y = Astro.params.year;
+const year: number = +y;
+
+if (year < 0 || year > 8) {
+    return Astro.redirect("/beta");
+}
+
+let phrases = {};
+if (year == 0) {
+    for (var i = 1; i < 8; i++) {
+        const json = await fetch(
+            Astro.url.protocol +
+                "//" +
+                Astro.url.host +
+                "/catchphrases/" +
+                i +
+                ".json"
+        ).then((response) => response.json());
+        Object.keys(json).forEach((k) => {
+            if (!phrases[k]) phrases[k] = [];
+
+            json[k].forEach((a) => phrases[k].push(a));
+        });
+    }
+} else {
+    phrases = await fetch(
+        Astro.url.protocol +
+            "//" +
+            Astro.url.host +
+            "/catchphrases/" +
+            year +
+            ".json"
+    ).then((response) => response.json());
+}
+---
+
+<BetaLayout
+    title={"[BETA] Souhrn " + (year != 0 ? year + ". G" : "všeho")}
+    description="Souhrn školního roku"
+>
+    <div class="body">
+        <a href={"/events/" + year}>Události</a>
+        <div id="hlasky">
+            <h2>Hlášky</h2>
+            {
+                Object.keys(phrases).map((p) => (
+                    <div class="teach">
+                        <h2>{teachers[p]}</h2>{" "}
+                        <ul>
+                            {phrases[p].map((phrase) => (
+                                <li>{phrase}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</BetaLayout>

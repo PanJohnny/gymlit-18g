@@ -1,0 +1,58 @@
+---
+import { PageStatModel } from "../../../db";
+if (Astro.request.method == "POST") {
+    const identifier = Astro.request.headers.get("User-Identifier");
+    const page = Astro.url.searchParams.get("site");
+
+    if (page && identifier) {
+        const model = await PageStatModel.findOne({ page: page }).exec();
+        if (!model) {
+            const model = new PageStatModel({
+                page: page,
+                visits: 1,
+                visitors: [identifier],
+            });
+
+            model.save();
+
+            return new Response(JSON.stringify(model.toObject()), {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+        } else {
+            model.visits = model.visits + 1;
+            if (!model.visitors.includes(identifier)) {
+                model.visitors.push(identifier);
+            }
+
+            model.save();
+
+            return new Response(JSON.stringify(model.toObject()), {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+        }
+    } else {
+        return new Response(undefined, {
+            status: 400,
+        });
+    }
+} else if (Astro.request.method == "GET") {
+    const page = Astro.url.searchParams.get("site");
+    if (page) {
+        const model = await PageStatModel.findOne({ page: page }).exec();
+        if (!model)
+            return new Response(undefined, {
+                status: 404,
+            });
+
+        return new Response(JSON.stringify(model.toObject()), {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+    }
+}
+---

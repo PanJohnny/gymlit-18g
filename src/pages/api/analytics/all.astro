@@ -1,0 +1,25 @@
+---
+import { PageStatModel } from "../../../db";
+if (Astro.request.method == "GET") {
+    const pages = await PageStatModel.find({}).exec();
+    
+    let sortable = [];
+    pages.forEach(p => {
+        sortable.push([p, p["visits"]]);
+    });
+    
+    sortable.sort(function (a, b) {
+        return b[1] - a[1];
+    });
+
+    return new Response(JSON.stringify(sortable.map(s => s[0])), {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+} else {
+    return new Response(undefined, {
+        status: 400,
+    });
+}
+---

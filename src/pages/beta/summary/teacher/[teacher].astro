@@ -1,0 +1,33 @@
+---
+import BetaLayout from "../../../../layouts/beta/BetaLayout.astro";
+import teachers from "../../../../../public/teachers.json";
+const catchphrases = await Astro.glob("../../../../../public/catchphrases/*.json");
+
+const t = Astro.params.teacher;
+
+const teacher = teachers[t];
+
+if (!teacher) {
+    return Astro.redirect("/beta");
+}
+
+let phrases = [];
+catchphrases.forEach((pr) => {
+    if (pr[t]) pr[t].forEach((p) => phrases.push(p));
+});
+---
+
+<BetaLayout title={"[BETA] " + teacher} description="Osobní stránka učitele">
+    <div class="body">
+        <div id="hlasky">
+            <h2>Hlášky ({phrases.length})</h2>
+            <ul>
+                {
+                    phrases.map((p) => 
+                        (<li>{p}</li>)
+                    )
+                }
+            </ul>
+        </div>
+    </div>
+</BetaLayout>
