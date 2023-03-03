@@ -44,7 +44,8 @@
 		"[de facto] = de facto",
 		"[na uandrajfu] = na OneDrivu",
 		"[aces pojnt] = Access point",
-		"\"Angličan přijel a zase neví co dělat.\""
+		"\"Angličan přijel a zase neví co dělat.\"",
+		"[pást] = paste"
 	],
 	"ladc": [
 		"Když z toho tabletu sundáš ten obal, tak tam vzadu bude takový ochroustaný jablíčko."
@@ -57,5 +58,8 @@
 	],
 	"jitp": [
 		"\"Musím se vzpamatovat z toho, co se k nám hlásí.\""
+	],
+	"ilos": [
+		"\"Mohli bychom nocovat ve škole, ALE BEZ ALKOHOLU. Říkejte tomu předsudky nebo drby, já tomu říkám fakta\""
 	]
 }
