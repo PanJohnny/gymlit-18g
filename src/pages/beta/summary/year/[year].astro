@@ -36,6 +36,13 @@ if (year == 0) {
             ".json"
     ).then((response) => response.json());
 }
+
+function quoteFix(input) {
+    let n = 0;
+    return input.replace(/"/g, (m, i, og) => {
+        return (n++ % 2) ? "“" : '„';
+    });
+}
 ---
 
 <BetaLayout
@@ -52,7 +59,7 @@ if (year == 0) {
                         <h2>{teachers[p]}</h2>{" "}
                         <ul>
                             {phrases[p].map((phrase) => (
-                                <li>{phrase}</li>
+                                <li>{quoteFix(phrase)}</li>
                             ))}
                         </ul>
                     </div>
