@@ -63,11 +63,13 @@ if (year == 0) {
 }
 
 Object.keys(phrases).forEach((t) => {
-    insert(year);
-    insert(t);
-    insert(teachers[t]);
-    insert(phrases[t]);
-    newLine();
+    phrases[t].forEach((p) => {
+        insert(year);
+        insert(t);
+        insert(teachers[t]);
+        insert(phrases[t]);
+        newLine(p);
+    })
 });
 
 return new Response(csv, {
