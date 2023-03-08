@@ -46,11 +46,11 @@ function quoteFix(input) {
 ---
 
 <BetaLayout
-    title={"[BETA] Souhrn " + (year != 0 ? year + ". G" : "všeho")}
+    title={"Souhrn " + (year != 0 ? year + ". G" : "všeho")}
     description="Souhrn školního roku"
 >
     <div class="body">
-        <a href={"/events/" + year}>Události</a>
+        <h2><a href={"/events/" + year}>► Události</a></h2>
         <div id="hlasky">
             <h2>Hlášky</h2>
             {

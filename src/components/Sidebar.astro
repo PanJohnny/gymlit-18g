@@ -92,10 +92,20 @@ import teachers from "../../public/teachers.json";
             <li>
                 <a href="htps://fastgymlit.vercel.app"><h3>FastGymlit</h3></a>
             </li>
+
+            {
+                Astro.cookies.has('auth') ? (<li href={"./editor"}> </li>) : null
+            }
         </ul>
 
         <div class="lower">
-            <span class="toggle" id="settingsToggle">⚙ Preference</span>
+            <div class="toggle" id="settingsToggle">⚙ Preference</div>
+            <div>
+                {
+                !Astro.cookies.has("auth") ? (<a class="text-gradient" href="/login" id="login" class="toggle">
+                    🙋‍♂️ Přihlásit se
+                </a>):null
+            }</div>
         </div>
     </nav>
 </div>
@@ -204,7 +214,7 @@ import teachers from "../../public/teachers.json";
         }
     }
 
-    #settingsToggle {
+    .lower {
         background-color: var(--dark);
         padding: 2px;
         border: solid 1px;

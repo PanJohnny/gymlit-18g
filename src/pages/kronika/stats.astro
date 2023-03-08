@@ -51,7 +51,7 @@ catchphrases.forEach(phrases => {
 const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/analytics/all").then(a => a.json());
 ---
 
-<BetaLayout title="[BETA] Statistiky" description="Statistiky o hláškách učitelů a další...">
+<BetaLayout title="Statistiky" description="Otevřené statistiky naší kroniky a návštěvnosti stránek">
     <div class="body">
         <div id="zakladni">
             <h2>Nejupovídanější profesor</h2>

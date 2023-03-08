@@ -1,0 +1,108 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+---
+
+<Layout title="Online kronika">
+	<main>
+		<h1><span class="text-gradient">Online kronika</span></h1>
+		<script is:inline src="/cookieUtil.js"></script>
+		<Card
+			title="Začít číst"
+			body="Otevřete kroniku a nahlédněte dovnitř"
+			href="/select/year"
+		/>
+		<Card
+			title="Znovu otevřít"
+			body="Začít kde jste skončili naposledy (pokud jsou tato data uložena v cookies)"
+			href="/select/last"
+		/>
+		{
+			Astro.cookies.has("cookie") ? (
+				<Card
+					title="Nastavení"
+					body="Přenastavte některé možnosti podle svého gusta"
+					href="/settings"
+				/>
+			) : {}
+		}
+
+		<span id="info" class="text-gradient"
+			><a href="/beta">Novinky: beta verze stránky</a></span
+		>
+
+		{
+			!Astro.cookies.has("auth") ? (
+				<a class="text-gradient" href="/login" id="login">
+					Přihlásit se <br />
+				</a>
+			) : null
+		}
+	</main>
+</Layout>
+
+<style>
+	:root {
+		--astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
+	}
+
+	h1 {
+		margin: 2rem 0;
+	}
+
+	main {
+		margin: auto;
+		padding: 1em;
+		max-width: 60ch;
+	}
+
+	.text-gradient {
+		font-weight: 900;
+		background-image: var(--astro-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-size: 100% 200%;
+		background-position-y: 100%;
+		border-radius: 0.4rem;
+		animation: pulse 4s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%,
+		100% {
+			background-position-y: 0%;
+		}
+		50% {
+			background-position-y: 80%;
+		}
+	}
+
+	.instructions {
+		line-height: 1.6;
+		margin: 1rem 0;
+		background: #4f39fa;
+		padding: 1rem;
+		border-radius: 0.4rem;
+		color: var(--color-bg);
+	}
+
+	.instructions code {
+		font-size: 0.875em;
+		border: 0.1em solid var(--color-border);
+		border-radius: 4px;
+		padding: 0.15em 0.25em;
+	}
+
+	.link-card-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+		gap: 1rem;
+		padding: 0;
+	}
+
+	:global(#login) {
+		position: fixed;
+		bottom: 10px;
+		right: 10px;
+	}
+</style>

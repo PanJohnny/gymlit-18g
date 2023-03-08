@@ -1,0 +1,65 @@
+---
+import BetaLayout from "../../layouts/beta/BetaLayout.astro";
+
+const auth = Astro.cookies.get("auth").value;
+if (auth != import.meta.env.SECRET) {
+    return Astro.redirect("/login");
+}
+---
+
+<BetaLayout title="Portál editora" description="Portál editora kroniky">
+    <div class="body">
+        <h2>Nástroje</h2>
+        <ul>
+            <li>
+                <a href="/editor/catchprases">Hlášky</a>
+            </li>
+            <li>
+                <a href="/editor/teacher">Učitelé</a>
+            </li>
+        </ul>
+        <h2>Ročníky</h2>
+        <ul>
+            <li>
+                <a href="/edit/edit?year=1" title="2018/2019"
+                    >Prima</a
+                >
+            </li>
+            <li>
+                <a href="/edit/edit?year=2" title="2019/2020"
+                    >Sekunda</a
+                >
+            </li>
+            <li>
+                <a href="/edit/edit?year=3" title="2020/2021"
+                    >Tercie</a
+                >
+            </li>
+            <li>
+                <a href="/edit/edit?year=4" title="2021/2022"
+                    >Kvarta</a
+                >
+            </li>
+            <li>
+                <a href="/edit/edit?year=5" title="2022/2023"
+                    >Kvinta</a
+                >
+            </li>
+            <li>
+                <a href="/edit/edit?year=6" title="2023/2024"
+                    >Sexta</a
+                >
+            </li>
+            <li>
+                <a href="/edit/edit?year=7" title="2024/2025"
+                    >Septima</a
+                >
+            </li>
+            <li>
+                <a href="/edit/edit?year=8" title="2025/2026"
+                    >Oktáva</a
+                >
+            </li>
+        </ul>
+    </div>
+</BetaLayout>
