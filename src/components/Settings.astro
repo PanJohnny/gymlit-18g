@@ -17,7 +17,7 @@ if (!visible) {
     <div>
         <label><input type="checkbox" id="darkMode"> Tmavý režim</label>
     </div>
-    <span class="toggle" id="doneSettings">Hotovo</span>
+    <span class="toggle" id="doneSettings" role="button">Hotovo</span>
 </div>
 
 <style>
@@ -37,6 +37,10 @@ if (!visible) {
 
     .settings[data-visible="false"] {
         display: none;
+    }
+    
+    #doneSettings {
+        right: .2em;
     }
 </style>
 
