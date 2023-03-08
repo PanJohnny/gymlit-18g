@@ -74,7 +74,7 @@ Object.keys(phrases).forEach((t) => {
 
 return new Response(csv, {
     headers: {
-        "Content-Type": "text/csv"
+        "Content-Type": "text/plain" // add text/csv - this is for debbuging
     }
 });
 ---
