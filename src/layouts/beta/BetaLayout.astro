@@ -129,15 +129,15 @@ const props = Astro.props as Props;
     :global([role=button]) {
         cursor: pointer;
         background-color: #00ff40;
-        color: var(--light);
-        border: 1px solid var(--dark);
+        color: var(--dark);
+        border: 1px solid var(--light);
         border-radius: 10px;
-        padding .2em;
+        padding 1em;
         margin: .2em;
     }
     
     :global([role=button]:hover) {
-        border-color: var(--light);
+        border-color: var(--dark);
     }
 </style>
 
