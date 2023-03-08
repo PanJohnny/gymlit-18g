@@ -46,9 +46,13 @@ if (year == 0) {
                 ".json"
         ).then((response) => response.json());
         Object.keys(json).forEach((k) => {
-            if (!phrases[k]) phrases[k] = [];
-
-            json[k].forEach((a) => phrases[k].push(a));
+            json[k].forEach((p) => {
+                insert(i);
+                insert(k);
+                insert(teachers[k]);
+                insert(p);
+                newLine();
+            });
         });
     }
 } else {
