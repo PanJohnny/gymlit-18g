@@ -17,6 +17,11 @@ import Card from "../components/Card.astro";
 			body="Začít kde jste skončili naposledy (pokud jsou tato data uložena v cookies)"
 			href="/select/last"
 		/>
+		<Card
+			title="Nová verze"
+			body="Otevřete si novou verzi webových stránek"
+			href="/kronika"
+		/>
 		{
 			Astro.cookies.has("cookie") ? (
 				<Card
@@ -28,7 +33,7 @@ import Card from "../components/Card.astro";
 		}
 
 		<span id="info" class="text-gradient"
-			><a href="/beta">Novinky: beta verze stránky</a></span
+			><a href="/kronika#novinky">Novinky: nová verze stránek</a></span
 		>
 
 		{
