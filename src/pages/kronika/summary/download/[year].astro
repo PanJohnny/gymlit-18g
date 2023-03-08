@@ -1,0 +1,78 @@
+---
+import teachers from "../../../../../public/teachers.json";
+const y = Astro.params.year;
+const year: number = +y;
+
+if (year < 0 || year > 8) {
+    return new Response(undefined, {
+        status: 400,
+        statusMessage: "Year requested must be between 0 and 8"
+    });
+}
+
+let csv = "Rok,ID Učitele,Učitel,Hláška\n";
+let nl = true;
+
+function insert(s) {
+    if (!nl) {
+        csv += ","
+    } else
+        nl = false;
+    csv += '"' + quoteFix(s) + '"';
+}
+
+function newLine() {
+    csv += "\n";
+    nl = true;
+}
+
+function quoteFix(input) {
+    let n = 0;
+    return input.replace(/"/g, (m, i, og) => {
+        return (n++ % 2) ? "“" : '„';
+    });
+}
+
+let phrases = {};
+
+if (year == 0) {
+    for (var i = 1; i < 8; i++) {
+        const json = await fetch(
+            Astro.url.protocol +
+                "//" +
+                Astro.url.host +
+                "/catchphrases/" +
+                i +
+                ".json"
+        ).then((response) => response.json());
+        Object.keys(json).forEach((k) => {
+            if (!phrases[k]) phrases[k] = [];
+
+            json[k].forEach((a) => phrases[k].push(a));
+        });
+    }
+} else {
+    phrases = await fetch(
+        Astro.url.protocol +
+            "//" +
+            Astro.url.host +
+            "/catchphrases/" +
+            year +
+            ".json"
+    ).then((response) => response.json());
+}
+
+Object.keys(phrases).forEach((t) => {
+    insert(year);
+    insert(t);
+    insert(teachers[t]);
+    insert(phrases[t]);
+    newLine();
+});
+
+return new Response(csv, {
+    headers: {
+        "Content-Type": "text/csv"
+    }
+});
+---

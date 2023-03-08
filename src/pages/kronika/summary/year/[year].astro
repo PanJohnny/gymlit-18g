@@ -6,7 +6,7 @@ const y = Astro.params.year;
 const year: number = +y;
 
 if (year < 0 || year > 8) {
-    return Astro.redirect("/beta");
+    return Astro.redirect("/kronika");
 }
 
 let phrases = {};
