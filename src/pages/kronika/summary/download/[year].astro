@@ -28,7 +28,7 @@ function newLine() {
 
 function quoteFix(input) {
     let n = 0;
-    return input.replace(/"/g, (m, i, og) => {
+    return (input + "").replace(/"/g, (m, i, og) => {
         return (n++ % 2) ? "“" : '„';
     });
 }
