@@ -78,7 +78,7 @@ const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/ana
         <div id="ucitele">
             <h2>Evidovaní učitelé</h2>
             <ol>
-                {Object.keys(teachers).map((k) => <a href={"/beta/summary/teacher/" + k}><li>{teachers[k]}</li></a>)}
+                {Object.keys(teachers).map((k) => <a href={"/kronika/summary/teacher/" + k}><li>{teachers[k]}</li></a>)}
             </ol>
         </div>
         <div id="pages">
