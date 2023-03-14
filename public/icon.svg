@@ -4,6 +4,9 @@
 <desc>Created with Fabric.js 4.6.0</desc>
 <defs>
 </defs>
+<g transform="matrix(1.03 0 0 1.03 248.91 248.91)" id="jNtJbjF6WXzd-aRzaZfo_"  >
+<path style="stroke: rgb(5,245,63); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 -241.42857 C 133.26857 -241.42857 241.42857 -133.26857 241.42857 0 C 241.42857 133.26857 133.26857 241.42857 0 241.42857 C -133.26857 241.42857 -241.42857 133.26857 -241.42857 0 C -241.42857 -133.26857 -133.26857 -241.42857 0 -241.42857 z" stroke-linecap="round" />
+</g>
 <g transform="matrix(0.71 0 0 0.71 263.86 250)" id="U0oYoZVJm1nZvg7MxPBo-"  >
 <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-224, -256)" d="M 96 0 C 43 0 0 43 0 96 L 0 416 C 0 469 43 512 96 512 L 384 512 L 416 512 C 433.7 512 448 497.7 448 480 C 448 462.3 433.7 448 416 448 L 416 384 C 433.7 384 448 369.7 448 352 L 448 32 C 448 14.3 433.7 0 416 0 L 384 0 L 96 0 z M 96 384 L 352 384 L 352 448 L 96 448 C 78.3 448 64 433.7 64 416 C 64 398.3 78.3 384 96 384 z M 128 144 C 128 135.2 135.2 128 144 128 L 336 128 C 344.8 128 352 135.2 352 144 C 352 152.8 344.8 160 336 160 L 144 160 C 135.2 160 128 152.8 128 144 z M 144 192 L 336 192 C 344.8 192 352 199.2 352 208 C 352 216.8 344.8 224 336 224 L 144 224 C 135.2 224 128 216.8 128 208 C 128 199.2 135.2 192 144 192 z" stroke-linecap="round" />
 </g>
