@@ -31,6 +31,15 @@ const props = Astro.props as Props;
         <meta property="twitter:url" content={Astro.url.href} />
         <meta property="twitter:title" content={props.title} />
         <meta property="twitter:description" content={props.description} />
+        
+        <!-- Icons -->
+        <meta property="og:image" content="https://panjohnny.vercel.app/icon.svg">
+        <meta name="twitter:image" content="https://panjohnny.vercel.app/icon.svg">
+        <link rel="icon" type="image/svg" href="/icon.svg" />
+
+        <!-- Add to home screen -->
+        <meta name='mobile-web-app-capable' content='yes'>
+        <meta name='apple-mobile-web-app-capable' content='yes'>
     </head>
     <body>
         <main>
