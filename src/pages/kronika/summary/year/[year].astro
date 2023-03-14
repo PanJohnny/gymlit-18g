@@ -56,7 +56,7 @@ function quoteFix(input) {
             {
                 Object.keys(phrases).map((p) => (
                     <div class="teach">
-                        <h2>{teachers[p]}</h2>{" "}
+                        <h3>{teachers[p]}</h3>{" "}
                         <ul>
                             {phrases[p].map((phrase) => (
                                 <li>{quoteFix(phrase)}</li>
@@ -66,5 +66,8 @@ function quoteFix(input) {
                 ))
             }
         </div>
+
+        <hr />
+        Experiment: <a href={"/summary/download/" + year}>stáhnout jako csv</a>
     </div>
 </BetaLayout>
