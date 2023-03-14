@@ -76,7 +76,7 @@ Object.keys(phrases).forEach((t) => {
     })
 });
 
-return new Response(csv, {
+return new Response("\ufeff" + csv, {
     headers: {
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": "attachment",
