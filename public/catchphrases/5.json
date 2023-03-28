@@ -16,7 +16,8 @@
 		"\"Václave, nezívej, ty se určitě zase přežral.\"",
 		"\"Já zkouším různé podpisy, abych poznal sám sebe.\" řekl Karel, \"A jak vidím, tak ses ještě nenašel.\" řekl pan profesor",
 		"\"Až na tebe přijde apendix v nestřeženém okamžiku, to budeš čumět\" řekl pan profesor Honzovi",
-		"\"Jenom Honza se zamyslel, sice málo, ale zamyslel\""
+		"\"Jenom Honza se zamyslel, sice málo, ale zamyslel\"",
+		"\"Dokážeš si představit, že bys byla úplně celej táta? Ale ty vlastně nemůžeš bejt, protože seš ženská.\" (na Elu)"
 	],
 	"stef": [
 		"\"Ta lavice stála víc než ty!\"",
@@ -29,23 +30,27 @@
 		"\"Brambora a brambora jsou dvě brambory a ne odmocnina z 12!\"",
 		"\"Já jdu domů!\" povídá paní profesorka Rozumová, po dalších matematických zločinech, které byly vyřčeny z úst Jáchymových.",
 		"\"Budu si muset večer udělat grog a opravovat vaše písemky postupně.\"",
-		"\"Brambora mínus brambora je nula, Honzo!\""
+		"\"Brambora mínus brambora je nula, Honzo!\"",
+		"\"A tady to mám napsané špatně. No mě zmátl Kryštof, takže je to jeho vina.\""
 	],
 	"svap": [
 		"\"Vše, no jo vše, takže vše.\"",
 		"\"Svět se zbláznil a já proti tomu bojuju!\"",
 		"\"Zíváš, protože si unavený nebo protože tě unavuji já?\"",
-		"\"Co je toto?\" (říká pan profesor Procházka)\n\"Držátko.\" (Ela)\n\"Ty jsi taky držátko! (pan profesor Procházka",
+		"\"Co je toto?\" (říká pan profesor Procházka)\n\"Držátko.\" (Ela)\n\"Ty jsi taky držátko!\"",
 		"Po přestávce jsme se vrátili do laboratoří chemie, kde se stále větralo po práci s ethanolem. Matěj pronesl: \"No, hezky to tu vyvětral.\" Pak si. všiml, že pan profesor Procházka stojí přímo vedlo něho, a tak se rychle opravil: \"Hezky se to tu vyvětralo..\" Načež pan profesor odpověděl: \"No ono se to tu samo nevyvětralo.\"",
-		"\"O víkendu se uč značky prvků, budeš mít jednodušší život.\" (pan profesor Procházka)",
-		"\"Nikdo nebude nikoho vyhazovat z okna!\" (pan profesor Procházka)"
+		"\"O víkendu se uč značky prvků, budeš mít jednodušší život.\"",
+		"\"Nikdo nebude nikoho vyhazovat z okna!\"",
+		"\"Pořád se tady napájíš a ještě u toho mlaskáš\" (na Tobiase)"
 	],
 	"marw": [
 		"[de facto] = de facto",
 		"[na uandrajfu] = na OneDrivu",
 		"[aces pojnt] = Access point",
 		"\"Angličan přijel a zase neví co dělat.\"",
-		"[pást] = paste"
+		"[pást] = paste",
+		"[pencil] = pencil",
+		"[solidify] = solidify"
 	],
 	"ladc": [
 		"Když z toho tabletu sundáš ten obal, tak tam vzadu bude takový ochroustaný jablíčko."
