@@ -86,11 +86,7 @@ import teachers from "../../public/teachers.json";
             </li>
 
             <li>
-                <a href="/old"><h3>Stará kronika</h3></a>
-            </li>
-            
-            <li>
-                <a href="htps://fastgymlit.vercel.app"><h3>FastGymlit</h3></a>
+                <a href="/old"><h3>Stará verze</h3></a>
             </li>
 
             {
@@ -102,10 +98,13 @@ import teachers from "../../public/teachers.json";
             <div class="toggle" id="settingsToggle">⚙ Preference</div>
             <div>
                 {
-                !Astro.cookies.has("auth") ? (<a class="text-gradient" href="/login" id="login" class="toggle">
+                !Astro.cookies.has("auth") ? (<a href="/login" id="login" class="toggle">
                     🙋‍♂️ Přihlásit se
                 </a>):null
             }</div>
+            <div>
+                <a href="https://fastgymlit.vercel.app" class="toggle">🏫 FastGymlit</a>
+            </div>
         </div>
     </nav>
 </div>
