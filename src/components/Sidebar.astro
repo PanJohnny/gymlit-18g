@@ -100,7 +100,9 @@ import teachers from "../../public/teachers.json";
                 {
                 !Astro.cookies.has("auth") ? (<a href="/login" id="login" class="toggle">
                     🙋‍♂️ Přihlásit se
-                </a>):null
+                </a>):<a href="/settings/apply#logout" id="login" class="toggle">
+                    🚫 Odhlásit se
+                </a>
             }</div>
             <div>
                 <a href="https://fastgymlit.vercel.app" class="toggle">🏫 FastGymlit</a>
