@@ -18,10 +18,10 @@ if (!visible) {
         <ol>
             <li><label><input type="checkbox" id="darkMode"> Tmavý režim 🌚</label></li>
             <li><label><input type="checkbox" id="oldVersion"> Preferovat starou verzi 👴</label></li>
-            <li><input type="button" role="button" onclick="window.location.href = '/settings/apply#cookies';" value="Vymazat data 🗑" /> (preference, cookies - autorizace, poslední url, statistický id)</li>
         </ol>
     </div>
     <span id="doneSettings" role="button">Hotovo</span>
+    <input type="button" role="button" onclick="clearData()" value="Vymazat data 🗑" style="background-color: red;" /> (preference, cookies - autorizace, poslední url, statistický id)
 </div>
 
 <style>
@@ -72,4 +72,18 @@ if (!visible) {
     });
 
     document.querySelector("#oldVersion")["checked"] = localStorage.getItem("old") == "true";
+    
+    function clearData() {
+         const cookies = document.cookie.split(";");
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+        
+        localStorage.clear();
+        window.location.href="#";
+    }
 </script>
