@@ -50,7 +50,9 @@
 		"\"Angličan přijel a zase neví co dělat.\"",
 		"[pást] = paste",
 		"[pencil] = pencil",
-		"[solidify] = solidify"
+		"[solidify] = solidify",
+		"[bulín] = boolean",
+		"[diference] = difference"
 	],
 	"ladc": [
 		"Když z toho tabletu sundáš ten obal, tak tam vzadu bude takový ochroustaný jablíčko."
