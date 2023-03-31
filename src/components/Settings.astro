@@ -20,8 +20,8 @@ if (!visible) {
             <li><label><input type="checkbox" id="oldVersion"> Preferovat starou verzi 👴</label></li>
         </ol>
     </div>
-    <span id="doneSettings" role="button">Hotovo</span> <hr />
-    <span role="button" id="clearData" style="background-color: red;">Vymazat data 🗑</span> (preference, cookies - autorizace, poslední url, statistický id)
+    <span id="doneSettings" role="button">Hotovo ✔️</span> <hr />
+    <span role="button" id="clearData" style="background-color: red;">Vymazat data 🧹</span> (preference, cookies - autorizace, poslední url, statistický id)
 </div>
 
 <style>
@@ -84,6 +84,6 @@ if (!visible) {
         }
         
         localStorage.clear();
-        window.location.href="#";
+        window.location.reload();
     });
 </script>
