@@ -8,7 +8,7 @@ const year: number = +y;
 if (year < 0 || year > 8) {
     return Astro.redirect("/kronika");
 }
-
+let events = "";
 let phrases = {};
 if (year == 0) {
     for (var i = 1; i < 8; i++) {
@@ -25,6 +25,10 @@ if (year == 0) {
 
             json[k].forEach((a) => phrases[k].push(a));
         });
+        const temp = await fetch(
+            Astro.url.protocol + "//" + Astro.url.host + "/events/" + i
+        ).then((b) => b.text());
+        events += temp.split("<body>")[1].split("</body>")[0];
     }
 } else {
     phrases = await fetch(
@@ -35,12 +39,17 @@ if (year == 0) {
             year +
             ".json"
     ).then((response) => response.json());
+    events = await fetch(
+        Astro.url.protocol + "//" + Astro.url.host + "/events/" + year
+    ).then((b) => b.text());
+
+    events = events.split("<body>")[1].split("</body>")[0];
 }
 
 function quoteFix(input) {
     let n = 0;
     return input.replace(/"/g, (m, i, og) => {
-        return (n++ % 2) ? "“" : '„';
+        return n++ % 2 ? "“" : "„";
     });
 }
 ---
@@ -50,24 +59,70 @@ function quoteFix(input) {
     description="Souhrn školního roku"
 >
     <div class="body">
-        <h2><a href={"/events/" + year}>► Události</a></h2>
+        <div id="udalosti">
+            <details>
+                <summary> Události</summary>
+                <div set:html={events} />
+            </details>
+        </div>
         <div id="hlasky">
-            <h2>Hlášky</h2>
-            {
-                Object.keys(phrases).map((p) => (
-                    <div class="teach">
-                        <h3>{teachers[p]}</h3>{" "}
-                        <ul>
-                            {phrases[p].map((phrase) => (
-                                <li>{quoteFix(phrase)}</li>
-                            ))}
-                        </ul>
-                    </div>
-                ))
-            }
+            <details>
+                <summary>Hlášky</summary>
+                {
+                    Object.keys(phrases).map((p) => (
+                        <div class="teach">
+                            <h3>{teachers[p]}</h3>{" "}
+                            <ul>
+                                {phrases[p].map((phrase) => (
+                                    <li>{quoteFix(phrase)}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))
+                }
+            </details>
         </div>
 
         <hr />
-        Experiment: <a href={"/kronika/summary/download/" + year}>stáhnout jako csv</a>
+        Experiment: <a href={"/kronika/summary/download/" + year}
+            >stáhnout jako csv</a
+        >
     </div>
+
+    <script>
+        document
+            .querySelector("#udalosti")
+            .querySelectorAll("h1")
+            .forEach((e) => {
+                e.remove();
+            });
+    </script>
 </BetaLayout>
+
+<style>
+    summary {
+        background-color: var(--text-color);
+        color: var(--background);
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        margin-bottom: 1em;
+        margin-right: 10px;
+    }
+
+    summary:hover {
+        filter: sepia(20);
+    }
+
+    details[open] > summary {
+        position: fixed;
+        margin: 0px;
+        top: 0px;
+        z-index: 2;
+        left: 0px;
+    }
+</style>
