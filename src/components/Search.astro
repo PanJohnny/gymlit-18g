@@ -1,0 +1,170 @@
+---
+---
+
+<div id="searchWrapper" class="hidden inverted">
+    <input type="search" name="Tab" id="search" placeholder="Vyhledejte na stránce">
+    <ul id="searchResults">
+
+    </ul>
+    <div id="searchInfo">Napište hledané slovo a zmáčkněte <kbd>↵ Enter</kbd>. Zavřete pomocí klávesy <kbd>Escape</kbd>.</div>
+</div>
+
+<script>
+    const searchList = [
+        {
+            title: "Prima",
+            alias: ["1"],
+            path: "/kronika/summary/year/1"
+        },
+        {
+            title: "Sekunda",
+            alias: ["2"],
+            path: "/kronika/summary/year/2"
+        },
+        {
+            title: "Tercie",
+            alias: ["3"],
+            path: "/kronika/summary/year/3"
+        },
+        {
+            title: "Kvarta",
+            alias: ["4"],
+            path: "/kronika/summary/year/4"
+        },
+        {
+            title: "Kvinta",
+            alias: ["5"],
+            path: "/kronika/summary/year/5"
+        },
+        {
+            title: "Sexta",
+            alias: ["6"],
+            path: "/kronika/summary/year/6"
+        },
+        {
+            title: "Septima",
+            alias: ["7"],
+            path: "/kronika/summary/year/7"
+        },
+
+        {
+            title: "Oktáva",
+            alias: ["8"],
+            path: "/kronika/summary/year/8"
+        },
+        {
+            title: "Všechno",
+            alias: ["0", "a"],
+            path: "/kronika/summary/year/0"
+        }
+    ]
+    
+    const teachers = await fetch("/teachers.json").then(res => res.json());
+
+    Object.keys(teachers).forEach(k => {
+        searchList.push({
+            title: teachers[k],
+            alias: [k],
+            path: "/kronika/summary/teacher/" + k
+        });
+    });
+
+    const searchW = document.querySelector("#searchWrapper");;
+
+    const searchEl:HTMLInputElement = document.querySelector("#search");
+    const resultsEl = document.querySelector("#searchResults");
+
+
+    searchEl.addEventListener("keyup", quickSearch)
+
+    function quickSearch(e) {
+        const query = searchEl.value.trim().toLocaleLowerCase();
+        let results = [];
+
+        searchList.forEach(el => {
+            const title = el.title;
+            const alias = el.alias;
+
+            if (title.toLocaleLowerCase().startsWith(query) || alias.includes(query)) {
+                results.push(el);
+            }
+        });
+
+        resultsEl.innerHTML = "";
+
+        if (results.length > 0) {
+            if (e.key == "Enter") {
+                searchW.innerHTML = "<h2>Přesměrovávání</h2>";
+                location.href = results[0].path;
+                return;
+            }
+            let i = 0;
+            results.forEach(el => {
+                if (i == 3)
+                    return;
+                i++;
+                const li = document.createElement("li");
+
+                resultsEl.appendChild(li);
+
+                li.innerHTML = '<span class="search-title">' + el.title + '</span>';
+            });
+        }
+    }
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key == "Control") {
+            searchW.classList.toggle("hidden");
+            if (!searchW.classList.contains("hidden")) {
+                searchEl.focus();
+            }
+        } else if (e.key == "Escape") {
+            searchW.classList.add("hidden");
+        }
+    });
+</script>
+
+<style>
+    #searchWrapper {
+        position: fixed;
+        z-index: 2;
+        border-style: solid;
+        border-radius: 10px;
+        border-color: var(--border-color);
+        padding: 1em;
+        border-width: 2px;
+
+        top: 40vh;
+        left: 50vw;
+        transform: translate(-50%, -50%);
+    }
+
+    #search {
+        outline: none;
+        padding: 1em;
+        border-radius: 15px;
+    }
+
+    #searchResults {
+        list-style: none;
+        padding-left: 0px;
+        border: var(--background) 1px solid;
+        border-radius: 4px;
+        padding 2em;
+        text-align: center;
+    }
+
+    #searchResults > li {
+        padding: .5em;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .search-title {
+        font-size: large;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+</style>

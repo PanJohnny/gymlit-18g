@@ -5,10 +5,7 @@ import BetaLayout from "../../layouts/beta/BetaLayout.astro";
 <BetaLayout title="Kronika 5. G" description="Internetová verze třídní kroniky">
     <div class="body">
         Vítejte na našich webových stránkách!
-        
-        <h2><b>158🚨</b></h2>
-        <p>To je počet hlášek ke dni 28. 3. 👉 Více informací <a href="/kronika/stats">zde</a></p>
-
+        <p class="news desktop"><b>Novinka!</b> Pomocí klávesy <kbd>Ctrl</kbd> spustíte rychlou navigace po stránce</p>
         <div class="desktop">
             <h2>Kalendář</h2>
             <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Europe%2FPrague&showTabs=0&showCalendars=0&showTz=0&showPrint=1&showNav=1&src=MjNrOWsyM3NqbHY5b2Rmazh0b3BwcGFoanNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%238E24AA" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
@@ -27,5 +24,10 @@ import BetaLayout from "../../layouts/beta/BetaLayout.astro";
         .desktop {
             display: none;
         }
+    }
+
+    .news {
+        color: green;
+        font-weight: 900;
     }
 </style>

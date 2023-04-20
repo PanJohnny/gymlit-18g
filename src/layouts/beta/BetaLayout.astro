@@ -1,6 +1,7 @@
 ---
 import Settings from "../../components/Settings.astro";
 import Sidebar from "../../components/Sidebar.astro";
+import Search from "../../components/Search.astro";
 
 interface Props {
     title: string;
@@ -45,6 +46,7 @@ const props = Astro.props as Props;
         <main>
             <Sidebar />
             <Settings />
+            <Search />
             <div class="main">
                 <div class="header">
                     <h1>
