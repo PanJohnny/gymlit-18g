@@ -61,13 +61,15 @@ function quoteFix(input) {
     <div class="body">
         <div id="udalosti">
             <details>
-                <summary> Události</summary>
+                <summary>Události</summary>
+                <h2>Události</h2>
                 <div set:html={events} />
             </details>
         </div>
         <div id="hlasky">
             <details>
                 <summary>Hlášky</summary>
+                <h2>Hlášky</h2>
                 {
                     Object.keys(phrases).map((p) => (
                         <div class="teach">
