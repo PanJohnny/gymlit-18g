@@ -1,5 +1,4 @@
 ---
-import Layout from "../layouts/Layout.astro";
 import { cookieOptions } from "../utils";
 
 if (Astro.url.searchParams.has("auth")) {
@@ -11,64 +10,114 @@ if (Astro.url.searchParams.has("auth")) {
 }
 
 if (Astro.cookies.has("auth")) return Astro.redirect("/");
+
+const title = "Přihlášení";
+const description = "Přihlášení do nástrojů online kroniky";
 ---
 
-<Layout title="Přihlásit se">
-    <main>
-        <h1 class="text-gradient">Přihlásit se</h1>
-        <input type="text" placeholder="Username" id="username" />
-        <input type="password" id="password" placeholder="Password" />
-        <input type="button" value="Login" id="login" />
-    </main>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
 
-    <script is:inline>
-        const username = document.getElementById("username");
-        const password = document.getElementById("password");
-        document
-            .getElementById("login")
-            .addEventListener("click", async (event) => {
-                fetch("/api/login", {
-                    method: "GET",
-                    headers: {
-                        username: username.value,
-                        password: password.value,
-                    },
-                })
-                    .then((data) => data.text())
-                    .then((text) => {
-                        if (text.startsWith("{")) {
-                            const json = JSON.parse(text);
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={Astro.url.href} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
 
-                            document.location.href = "?auth=" + json.secret;
-                        } else window.alert(text);
-                    });
-            });
-    </script>
-</Layout>
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary" />
+        <meta property="twitter:url" content={Astro.url.href} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+
+        <!-- Icons -->
+        <meta
+            property="og:image"
+            content="https://panjohnny.vercel.app/icon.svg"
+        />
+        <meta
+            name="twitter:image"
+            content="https://panjohnny.vercel.app/icon.svg"
+        />
+        <link rel="icon" type="image/svg" href="/icon.svg" />
+
+        <!-- Add to home screen -->
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+    </head>
+    <body>
+        <main>
+            <h1>Přihlásit se</h1>
+            <input type="text" placeholder="Uživatelské jméno" id="username" name="username" />
+            <input type="password" id="password" name="password" placeholder="Heslo" />
+            <input type="button" value="Přihlásit se" id="login" />
+        </main>
+    </body>
+</html>
+
+<script>
+    if (localStorage.getItem("mode"))
+        document.querySelector("html").className = localStorage.getItem("mode");
+</script>
+
+<script is:inline>
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    document
+        .getElementById("login")
+        .addEventListener("click", async (event) => {
+            fetch("/api/login", {
+                method: "GET",
+                headers: {
+                    username: username.value,
+                    password: password.value,
+                },
+            })
+                .then((data) => data.text())
+                .then((text) => {
+                    if (text.startsWith("{")) {
+                        const json = JSON.parse(text);
+
+                        document.location.href = "?auth=" + json.secret;
+                    } else window.alert(text);
+                });
+        });
+</script>
 
 <style>
-    :root {
-        --astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
+    html.dark {
+        background-color: #02182b;
+        color: #eeeeff;
     }
 
-    h1 {
-        margin: 2rem 0;
+    html.light {
+        background-color: #eeeeff;
+        color: #02182b;
+    }
+
+    html {
+        font-family: system-ui, sans-serif;
+        margin: 2em;
     }
 
     main {
-        margin: auto;
-        padding: 1em;
-        max-width: 60ch;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
     }
 
-    .text-gradient {
-        font-weight: 900;
-        background-image: var(--astro-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-size: 100% 200%;
-        background-position-y: 100%;
-        border-radius: 0.4rem;
-        animation: pulse 4s ease-in-out infinite;
+    input {
+        padding: 1em;
+        border: 1px solid #508991;
+        border-radius: 15px;
+        outline: none;
+        margin-bottom: 1em;
     }
 </style>
