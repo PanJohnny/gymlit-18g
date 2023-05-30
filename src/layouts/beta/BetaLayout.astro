@@ -9,6 +9,8 @@ interface Props {
 }
 
 const props = Astro.props as Props;
+
+const commitInfo = await fetch("https://api.github.com/repos/PanJohnny/gymlit-18g/commits/main").then(body => body.json()).then(json => json["commit"]};
 ---
 
 <!DOCTYPE html>
@@ -59,7 +61,7 @@ const props = Astro.props as Props;
                 </div>
                 <slot />
                 <hr />
-                Kronikář: Filip | Pomocník: Ondra F. | Naprogramoval: Honza | Kód na <a href="https://github.com/PanJohnny/gymlit-18g">GitHubu</a>
+                Poslední aktualizace: <b title={commitInfo["message"]}>{new Date(commitInfo["author"]["date"]).toLocaleDateString())}</b> | Kronikář: Filip | Pomocník: Ondra F. | Naprogramoval: Honza | Kód na <a href="https://github.com/PanJohnny/gymlit-18g">GitHubu</a>
             </div>
         </main>
     </body>
