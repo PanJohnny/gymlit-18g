@@ -1,62 +1,186 @@
 ---
-export interface Props {
-	title: string;
+import Settings from "../components/Settings.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Search from "../components/Search.astro";
+
+interface Props {
+    title: string;
+    description: string;
 }
 
-const { title } = Astro.props as Props;
+const props = Astro.props as Props;
+
+const commitInfo = await fetch("https://api.github.com/repos/PanJohnny/gymlit-18g/commits/main").then(body => body.json()).then(json => json["commit"]);
 ---
 
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/x-icon" href="/icon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="en" class="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{props.title}</title>
+        <meta name="title" content={props.title} />
+        <meta name="description" content={props.description} />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={Astro.url.href} />
+        <meta property="og:title" content={props.title} />
+        <meta property="og:description" content={props.description} />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary" />
+        <meta property="twitter:url" content={Astro.url.href} />
+        <meta property="twitter:title" content={props.title} />
+        <meta property="twitter:description" content={props.description} />
+        
+        <!-- Icons -->
+        <meta property="og:image" content="https://panjohnny.vercel.app/icon.svg">
+        <meta name="twitter:image" content="https://panjohnny.vercel.app/icon.svg">
+        <link rel="icon" type="image/svg" href="/icon.svg" />
+
+        <!-- Add to home screen -->
+        <meta name='mobile-web-app-capable' content='yes'>
+        <meta name='apple-mobile-web-app-capable' content='yes'>
+    </head>
+    <body>
+        <main>
+            <Sidebar />
+            <Settings />
+            <Search />
+            <div class="main">
+                <div class="header">
+                    <h1>
+                        <span class="toggle hamburger hidden" id="h1burger"
+                            >☰</span
+                        >
+                        {props.title}
+                    </h1>
+                    <h4>{props.description}</h4>
+                </div>
+                <slot />
+                <hr />
+                Poslední aktualizace: <b title={commitInfo["message"]}>{new Date(commitInfo["author"]["date"]).toLocaleString("cs-CZ")}</b> | Kronikář: Filip | Pomocník: Ondra F. | Naprogramoval: Honza | Kód na <a href="https://github.com/PanJohnny/gymlit-18g">GitHubu</a>
+            </div>
+        </main>
+    </body>
 </html>
+
 <style>
-	:root {
-		--font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
-		--font-size-lg: clamp(1.2rem, 0.7vw + 1.2rem, 1.5rem);
-		--font-size-xl: clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem);
+    :root {
+        --dark: #02182b;
+        --light: #eeeeff;
+        --border: #508991;
+        --decoration: #99f7ab;
 
-		--color-text: hsl(12, 5%, 4%);
-		--color-bg: hsl(10, 21%, 95%);
-		--color-border: hsl(17, 24%, 90%);
-	}
+        --background: var(--light);
+        --text-color: var(--dark);
 
-	html {
-		font-family: system-ui, sans-serif;
-		font-size: var(--font-size-base);
-		color: var(--color-text);
-		background-color: var(--color-bg);
-	}
+        --bg-unused: var(--text-color);
+        --text-unused: var(--background);
+    }
 
-	body {
-		margin: 0;
-	}
+    html {
+        font-family: system-ui, sans-serif;
+        margin: 2em;
+        text-decoration-color: var(--decoration);
+        border-color: var(--border);
+        outline-color: var(--decoration);
+    }
 
-	:global(h1) {
-		font-size: var(--font-size-xl);
-	}
+    :global(.dark) {
+        background-color: var(--dark);
+        color: var(--light);
 
-	:global(h2) {
-		font-size: var(--font-size-lg);
-	}
+        --background: var(--dark);
+        --text-color: var(--light);
+    }
 
-	:global(code) {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
+    :global(.light) {
+        background-color: var(--light);
+        color: var(--dark);
 
-	@media (prefers-color-scheme: dark) {
-		:root {
-			filter: invert(1);
-		}
-	}
+        --background: var(--light);
+        --text-color: var(--dark);
+    }
+
+    :global(.inverted) {
+        background-color: var(--bg-unused);
+        color: var(--text-unused);
+    }
+
+    .main {
+        margin-left: var(--sidebar-width);
+        padding-left: 1em;
+    }
+
+    @media print {
+        :root {
+            --sidebar-width: 0px;
+        }
+
+        .sidebar {
+            display: none;
+        }
+    }
+
+    :global(.toggle) {
+        cursor: pointer;
+    }
+
+    :global(.toggle:hover) {
+        color: var(--decoration);
+    }
+
+    :global(.no-margin-left) {
+        margin-left: 0px;
+    }
+
+    :global(.hidden) {
+        display: none;
+    }
+
+    :global([role=button]) {
+        cursor: pointer;
+        background-color: #00ff40;
+        color: var(--dark);
+        border: 1px solid var(--light);
+        border-radius: 6px;
+        padding: .2em;
+        line-height: 2em;
+    }
+    
+    :global([role=button]:hover) {
+        border-color: var(--dark);
+    }
 </style>
+
+<script lang="js">
+    if (localStorage.getItem("mode"))
+        document.querySelector("html").className = localStorage.getItem("mode");
+    if (window.innerWidth <= 500)
+        document.querySelector("#h1burger").classList.remove("hidden");
+
+    window.addEventListener("load", async () => {
+        // Analytics
+        let userId = localStorage.getItem("analyticsId");
+
+        if (!userId) {
+            userId =
+                new Date(Date.now()).toISOString() +
+                Date.now().toString(36) +
+                Math.random().toString(36).substring(2);
+            localStorage.setItem("analyticsId", userId);
+        }
+
+        await fetch("/api/analytics?site=" + encodeURI(location.pathname), {
+            headers: {
+                "User-Identifier": userId,
+            },
+            method: "POST",
+        }).catch((err) => {
+            console.error("Failed to send analytics data " + err);
+        });
+    });
+</script>

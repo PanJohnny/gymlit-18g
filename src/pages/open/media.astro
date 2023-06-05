@@ -3,7 +3,7 @@ import {cookieOptions, validYear} from "../../utils"
 import media from "../../data/media.json"
 
 const params = Astro.url.searchParams
-
+// @ts-ignore
 if (!params.has("year") || !validYear(params.get("year"))) {
 	return Astro.redirect('/select/year?redirect_reason=invalid.year')
 }

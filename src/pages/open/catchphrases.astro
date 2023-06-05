@@ -1,12 +1,12 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../../layouts/old/Layout.astro";
 import Card from "../../components/Card.astro";
 import teachers from "../../../public/teachers.json";
 const phrases = await Astro.glob("../../../public/catchphrases/*.json");
 import { className, cookieOptions, validYear } from "../../utils";
 
 const params = Astro.url.searchParams
-
+// @ts-ignore
 if (!params.has("year") || !validYear(params.get("year"))) {
 	return Astro.redirect('/select/year?redirect_reason=invalid.year')
 }
@@ -16,13 +16,13 @@ const year = params.get("year")
 Astro.cookies.set("last", Astro.url.href, cookieOptions)
 
 var keys = [];
-if (year != "0") {
+if (year != "0") { // @ts-ignore
 	keys = Object.keys(phrases.at(parseInt(year) - 1))
 }
 function valid(key:string) {
 	if (keys.length == 0) {
 		return true;
-	} else {
+	} else { // @ts-ignore
 		if (keys.includes(key)) {
 			return true;
 		} else {
@@ -36,7 +36,10 @@ function valid(key:string) {
 	<main>
 		<h1><span class="text-gradient">Vyberte učitele</span></h1>
 		<span class="text-gradient" id="class">
-			{className(year)}
+			{
+			// @ts-ignore
+			className(year)
+			}
 		</span>
 		{
 			// go through teachers and add Card for every key

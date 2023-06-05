@@ -1,9 +1,12 @@
 ---
 import teachers from "../../../../../public/teachers.json";
 const y = Astro.params.year;
-const year: number = +y;
+if (!y)
+    return Astro.redirect("/kronika");
 
-if (year < 0 || year > 8) {
+const classYear: number = +y;
+
+if (classYear < 0 || classYear > 8) {
     return new Response(undefined, {
         status: 400,
         statusMessage: "Year requested must be between 0 and 8"
@@ -35,7 +38,7 @@ function quoteFix(input) {
 
 let phrases = {};
 
-if (year == 0) {
+if (classYear == 0) {
     for (var i = 1; i < 8; i++) {
         const json = await fetch(
             Astro.url.protocol +
@@ -61,14 +64,14 @@ if (year == 0) {
             "//" +
             Astro.url.host +
             "/catchphrases/" +
-            year +
+            classYear +
             ".json"
     ).then((response) => response.json());
 }
 
 Object.keys(phrases).forEach((t) => {
     phrases[t].forEach((p) => {
-        insert(year);
+        insert(classYear);
         insert(t);
         insert(teachers[t]);
         insert(p);
@@ -80,7 +83,7 @@ return new Response("\ufeffsep=,\n\ufeff" + csv, {
     headers: {
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": "attachment",
-        "filename": "gymlit18G-hlasky-" + year + ".csv"
+        "filename": "gymlit18G-hlasky-" + classYear + ".csv"
     }
 });
 ---

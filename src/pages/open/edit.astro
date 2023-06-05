@@ -1,10 +1,10 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../../layouts/old/Layout.astro";
 import Card from "../../components/Card.astro";
 import {cookieOptions, validYear} from "../../utils"
 
 const params = Astro.url.searchParams
-
+// @ts-ignore
 if (!params.has("year") || !validYear(params.get("year"))) {
 	return Astro.redirect('/select/year?redirect_reason=invalid.year')
 }

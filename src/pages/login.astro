@@ -3,7 +3,7 @@ import { cookieOptions } from "../utils";
 
 if (Astro.url.searchParams.has("auth")) {
     Astro.cookies.set(
-        "auth",
+        "auth", // @ts-ignore
         Astro.url.searchParams.get("auth"),
         cookieOptions
     );
@@ -62,7 +62,7 @@ const description = "Přihlášení do nástrojů online kroniky";
 </html>
 
 <script>
-    if (localStorage.getItem("mode"))
+    if (localStorage.getItem("mode")) // @ts-ignore
         document.querySelector("html").className = localStorage.getItem("mode");
 </script>
 

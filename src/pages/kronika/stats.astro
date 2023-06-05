@@ -1,5 +1,5 @@
 ---
-import BetaLayout from "../../layouts/beta/BetaLayout.astro";
+import Layout from "../../layouts/Layout.astro";
 import teachers from "../../../public/teachers.json";
 const catchphrases = await Astro.glob("../../../public/catchphrases/*.json");
 
@@ -17,6 +17,7 @@ catchphrases.forEach(phrases => {
 
 let sortable = [];
 for (var vehicle in cpp) {
+    // @ts-ignore
     sortable.push([vehicle, cpp[vehicle]]);
 }
 
@@ -38,10 +39,11 @@ const cpy = [];
 
 let i = 0;
 catchphrases.forEach(phrases => {
+    // @ts-ignore
     cpy.push(0);
     
     Object.values(phrases).forEach(v => {
-        if (v != undefined && v.length != undefined)
+        if (v != undefined && v.length != undefined) // @ts-ignore
             cpy[i] += v.length;
     })
 
@@ -51,7 +53,7 @@ catchphrases.forEach(phrases => {
 const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/analytics/all").then(a => a.json());
 ---
 
-<BetaLayout title="Statistiky" description="Otevřené statistiky naší kroniky a návštěvnosti stránek">
+<Layout title="Statistiky" description="Otevřené statistiky naší kroniky a návštěvnosti stránek">
     <div class="body">
         <div id="zakladni">
             <h2>Nejupovídanější profesor</h2>

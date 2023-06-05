@@ -1,18 +1,22 @@
 ---
-import BetaLayout from "../../../../layouts/beta/BetaLayout.astro";
+import Layout from "../../../../layouts/Layout.astro";
 import teachers from "../../../../../public/teachers.json";
 const catchphrases = await Astro.glob("../../../../../public/catchphrases/*.json");
 
 const t = Astro.params.teacher;
 
-const teacher = teachers[t];
+if (!t) {
+    return Astro.redirect("/kronika");
+}
 
-if (!teacher) {
+const teacherName = teachers[t];
+
+if (!teacherName) {
     return Astro.redirect("/kronika");
 }
 
 let phrases = [];
-catchphrases.forEach((pr) => {
+catchphrases.forEach((pr) => {// @ts-ignore
     if (pr[t]) pr[t].forEach((p) => phrases.push(p));
 });
 
@@ -24,7 +28,7 @@ function quoteFix(input) {
 }
 ---
 
-<BetaLayout title={teacher} description={"Hlášky učitele " + teacher}>
+<Layout title={teacherName} description={"Hlášky učitele " + teacherName}>
     <div class="body">
         <div id="hlasky">
             <h2>Hlášky ({phrases.length})</h2>

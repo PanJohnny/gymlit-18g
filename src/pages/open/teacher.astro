@@ -1,10 +1,10 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../../layouts/old/Layout.astro";
 import { cookieOptions, className, validYear } from "../../utils";
 import teachers from "../../../public/teachers.json";
 
 const params = Astro.url.searchParams;
-
+// @ts-ignore
 if (!params.has("year") || !validYear(params.get("year"))) {
     return Astro.redirect("/select/year?redirect_reason=invalid.year");
 }
@@ -17,7 +17,7 @@ if (!params.has("id"))
     return Astro.redirect("/select/year?redirect_reason=invalid.teacher_id");
 
 // get teacher id
-const id = params.get("id");
+const id = params.get("id");// @ts-ignore
 const teacher = teachers[id];
 
 if (!teacher) return Astro.redirect("/select/category");
@@ -25,8 +25,8 @@ if (!teacher) return Astro.redirect("/select/category");
 let json: Array<string> = [];
 if (year == "0") {
     await Astro.glob("../../../public/catchphrases/*.json").then((arr) => {
-        arr.forEach((a) => {
-            if (Object.keys(a).includes(id))
+        arr.forEach((a) => {// @ts-ignore
+            if (Object.keys(a).includes(id))// @ts-ignore
                 a[id].forEach((d: string) => {
                     json.push(d);
                 });
@@ -36,8 +36,8 @@ if (year == "0") {
     await fetch(Astro.url.protocol + "//" 
      + Astro.url.host + "/catchphrases/" + year + ".json")
         .then((response) => response.json())
-        .then((a:object) => {
-            if (Object.keys(a).includes(id))
+        .then((a:object) => {// @ts-ignore
+            if (Object.keys(a).includes(id))// @ts-ignore
                 a[id].forEach((d: string) => {
                     json.push(d);
                 });
@@ -52,7 +52,12 @@ if (json.length == 0) {
 <Layout title={teacher + " @ Online Kronika"}>
     <main>
         <h1><span class="text-gradient" id="title">{teacher}</span></h1>
-        <span class="text-gradient" id="class">{className(year)}</span>
+        <span class="text-gradient" id="class">
+            {
+        // @ts-ignore
+        className(year)
+            }
+        </span>
         <div id="phrases">
             {json.map((el: string) => (<div class="ph">{el}</div>))}
         </div>

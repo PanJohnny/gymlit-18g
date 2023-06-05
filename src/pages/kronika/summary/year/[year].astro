@@ -1,16 +1,19 @@
 ---
-import BetaLayout from "../../../../layouts/beta/BetaLayout.astro";
+import Layout from "../../../../layouts/Layout.astro";
 import teachers from "../../../../../public/teachers.json";
 
 const y = Astro.params.year;
-const year: number = +y;
+if (!y)
+    return Astro.redirect("/kronika");
 
-if (year < 0 || year > 8) {
+const classYear: number = +y;
+
+if (classYear < 0 || classYear > 8) {
     return Astro.redirect("/kronika");
 }
 let events = "";
 let phrases = {};
-if (year == 0) {
+if (classYear == 0) {
     for (var i = 1; i < 8; i++) {
         const json = await fetch(
             Astro.url.protocol +
@@ -36,11 +39,11 @@ if (year == 0) {
             "//" +
             Astro.url.host +
             "/catchphrases/" +
-            year +
+            classYear +
             ".json"
     ).then((response) => response.json());
     events = await fetch(
-        Astro.url.protocol + "//" + Astro.url.host + "/events/" + year
+        Astro.url.protocol + "//" + Astro.url.host + "/events/" + classYear
     ).then((b) => b.text());
 
     events = events.split("<body>")[1].split("</body>")[0];
@@ -54,8 +57,8 @@ function quoteFix(input) {
 }
 ---
 
-<BetaLayout
-    title={"Souhrn " + (year != 0 ? year + ". G" : "všeho")}
+<Layout
+    title={"Souhrn " + (classYear != 0 ? classYear + ". G" : "všeho")}
     description="Souhrn školního roku"
 >
     <div class="body">
@@ -86,7 +89,7 @@ function quoteFix(input) {
         </div>
 
         <hr />
-        Experiment: <a href={"/kronika/summary/download/" + year}
+        Experiment: <a href={"/kronika/summary/download/" + classYear}
             >stáhnout jako csv</a
         >
     </div>

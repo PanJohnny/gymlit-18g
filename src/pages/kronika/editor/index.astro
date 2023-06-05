@@ -1,0 +1,131 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+
+const auth = Astro.cookies.get("auth").value;
+if (auth != import.meta.env.SECRET) {
+    return Astro.redirect("/login");
+}
+---
+
+<Layout title="Portál editora" description="Portál editora kroniky">
+    <div class="body">
+        <h2>Nástroje</h2>
+        <ul>
+            <li>
+                <a href="/editor/catchphrases">Tvorba hlášek</a>
+            </li>
+            <li>
+                <a href="/editor/teacher">Evidence učitelů</a>
+            </li>
+        </ul>
+        <h2>Návody</h2>
+        <ul>
+            <li>
+                <a href="https://github.com/PanJohnny/gymlit-18g/tree/main/guides/CATCHPHRASES.md">Jak upravit hlášky</a>
+            </li>
+            <li>
+                <a href="https://github.com/PanJohnny/gymlit-18g/tree/main/guides/EVENTS.md">Jak upravit události</a>
+            </li>
+            <li>
+                <a href="https://github.com/PanJohnny/gymlit-18g/tree/main/TEACHERS.md">Jak evidovat nového učitele</a>
+            </li>
+        </ul>
+        <h2>Ročníky</h2>
+        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/teachers.json">Evidence učitelů</a>
+        <ol>
+            <li>
+                <b>Prima</b>
+                <ul>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/1.md">Události</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/1.json">Hlášky</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <b>Sekunda</b>
+                <ul>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/2.md">Události</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/2.json">Hlášky</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <b>Tercie</b>
+                <ul>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/3.md">Události</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/3.json">Hlášky</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <b>Kvarta</b>
+                <ul>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/4.md">Události</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/4.json">Hlášky</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <b>Kvinta</b>
+                <ul>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/5.md">Události</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/5.json">Hlášky</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <b>Sexta</b>
+                <ul>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/6.md">Události</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/6.json">Hlášky</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <b>Septima</b>
+                <ul>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/7.md">Události</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/7.json">Hlášky</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <b>Oktáva</b>
+                <ul>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/8.md">Události</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/PanJohnny/gymlit-18g/edit/main/public/catchphrases/8.json">Hlášky</a>
+                    </li>
+                </ul>
+            </li>
+        </ol>
+
+        <hr />
+        <p>
+            Děkuji Vám za editování stránek ❤
+        </p>
+    </div>
+</BetaLayout>
