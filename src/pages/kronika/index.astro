@@ -1,11 +1,11 @@
 ---
-import BetaLayout from "../../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 ---
 
-<BetaLayout title="Kronika 5. G" description="Internetová verze třídní kroniky">
+<Layout title="Kronika 5. G" description="Internetová verze třídní kroniky">
     <div class="body">
         Vítejte na našich webových stránkách!
-        <p class="news desktop"><b>Novinka!</b> Pomocí klávesy <kbd>Ctrl</kbd> spustíte rychlou navigace po stránce.</p>
+        <p class="news desktop"><b>Novinka!</b> Vylepšený systém pro úpravu stránky, ukazování posledního času úpravy stránek a systém nahlašování chyb. Rychlé hledání se již nespustí pomocí klávesy <kbd>Ctrl</kbd> kvůli problémům s dostupností.</p>
         <div class="desktop">
             <h2>Kalendář</h2>
             <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Europe%2FPrague&showTabs=0&showCalendars=0&showTz=0&showPrint=1&showNav=1&src=MjNrOWsyM3NqbHY5b2Rmazh0b3BwcGFoanNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%238E24AA" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
@@ -17,7 +17,7 @@ import BetaLayout from "../../layouts/Layout.astro";
         <h2>Preference</h2>
         <p>V preferencích můžete nastavit zda-li byste radši použili starou verzi kroniky. Dále můžete aktivovat tmavý režim.</p>
     </div>
-</BetaLayout>
+</Layout>
     
 <style>
     @media (max-width: 1024px) {

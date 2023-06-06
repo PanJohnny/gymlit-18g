@@ -92,6 +92,7 @@
 
     const searchW = document.querySelector("#searchWrapper");;
 
+    // @ts-ignore
     const searchEl:HTMLInputElement = document.querySelector("#search");
     const resultsEl = document.querySelector("#searchResults");
 
@@ -106,16 +107,16 @@
             const title = el.title;
             const alias = el.alias;
 
-            if (title.toLocaleLowerCase().startsWith(query) || alias.includes(query)) {
+            if (title.toLocaleLowerCase().startsWith(query) || alias.includes(query)) { // @ts-ignore
                 results.push(el);
             }
         });
-
+        // @ts-ignore
         resultsEl.innerHTML = "";
 
         if (results.length > 0) {
-            if (e.key == "Enter") {
-                searchW.innerHTML = "<h2>Přesměrovávání</h2>";
+            if (e.key == "Enter") {// @ts-ignore
+                searchW.innerHTML = "<h2>Přesměrovávání</h2>";// @ts-ignore
                 location.href = results[0].path;
                 return;
             }
@@ -125,34 +126,29 @@
                     return;
                 i++;
                 const li = document.createElement("li");
-
+                // @ts-ignore
                 resultsEl.appendChild(li);
-
+                // @ts-ignore
                 li.innerHTML = '<span class="search-title">' + el.title + '</span>';
             });
         }
     }
 
     document.addEventListener("keydown", (e) => {
-        if (e.key == "Control") {
-            searchW.classList.toggle("hidden");
-            if (!searchW.classList.contains("hidden")) {
-                searchEl.focus();
-            }
-        } else if (e.key == "Escape") {
+        if (e.key == "Escape") {// @ts-ignore
             searchW.classList.add("hidden");
         }
     });
-
+    // @ts-ignore
     document.querySelector("#searchButton").addEventListener("click", (e:MouseEvent) => {
-        if (e.button == 0) {
-            searchW.classList.toggle("hidden");
+        if (e.button == 0) {// @ts-ignore
+            searchW.classList.toggle("hidden");// @ts-ignore
             if (!searchW.classList.contains("hidden")) {
                 searchEl.focus();
             }
         }
     })
-
+    // @ts-ignore
     document.querySelector("#submitSearch").addEventListener("click", (e:MouseEvent) => {
         if (e.button == 0) {
             const query = searchEl.value.trim().toLocaleLowerCase();
@@ -162,12 +158,12 @@
                 const title = el.title;
                 const alias = el.alias;
 
-                if (title.toLocaleLowerCase().startsWith(query) || alias.includes(query)) {
+                if (title.toLocaleLowerCase().startsWith(query) || alias.includes(query)) {// @ts-ignore
                     results.push(el);
                 }
             });
-
-            searchW.innerHTML = "<h2>Přesměrovávání</h2>";
+            // @ts-ignore
+            searchW.innerHTML = "<h2>Přesměrovávání</h2>";// @ts-ignore
             location.href = results[0].path;
         }
     })

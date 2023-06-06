@@ -35,7 +35,7 @@ function quoteFix(input) {
             <ul>
                 {
                     phrases.map((p) => 
-                        (<li>{quoteFix(p)}</li>)
+                        (<li>{quoteFix(p)} <a href={"/kronika/report?text=" + quoteFix(p) + "&teacher=" + teacherName + "&return=" + Astro.url.href} title="Nahlásit chybu" style="color: red; text-decoration: none;">!</a></li>)
                     )
                 }
             </ul>

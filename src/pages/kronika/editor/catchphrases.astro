@@ -1,0 +1,302 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import teachers from "../../../../public/teachers.json";
+
+const auth = Astro.cookies.get("auth").value;
+if (auth != import.meta.env.SECRET) {
+    return Astro.redirect("/login");
+}
+---
+
+<Layout title="Úprava hlášek" description="Portál editora kroniky">
+    <div class="body">
+        <div class="bsearch">
+            <input
+                type="search"
+                name="teacher"
+                id="teach"
+                placeholder="Učitel"
+            />
+            <ul class="hidden">
+                {Object.keys(teachers).map((k) => <li>{teachers[k]}</li>)}
+            </ul>
+        </div>
+        <div class="bsearch">
+            <input type="search" name="class" id="class" placeholder="Třída" />
+            <ul class="hidden">
+                <li>Prima</li>
+                <li>Sekunda</li>
+                <li>Tercie</li>
+                <li>Kvarta</li>
+                <li>Kvinta</li>
+                <li>Sexta</li>
+                <li>Septima</li>
+                <li>Oktáva</li>
+            </ul>
+        </div>
+
+        <input type="button" id="submitAll" value="Načíst" />
+        <div id="results">Zde se zobrazí výsledky...</div>
+        <div id="resControls">
+            <input
+                type="button"
+                id="addField"
+                value="+"
+                title="Přidá další hlášku"
+                style="background-color: green;"
+            />
+            <input
+                type="button"
+                id="saveLocal"
+                value="Uložit do prohlížeče"
+                title="Uloží úpravy do prohlížeče, můžete pak pokračovat v úpravách u jiných učitelů"
+                style="background-color: orange;"
+            />
+            <input
+                type="button"
+                id="generateJson"
+                value="Vygenerovat JSON"
+                title="Vygeneruje JSON uložený v prohlížeči"
+                style="background-color: lightblue;"
+            />
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .bsearch > input {
+        border: none;
+        outline: none;
+        background-color: white;
+        font-weight: 600;
+        border-bottom: 1px solid black;
+        margin: 1em;
+    }
+
+    input[type="button"] {
+        outline: none;
+        background-color: greenyellow;
+        font-size: 1.2em;
+        padding: 0.4em;
+        border: 1px solid black;
+        border-radius: 15px;
+        margin-bottom: 0.5em;
+    }
+
+    input[type="button"]:hover {
+        outline: 1px solid black;
+    }
+
+    input[type="button"]:active {
+        filter: grayscale(0.5);
+    }
+
+    .bsearch {
+        position: relative;
+        border: 1px solid #508991;
+        border-radius: 15px;
+        width: fit-content;
+        display: inline-block;
+        outline: none;
+        margin-bottom: 0px;
+        background-color: white;
+        z-index: 3;
+    }
+
+    .bsearch > ul {
+        list-style: none;
+        margin-top: -0.5em;
+        padding: 1em;
+        cursor: pointer;
+        position: absolute;
+        background-color: whitesmoke;
+        border: 1px solid #508991;
+        border-radius: 15px;
+    }
+
+    .bsearch > ul > li {
+        margin-bottom: 0.2em;
+    }
+
+    #results {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+
+<script>
+    document.querySelectorAll(".bsearch > input").forEach((el) => {
+        el.addEventListener("focus", (e) => {
+            const list = el.parentElement?.querySelector("ul");
+            if (list) {
+                list.classList.remove("hidden");
+            }
+        });
+        el.addEventListener("focusout", (e) => {
+            const list = el.parentElement?.querySelector("ul");
+            if (list) {
+                setTimeout(() => {
+                    list.classList.add("hidden");
+                }, 100);
+            }
+        });
+        el.addEventListener("keyup", quickSearch);
+    });
+
+    document.querySelectorAll(".bsearch > ul > li").forEach((el) => {
+        el.addEventListener("click", acceptSuggestion);
+    });
+
+    function quickSearch(e) {
+        const query = e.target.value.trim().toLocaleLowerCase();
+        const ul = e.target.parentElement?.querySelector("ul");
+
+        let accepted = false;
+        // hide not matching
+        ul.querySelectorAll("li").forEach((el) => {
+            const name = el.innerText;
+            console.log(name);
+            const distance = LevenshteinDistance(
+                query.toLowerCase(),
+                name.toLowerCase()
+            );
+
+            if (distance > name.length - query.length) {
+                el.classList.add("hidden");
+            } else {
+                if (!accepted && e.key == "Enter") {
+                    acceptSuggestion({ target: el });
+                    accepted = true;
+                }
+                el.classList.remove("hidden");
+            }
+        });
+    }
+
+    function acceptSuggestion(e) {
+        const input =
+            e.target.parentElement.parentElement.querySelector("input");
+        input.value = e.target.innerText;
+    }
+
+    function LevenshteinDistance(a, b) {
+        if (a.length == 0) return b.length;
+        if (b.length == 0) return a.length;
+
+        var matrix = [];
+
+        // increment along the first column of each row
+        var i;
+        for (i = 0; i <= b.length; i++) {
+            // @ts-ignore
+            matrix[i] = [i];
+        }
+
+        // increment each column in the first row
+        var j;
+        for (j = 0; j <= a.length; j++) {
+            // @ts-ignore
+            matrix[0][j] = j;
+        }
+
+        // Fill in the rest of the matrix
+        for (i = 1; i <= b.length; i++) {
+            for (j = 1; j <= a.length; j++) {
+                if (b.charAt(i - 1) == a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    // @ts-ignore
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1, // substitution
+                        Math.min(
+                            matrix[i][j - 1] + 1, // insertion
+                            matrix[i - 1][j] + 1
+                        )
+                    ); // deletion
+                }
+            }
+        }
+
+        return matrix[b.length][a.length];
+    }
+
+    let teachers = {};
+
+    window.addEventListener("load", async (e) => {
+        teachers = await fetch("/teachers.json").then((r) => r.json());
+    });
+
+    document
+        .querySelector("#submitAll")
+        ?.addEventListener("click", async (e) => {
+            const clazz: HTMLInputElement | null =
+                document.querySelector("#class");
+            const teach: HTMLInputElement | null =
+                document.querySelector("#teach");
+
+            if (clazz && teach && teachers) {
+                const key = getKeyByValue(teachers, teach.value.trim());
+                if (!key) {
+                    window.alert(
+                        "Chyba v načítání hlášek, klíč učitele nenalezen"
+                    );
+                    console.error(teachers);
+                    return;
+                }
+
+                // Index of clazz element
+                // Start counting from 1
+                let i = 1;
+                let clazzIndex = -1;
+                clazz.parentElement
+                    ?.querySelector("ul")
+                    ?.querySelectorAll("li")
+                    .forEach((c) => {
+                        if (
+                            c.innerText.toLowerCase() ==
+                            clazz.value.toLowerCase()
+                        )
+                            clazzIndex = i;
+
+                        i++;
+                    });
+
+                // Check clazz index
+                if (clazzIndex < 0) {
+                    window.alert(
+                        "Chyba v načítání hlášek, index třídy mimo dosah"
+                    );
+                    return;
+                }
+
+                const phrases = await fetch(
+                    "/catchphrases/" + clazzIndex + ".json"
+                ).then((b) => b.json());
+
+                const specific = phrases[key];
+                if (!specific) {
+                    window.alert("Učitel nemá pro tento rok žádné hlášky");
+                }
+                console.log(specific);
+                const results = document.querySelector("#results");
+                if (!results) {
+                    window.alert(
+                        "Nemůžu nikam outputovat výsledky ty břídile!"
+                    );
+                    return;
+                }
+                results.innerHTML = "";
+                specific.forEach((a) => {
+                    const area = document.createElement("textarea");
+                    area.innerText = a;
+                    results.appendChild(area);
+                });
+            } else {
+                window.alert("Chyba při zpracování požadavku, problém s HTML.");
+            }
+        });
+
+    function getKeyByValue(object, value) {
+        return Object.keys(object).find((key) => object[key] === value);
+    }
+</script>

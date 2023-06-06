@@ -1,0 +1,248 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import teachers from "../../../public/teachers.json";
+---
+
+<Layout title="Nahlašovací systém" description="Nahlašte chybnou hlášku">
+    <div class="body">
+        <div class="mandatory">
+            <h2>Učitel</h2>
+            <input
+                type="text"
+                list="teachers"
+                placeholder="Zadejte jméno učitele"
+                value={Astro.url.searchParams.get("teacher")}
+                id="teach"
+            />
+            <datalist id="teachers">
+                {Object.values(teachers).forEach((t) => <option>{t}</option>)}
+            </datalist>
+        </div>
+        <div class="mandatory">
+            <h2>Hláška</h2>
+            <textarea
+                set:text={Astro.url.searchParams.get("text")}
+                placeholder="Zadejte hlášku"
+                id="quote"
+            />
+        </div>
+        <div class="mandatory">
+            <h2>Důvod</h2>
+            <input
+                type="text"
+                list="reasons"
+                id="reason"
+                placeholder="Zadejte důvod"
+            />
+            <datalist id="reasons">
+                <option>Gramatická chyba</option>
+                <option>Faktická chyba</option>
+                <option>Žádost o smazání</option>
+            </datalist>
+        </div>
+        <div>
+            <h2>Ročník</h2>
+            <input
+                type="text"
+                list="years"
+                placeholder="Zadejte ročník x. G stačí"
+                value={Astro.url.searchParams.get("year")}
+                id="year"
+            />
+            <datalist id="years">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+            </datalist>
+        </div>
+        <div>
+            <h2>Další informace</h2>
+            <textarea
+                id="other"
+                cols="30"
+                rows="10"
+                placeholder="Pokud chcete uveďte další informace"></textarea>
+        </div>
+        <input type="button" value="Odeslat" onclick="sendIt()" />
+        <hr />
+        *pole s hvězdou jsou povinná
+    </div>
+
+    <div>
+        <dialog id="thanks">
+            <img src="/images/messanger.svg" alt="Pošťák s balíkem" />
+            <p>Děkujeme za odeslání chyby. Podíváme se na to!</p>
+            <div class="modal-actions">
+                {
+                    Astro.url.searchParams.has("return") ? (
+                        <a
+                            role="button"
+                            class="button"
+                            href={Astro.url.searchParams.get("return")}
+                        >
+                            Vrátit se na původní stránku
+                        </a>
+                    ) : null
+                }
+                <a role="button" class="button" href="/kronika"
+                    >Zavřít a pokračovat domů</a
+                >
+            </div>
+            <hr />
+            <a href="https://storyset.com/message" class="img-atrib"
+                >Ilustrace „Message“ od Storyset</a
+            >
+        </dialog>
+        <dialog id="nope">
+            <h2>Nevyplněna povinná pole</h2>
+            <p>Dbejte na to, abyste vyplnili povinná pole.</p>
+            <div class="modal-actions">
+                <a role="button" class="button" href="javascript:closeNope()"
+                    >Zavřít a upravit</a
+                >
+            </div>
+        </dialog>
+    </div>
+</Layout>
+
+<script lang="js" is:inline>
+const teacherInput = document.getElementById("teach");
+const quoteInput = document.getElementById("quote");
+const reasonInput = document.getElementById("reason");
+const yearInput = document.getElementById("year");
+const otherInput = document.getElementById("other");
+
+const getTeacher = () => teacherInput.value;
+const getQuote = () => quoteInput.value;
+const getReason = () => reasonInput.value;
+const getYear = () => yearInput.value;
+const getOther = () => otherInput.value;
+function sendIt() {
+    const teacher = getTeacher();
+    const quote = getQuote();
+    const reason = getReason();
+    const year = getYear();
+    const other = getOther();
+
+    if (
+        teacher &&
+        quote &&
+        reason &&
+        minL(teacher, 4) &&
+        minL(quote, 4) &&
+        minL(reason, 4)
+    ) {
+        const author = localStorage.getItem("analyticsId")
+            ? localStorage.getItem("analyticsId")
+            : "Anonym";
+
+        const json = {
+            content: null,
+            embeds: [
+                {
+                    title: "Chyba nahlášena!",
+                    description: other,
+                    color: 16713479,
+                    fields: [
+                        {
+                            name: "Hláška*",
+                            value: quote,
+                        },
+                        {
+                            name: "Učitel*",
+                            value: teacher,
+                        },
+                        {
+                            name: "Důvod*",
+                            value: reason,
+                        },
+                        {
+                            name: "Ročník",
+                            value: year ? year : "Nespecifikováno",
+                        },
+                    ],
+                    author: {
+                        name: author,
+                        url: location.search.includes("&return=")?location.search.split("&return=")[1].replace("%23", "#"):null,
+                    },
+                    footer: {
+                        text: location.search.includes("&return=")?location.search.split("&return=")[1].replace("%23", "#"):null,
+                    },
+                },
+            ],
+            username: "Nahlašování - kronika",
+            avatar_url: null,
+            attachments: [],
+        };
+
+        fetch(
+            "https://discord.com/api/webhooks/1115726392072605787/zjI6V2vy4Vnnw7b_GYXfxj2qmPl8MtT0k4o5oCTDP5cS_yAymBMe3sOOwjJdaMPDoQHh",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(json),
+            }
+        ).then((f) => {
+            document.querySelector("#thanks").showModal();
+        }, (e) => {
+            window.alert("Nastala chyba při odesílání zprávy, prosím zkontrolujte svoje připojení k internetu a zkuste znovu");
+        })
+    } else {
+        document.querySelector("#nope").showModal();
+    }
+}
+
+function closeNope() {
+    document.querySelector("#nope").close();
+}
+
+function minL(a, b) {
+    let c = a.length >= b;
+    if (!c) {
+        alert(
+            "Moc krátký vstup: " +
+            a +
+            ", minimální požadovaný počet symbolů je " +
+            b
+        );
+    }
+    return c;
+}
+</script>
+
+<style>
+    input,
+    textarea {
+        padding: 1em;
+        border-radius: 15px;
+    }
+
+    .mandatory > h2::after {
+        content: "*";
+        color: red;
+    }
+
+    .img-atrib {
+        font-size: small;
+        text-decoration-color: chocolate;
+        color: inherit;
+    }
+
+    .modal-actions > a {
+        text-decoration: none;
+        background-color: lightblue;
+    }
+
+    .modal-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>

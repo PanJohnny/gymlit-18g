@@ -3,8 +3,7 @@ import Layout from "../../../../layouts/Layout.astro";
 import teachers from "../../../../../public/teachers.json";
 
 const y = Astro.params.year;
-if (!y)
-    return Astro.redirect("/kronika");
+if (!y) return Astro.redirect("/kronika");
 
 const classYear: number = +y;
 
@@ -79,7 +78,43 @@ function quoteFix(input) {
                             <h3>{teachers[p]}</h3>{" "}
                             <ul>
                                 {phrases[p].map((phrase) => (
-                                    <li>{quoteFix(phrase)}</li>
+                                    <li
+                                        id={
+                                            p +
+                                            "-" +
+                                            btoa(
+                                                encodeURIComponent(
+                                                    phrase.substring(1, 9)
+                                                )
+                                            )
+                                        }
+                                    >
+                                        {quoteFix(phrase)}{" "}
+                                        <a
+                                            href={
+                                                "/kronika/report?text=" +
+                                                quoteFix(phrase) +
+                                                "&teacher=" +
+                                                teachers[p] +
+                                                "&year=" +
+                                                y +
+                                                "&return=" +
+                                                Astro.url.href +
+                                                encodeURIComponent("#") +
+                                                p +
+                                                "-" +
+                                                btoa(
+                                                    encodeURIComponent(
+                                                        phrase.substring(1, 9)
+                                                    )
+                                                )
+                                            }
+                                            title="Nahlásit chybu"
+                                            style="color: red; text-decoration: none;"
+                                        >
+                                            !
+                                        </a>
+                                    </li>
                                 ))}
                             </ul>
                         </div>
@@ -93,16 +128,48 @@ function quoteFix(input) {
             >stáhnout jako csv</a
         >
     </div>
+</Layout>
 
-    <script>
-        document
-            .querySelector("#udalosti")
-            .querySelectorAll("h1")
-            .forEach((e) => {
-                e.remove();
+<script lang="js">
+    document
+        .querySelector("#udalosti")
+        .querySelectorAll("h1")
+        .forEach((e) => {
+            e.remove();
+        });
+
+    if (location.hash) {
+        const el = document.getElementById(location.hash.substring(1));
+        el.classList.add("highlight");
+        setTimeout(() => {
+            el.scrollIntoView({
+                behavior: "auto",
+                block: "center",
+                inline: "center",
             });
-    </script>
-</BetaLayout>
+        }, 100);
+    }
+
+    document.addEventListener("scroll", (event) => {
+        document.querySelectorAll("details[open] > summary").forEach((el) => {
+            if (0 >= el.getBoundingClientRect().top) {
+                if (!el.classList.contains("scrolled-past")) {
+                    el.setAttribute(
+                        "data-scroll-px",
+                        window.scrollY + el.getBoundingClientRect().top
+                    );
+                }
+                if (
+                    el.hasAttribute("data-scroll-px") &&
+                    parseFloat(el.getAttribute("data-scroll-px")) >=
+                        window.scrollY
+                ) {
+                    el.classList.remove("scrolled-past");
+                } else el.classList.add("scrolled-past");
+            }
+        });
+    });
+</script>
 
 <style>
     summary {
@@ -123,11 +190,16 @@ function quoteFix(input) {
         filter: sepia(20);
     }
 
-    details[open] > summary {
+    details[open] > summary.scrolled-past {
         position: fixed;
         margin: 0px;
         top: 0px;
         z-index: 2;
         left: 0px;
+    }
+
+    .highlight {
+        font-weight: 900;
+        color: green;
     }
 </style>
