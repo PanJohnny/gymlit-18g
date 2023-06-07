@@ -54,7 +54,7 @@ if (clazz) {
 
 <script is:inline>
     function displayMD() {
-        window.open("/kronika/editor/displayMD?class="+document.querySelector("#clazz").getAttribute("data-clazz")+"&md="+encodeURIComponent(document.querySelector("#events").innerHTML));
+        window.open("/kronika/editor/displayMD?class="+document.querySelector("#clazz").getAttribute("data-clazz")+"&md="+encodeURIComponent(document.querySelector("#events").innerText));
     }
 </script>
 
