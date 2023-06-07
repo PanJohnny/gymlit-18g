@@ -1,0 +1,7 @@
+User-agent: Googlebot
+Disallow: /api
+
+User-agent: *
+Allow: /
+
+Sitemap: https://gymlit-18g.vercel.app/sitemap-index.xml
