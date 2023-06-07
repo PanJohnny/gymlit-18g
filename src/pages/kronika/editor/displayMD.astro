@@ -1,9 +1,10 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import { Markdown } from "@astropub/md";
+import { marked } from "marked";
 
 const md = Astro.url.searchParams.get("md") + "";
 const clazz = Astro.url.searchParams.get("class");
+const rendered = marked.parse(md, {mangle: false, headerIds: false});
 ---
 
 <Layout
@@ -24,7 +25,8 @@ const clazz = Astro.url.searchParams.get("class");
             value="Kopírovat"
             id="copy"
         />
-        <Markdown of={md} />
+        <div set:html={rendered}>
+        </div>
     </div>
     <div id="raw">
         {md}

@@ -272,11 +272,8 @@ if (auth != import.meta.env.SECRET) {
     document.querySelector("#saveLocal")?.addEventListener("click", saveLocal);
     document.querySelector("#generateJson")?.addEventListener("click", generateJson);
 
-    let teachers = {};
-
-    window.addEventListener("load", async (e) => {
-        teachers = await fetch("/teachers.json").then((r) => r.json());
-    });
+    // Top level await
+    let teachers = await fetch("/teachers.json").then((r) => r.json());
 
     document
         .querySelector("#submitAll")

@@ -3,8 +3,6 @@ import vercel from '@astrojs/vercel/serverless';
 // https://astro.build/config
 import sitemap from "@astrojs/sitemap";
 
-import markdownIntegration from '@astropub/md'
-
 // https://astro.build/config
 export default defineConfig({
   output: "server",
@@ -12,5 +10,5 @@ export default defineConfig({
   site: 'https://panjohnny.vercel.app',
   integrations: [sitemap({
     filter: (page => page.includes("kronika") && !page.includes("editor"))
-  }), markdownIntegration()]
+  })]
 });
