@@ -9,6 +9,6 @@ export default defineConfig({
   adapter: vercel(),
   site: 'https://panjohnny.vercel.app',
   integrations: [sitemap({
-    filter: (page => page.includes("kronika") || page.includes("events"))
+    filter: (page => page.includes("kronika") || (page.includes("events") && !page.includes("open")))
   })]
 });
