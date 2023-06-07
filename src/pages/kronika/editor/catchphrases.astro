@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import teachers from "../../../../public/teachers.json";
+import BSearchBundle from "../../../components/BSearchBundle.astro";
 
 const auth = Astro.cookies.get("auth").value;
 if (auth != import.meta.env.SECRET) {
@@ -10,6 +11,7 @@ if (auth != import.meta.env.SECRET) {
 
 <Layout title="Úprava hlášek" description="Portál editora kroniky">
     <div class="body">
+        <p>V případě mazání hlášek nechte pole prázdné. Pro generování JSONu musíte uložit data. Pokud upravujete několik učitelů najednou prosím vždy uložte data před načtení dalšího učitele. Po vygenerování JSONu se vymažou uložená data pro ročník. Všechno se smaže po znovu načtení stránky!</p>
         <div class="bsearch">
             <input
                 type="search"
@@ -22,7 +24,7 @@ if (auth != import.meta.env.SECRET) {
             </ul>
         </div>
         <div class="bsearch">
-            <input type="search" name="class" id="class" placeholder="Třída" />
+            <input type="search" name="class" id="class" placeholder="Třída"/>
             <ul class="hidden">
                 <li>Prima</li>
                 <li>Sekunda</li>
@@ -63,16 +65,10 @@ if (auth != import.meta.env.SECRET) {
     </div>
 </Layout>
 
-<style>
-    .bsearch > input {
-        border: none;
-        outline: none;
-        background-color: white;
-        font-weight: 600;
-        border-bottom: 1px solid black;
-        margin: 1em;
-    }
+<BSearchBundle />
 
+<!-- NORMAL WORKING -->
+<style>
     input[type="button"] {
         outline: none;
         background-color: greenyellow;
@@ -91,134 +87,190 @@ if (auth != import.meta.env.SECRET) {
         filter: grayscale(0.5);
     }
 
-    .bsearch {
-        position: relative;
-        border: 1px solid #508991;
-        border-radius: 15px;
-        width: fit-content;
-        display: inline-block;
-        outline: none;
-        margin-bottom: 0px;
-        background-color: white;
-        z-index: 3;
-    }
-
-    .bsearch > ul {
-        list-style: none;
-        margin-top: -0.5em;
-        padding: 1em;
-        cursor: pointer;
-        position: absolute;
-        background-color: whitesmoke;
-        border: 1px solid #508991;
-        border-radius: 15px;
-    }
-
-    .bsearch > ul > li {
-        margin-bottom: 0.2em;
-    }
-
     #results {
         display: flex;
         flex-direction: column;
+        margin-bottom: 1em;
+        margin-top: 1em;
+    }
+</style>
+
+<!-- TEXT AREA NEEDS SOME THINGS... -->
+<style is:global>
+    .nc {
+        border-color: green;
+        outline-color: green;
+    }
+
+    textarea {
+        display: block;
+        margin-bottom: 1em;
+        border-width: 2px;
+        border-radius: 15px;
+        padding: 1em;
+        font-family: system-ui, sans-serif;
+        font-weight: 500;
     }
 </style>
 
 <script>
-    document.querySelectorAll(".bsearch > input").forEach((el) => {
-        el.addEventListener("focus", (e) => {
-            const list = el.parentElement?.querySelector("ul");
-            if (list) {
-                list.classList.remove("hidden");
-            }
+    function addField(e) {
+        const results = document.querySelector("#results");
+        if (!results) {
+            window.alert(
+                "Nemůžu nikam přidat hlášku břídile! Zkus refreshovat stránku..."
+            );
+            return;
+        }
+
+        const area = document.createElement("textarea");
+        area.classList.add("nc");
+        area.setAttribute("placeholder", "Nová hláška");
+        results.appendChild(area);
+    }
+
+    function saveLocal(e) {
+        const results = document.querySelector("#results");
+        if (!results || results.children.length == 0) {
+            window.alert("Nemůžu uložit hlášky břídile, žádný nejsou!");
+            return;
+        }
+
+        let phrases: string[] = [];
+
+        results.querySelectorAll("textarea").forEach((child) => {
+            if (child.value.trim().length > 0)
+                phrases.push(child.value);
         });
-        el.addEventListener("focusout", (e) => {
-            const list = el.parentElement?.querySelector("ul");
-            if (list) {
-                setTimeout(() => {
-                    list.classList.add("hidden");
-                }, 100);
-            }
+
+        // get saved data
+        const clazz: HTMLInputElement | null = document.querySelector("#class");
+        const teach: HTMLInputElement | null = document.querySelector("#teach");
+
+        const key = getKeyByValue(teachers, teach?.value.trim());
+        if (!key) {
+            window.alert("Chyba v načítání hlášek, klíč učitele nenalezen");
+            console.error(teachers);
+            return;
+        }
+
+        // Index of clazz element
+        // Start counting from 1
+        let i = 1;
+        let clazzIndex = -1;
+        clazz?.parentElement
+            ?.querySelector("ul")
+            ?.querySelectorAll("li")
+            .forEach((c) => {
+                if (c.innerText.toLowerCase() == clazz.value.toLowerCase())
+                    clazzIndex = i;
+
+                i++;
+            });
+
+        // Check clazz index
+        if (clazzIndex < 0) {
+            window.alert("Chyba v ukládání hlášek, index třídy mimo dosah");
+            return;
+        }
+
+        let saved = getSavedData(clazzIndex);
+
+        saved[key] = phrases;
+
+        saveData(clazzIndex, saved);
+    }
+
+    async function generateJson(e) {
+        const clazz: HTMLInputElement | null = document.querySelector("#class");
+
+        // Index of clazz element
+        // Start counting from 1
+        let i = 1;
+        let clazzIndex = -1;
+        clazz?.parentElement
+            ?.querySelector("ul")
+            ?.querySelectorAll("li")
+            .forEach((c) => {
+                if (c.innerText.toLowerCase() == clazz.value.toLowerCase())
+                    clazzIndex = i;
+
+                i++;
+            });
+
+        // Check clazz index
+        if (clazzIndex < 0) {
+            window.alert("Chyba v generování JSONu, index třídy mimo dosah");
+            return;
+        }
+
+        // json
+        const generated = getSavedData(clazzIndex);
+
+        let data = await fetch("/catchphrases/" + clazzIndex + ".json").then(b => b.json(), e => alert("Chyba při generování obsahu, zkontrolujte přístup k internetu"));
+
+        Object.keys(generated).forEach((k) => {
+            data[k] = generated[k];
         });
-        el.addEventListener("keyup", quickSearch);
-    });
 
-    document.querySelectorAll(".bsearch > ul > li").forEach((el) => {
-        el.addEventListener("click", acceptSuggestion);
-    });
+        // Reset
+        saveData(clazzIndex, {});
+        
+        window.open("/kronika/editor/displayJson?class=" + clazzIndex + "&json=" + encodeURIComponent(JSON.stringify(data, null, "\t")));
+    }   
 
-    function quickSearch(e) {
-        const query = e.target.value.trim().toLocaleLowerCase();
-        const ul = e.target.parentElement?.querySelector("ul");
+    function getSavedData(year: number) {
+        let sItem: string = localStorage.getItem("saved") + "";
 
-        let accepted = false;
-        // hide not matching
-        ul.querySelectorAll("li").forEach((el) => {
-            const name = el.innerText;
-            console.log(name);
-            const distance = LevenshteinDistance(
-                query.toLowerCase(),
-                name.toLowerCase()
+        if (!sItem || !sItem.startsWith("{") || !sItem.endsWith("}")) {
+            localStorage.setItem(
+                "saved",
+                JSON.stringify({
+                    "1": {},
+                    "2": {},
+                    "3": {},
+                    "4": {},
+                    "5": {},
+                    "6": {},
+                    "7": {},
+                    "8": {},
+                })
             );
 
-            if (distance > name.length - query.length) {
-                el.classList.add("hidden");
-            } else {
-                if (!accepted && e.key == "Enter") {
-                    acceptSuggestion({ target: el });
-                    accepted = true;
-                }
-                el.classList.remove("hidden");
-            }
-        });
-    }
-
-    function acceptSuggestion(e) {
-        const input =
-            e.target.parentElement.parentElement.querySelector("input");
-        input.value = e.target.innerText;
-    }
-
-    function LevenshteinDistance(a, b) {
-        if (a.length == 0) return b.length;
-        if (b.length == 0) return a.length;
-
-        var matrix = [];
-
-        // increment along the first column of each row
-        var i;
-        for (i = 0; i <= b.length; i++) {
-            // @ts-ignore
-            matrix[i] = [i];
+            sItem = localStorage.getItem("saved") + "";
         }
 
-        // increment each column in the first row
-        var j;
-        for (j = 0; j <= a.length; j++) {
-            // @ts-ignore
-            matrix[0][j] = j;
-        }
+        let json = JSON.parse(sItem);
 
-        // Fill in the rest of the matrix
-        for (i = 1; i <= b.length; i++) {
-            for (j = 1; j <= a.length; j++) {
-                if (b.charAt(i - 1) == a.charAt(j - 1)) {
-                    matrix[i][j] = matrix[i - 1][j - 1];
-                } else {
-                    // @ts-ignore
-                    matrix[i][j] = Math.min(
-                        matrix[i - 1][j - 1] + 1, // substitution
-                        Math.min(
-                            matrix[i][j - 1] + 1, // insertion
-                            matrix[i - 1][j] + 1
-                        )
-                    ); // deletion
-                }
-            }
+        try {
+            return json[year];
+        } catch (err) {
+            alert("Chyba se systémem! Nahlašte: " + err);
         }
-
-        return matrix[b.length][a.length];
     }
+
+    function saveData(year: number, data: any) {
+        // This method is not as safe
+
+        // Parse the JSON
+        const str = localStorage.getItem("saved");
+        if (!str) {
+            window.alert("Něco se fakt hodně pokazilo, nepodařilo se uložit!");
+            return;
+        }
+        const saved = JSON.parse(str);
+        saved[year] = data;
+
+        localStorage.setItem("saved", JSON.stringify(saved));
+
+        const results:HTMLDivElement | null = document.querySelector("#results");
+        if (results)
+            results.innerText = "Úspěšně uloženo!";
+    }
+
+    document.querySelector("#addField")?.addEventListener("click", addField);
+    document.querySelector("#saveLocal")?.addEventListener("click", saveLocal);
+    document.querySelector("#generateJson")?.addEventListener("click", generateJson);
 
     let teachers = {};
 

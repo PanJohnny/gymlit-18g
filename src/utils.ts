@@ -7,3 +7,18 @@ export function className(c:string) {
 }
 
 export const cookieOptions = {maxAge: 24*60*60, path: "/"}
+
+export function latinClass(n:number) {
+    const clazz = [
+        "Prima",
+        "Sekunda",
+        "Tercie",
+        "Kvarta",
+        "Kvinta",
+        "Sexta",
+        "Septima",
+        "Oktáva"
+    ]
+
+    return clazz[n-1];
+}

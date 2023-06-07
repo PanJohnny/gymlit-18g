@@ -85,12 +85,20 @@ import teachers from "../../public/teachers.json";
                 <a href="/kronika/stats"><h3>Statistiky</h3></a>
             </li>
 
-            <li>
-                <a href="/old"><h3>Stará verze</h3></a>
-            </li>
-
             {
-                Astro.cookies.has('auth') ? (<li> <a href="/kronika/editor"><h3>Editor</h3></a> </li>) : null
+                Astro.cookies.has("auth") ? (
+                    <li>
+                        <details>
+                            <summary><h3>Editor</h3></summary>
+                            <ul>
+                                <li><a href="/kronika/editor">Hlavní portál</a></li>
+                                <li><a href="/kronika/editor/catchphrases">Upravte hlášky</a></li>
+                                <li><a href="/kronika/editor/events">Upravte události</a></li>
+                                <li><a href="/kronika/editor/teachers">Upravte učitele</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                ) : null
             }
         </ul>
 
@@ -98,14 +106,25 @@ import teachers from "../../public/teachers.json";
             <div class="toggle" id="settingsToggle">⚙ Preference</div>
             <div>
                 {
-                !Astro.cookies.has("auth") ? (<a href="/login" id="login" class="toggle">
-                    🙋‍♂️ Přihlásit se
-                </a>):<a href="/settings/apply#logout" id="login" class="toggle">
-                    🚫 Odhlásit se
-                </a>
-            }</div>
+                    !Astro.cookies.has("auth") ? (
+                        <a href="/login" id="login" class="toggle">
+                            🙋‍♂️ Přihlásit se
+                        </a>
+                    ) : (
+                        <a
+                            href="/settings/apply#logout"
+                            id="login"
+                            class="toggle"
+                        >
+                            🚫 Odhlásit se
+                        </a>
+                    )
+                }
+            </div>
             <div>
-                <a href="https://fastgymlit.vercel.app" class="toggle">🏫 FastGymlit</a>
+                <a href="https://fastgymlit.vercel.app" class="toggle"
+                    >🏫 FastGymlit</a
+                >
             </div>
         </div>
     </nav>

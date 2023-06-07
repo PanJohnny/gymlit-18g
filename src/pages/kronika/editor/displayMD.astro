@@ -1,0 +1,65 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { Markdown } from "@astropub/md";
+
+const md = Astro.url.searchParams.get("md") + "";
+const clazz = Astro.url.searchParams.get("class");
+---
+
+<Layout
+    title="Vygenerovaný JSON"
+    description="Vložte ho do příslušného souboru"
+>
+    <div class="body">
+        <a
+            href={"https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/" +
+                clazz +
+                ".md"}
+            target="_blank"
+            rel="noopener noreferrer"
+            role="button">Otevřít soubor</a
+        >
+        <input
+            type="button"
+            value="Kopírovat"
+            id="copy"
+        />
+        <Markdown of={md} />
+    </div>
+    <div id="raw">
+        {md}
+    </div>
+</Layout>
+
+<style>
+    a {
+        text-decoration: none;
+    }
+
+    #raw {
+        display: none;
+    }
+
+    #copy {
+        padding: .5em;
+        background-color: coral;
+        border-radius: 15px;
+        outline: none;
+        border: none;
+    }
+
+    #copy:hover {
+        background-color: rgb(218, 113, 74);
+    }
+
+    #copy:active {
+        background-color: rgb(255, 96, 39);
+    }
+</style>
+
+<script>
+    document.getElementById("copy")?.addEventListener("click", async (event) => { // @ts-ignore
+        navigator.clipboard.writeText(document.getElementById("raw").innerText.trim());
+        window.alert("Zkopírováno do schránky!");
+    });
+</script>

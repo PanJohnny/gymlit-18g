@@ -1,0 +1,103 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import teachers from "../../../../public/teachers.json";
+
+const auth = Astro.cookies.get("auth").value;
+if (auth != import.meta.env.SECRET) {
+    return Astro.redirect("/login");
+}
+---
+
+<Layout title="Úprava evidence učitelů" description="Portál editora kroniky">
+    <div class="body">
+        <p>Tady můžeš přidat učitele</p>
+        <div>
+            <input type="text" placeholder="Ivan Soukup" id="prof" />
+            <input type="button" value="Generovat" id="save" role="button" />
+            <input type="button" value="Kopírovat" id="copy" role="button" />
+            <input
+                type="button"
+                value="Otevřít soubor"
+                id="open"
+                role="button"
+            />
+        </div>
+        <code id="out"></code>
+        <div>
+            <h2>Evidovaní učitelé</h2>
+            <ul>
+                {
+                    Object.keys(teachers).map((k) => (
+                        <li>{teachers[k] + ": " + k}</li>
+                    ))
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div id="raw" class="hidden">
+        {JSON.stringify(teachers)}
+    </div>
+</Layout>
+<style>
+    #prof {
+        padding: 0.5em;
+        border-radius: 15px;
+    }
+
+    #copy {
+        background-color: coral;
+    }
+
+    #open {
+        background-color: powderblue;
+    }
+</style>
+
+<script lang="js">
+const prof = document.getElementById("prof");
+const out = document.getElementById("out");
+const raw = JSON.parse(document.getElementById("raw").innerText.trim());
+if (prof && out) {
+    document
+        .getElementById("save")
+        .addEventListener("click", async (event) => {
+            const split = prof.value.trim().split(" ");
+            if (split.length >= 2) {
+                let id =
+                    split[0].substring(0, 3).toLowerCase() +
+                    split[1].charAt(0).toLowerCase();
+                if (raw[id]) {
+                    id = window
+                        .prompt(
+                            "Generovaný identifikátor se už používá, prosím vymyslete 4místný identifikátor pro učitele."
+                        )
+                        .toLowerCase();
+                    while (raw[id]) {
+                        id = window
+                            .prompt(
+                                "Váš identifikátor se už používá, prosím vymyslete 4místný identifikátor pro učitele."
+                            )
+                            .toLowerCase();
+                    }
+                }
+                raw[id] = prof.value.trim();
+                out.innerText = JSON.stringify(raw, null, "\t");
+            }
+        });
+
+    document
+        .getElementById("copy")
+            .addEventListener("click", async (event) => {
+                navigator.clipboard.writeText(
+                    document.getElementById("out").innerText
+                );
+            });
+    }
+
+    document.getElementById("open").addEventListener("click", async (event) => {
+        window.open(
+            "https://github.com/PanJohnny/gymlit-18g/edit/main/public/teachers.json"
+        );
+    });
+</script>

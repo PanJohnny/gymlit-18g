@@ -1,0 +1,143 @@
+---
+---
+
+<script>
+    function quickSearch(e) {
+        const query = e.target.value.trim().toLocaleLowerCase();
+        const ul = e.target.parentElement?.querySelector("ul");
+
+        let accepted = false;
+        // hide not matching
+        ul.querySelectorAll("li").forEach((el) => {
+            const name = el.innerText;
+            console.log(name);
+            const distance = LevenshteinDistance(
+                query.toLowerCase(),
+                name.toLowerCase()
+            );
+
+            if (distance > name.length - query.length) {
+                el.classList.add("hidden");
+            } else {
+                if (!accepted && e.key == "Enter") {
+                    acceptSuggestion({ target: el });
+                    accepted = true;
+                }
+                el.classList.remove("hidden");
+            }
+        });
+    }
+
+    function acceptSuggestion(e) {
+        const input =
+            e.target.parentElement.parentElement.querySelector("input");
+        input.value = e.target.innerText;
+    }
+
+    function LevenshteinDistance(a, b) {
+        if (a.length == 0) return b.length;
+        if (b.length == 0) return a.length;
+
+        var matrix = [];
+
+        // increment along the first column of each row
+        var i;
+        for (i = 0; i <= b.length; i++) {
+            // @ts-ignore
+            matrix[i] = [i];
+        }
+
+        // increment each column in the first row
+        var j;
+        for (j = 0; j <= a.length; j++) {
+            // @ts-ignore
+            matrix[0][j] = j;
+        }
+
+        // Fill in the rest of the matrix
+        for (i = 1; i <= b.length; i++) {
+            for (j = 1; j <= a.length; j++) {
+                if (b.charAt(i - 1) == a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    // @ts-ignore
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1, // substitution
+                        Math.min(
+                            matrix[i][j - 1] + 1, // insertion
+                            matrix[i - 1][j] + 1
+                        )
+                    ); // deletion
+                }
+            }
+        }
+
+        return matrix[b.length][a.length];
+    }
+
+    // Add to window
+    window.addEventListener("load", (e) => {
+        document.querySelectorAll(".bsearch > input").forEach((el) => {
+            el.addEventListener("focus", (e) => {
+                const list = el.parentElement?.querySelector("ul");
+                if (list) {
+                    list.classList.remove("hidden");
+                }
+            });
+            el.addEventListener("focusout", (e) => {
+                const list = el.parentElement?.querySelector("ul");
+                if (list) {
+                    setTimeout(() => {
+                        list.classList.add("hidden");
+                    }, 200);
+                }
+            });
+            el.addEventListener("keyup", quickSearch);
+        });
+
+        document.querySelectorAll(".bsearch > ul > li").forEach((el) => {
+            el.addEventListener("click", acceptSuggestion);
+        });
+    });
+</script>
+
+<style is:global>
+    .bsearch {
+        position: relative;
+        border: 1px solid #508991;
+        border-radius: 15px;
+        width: -moz-fit-content;
+        width: fit-content;
+        display: inline-block;
+        outline: none;
+        margin-bottom: 0px;
+        background-color: white;
+        z-index: 3;
+    }
+
+    .bsearch > ul {
+        list-style: none;
+        margin-top: -0.5em;
+        padding: 1em;
+        cursor: pointer;
+        position: absolute;
+        background-color: whitesmoke;
+        border: 1px solid #508991;
+        border-radius: 15px;
+        color: var(--dark);
+    }
+
+    .bsearch > ul > li {
+        margin-bottom: 0.2em;
+    }
+
+    .bsearch > input {
+        border: none;
+        outline: none;
+        background-color: white;
+        font-weight: 600;
+        border-bottom: 1px solid var(--text-color);
+        margin: 1em;
+        color: var(--dark);
+    }
+</style>
