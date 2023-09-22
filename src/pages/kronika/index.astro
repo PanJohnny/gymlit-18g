@@ -4,15 +4,10 @@ import Layout from "../../layouts/Layout.astro";
 
 <Layout title="Kronika 6. G" description="Internetová verze třídní kroniky">
     <div class="body">
-        <hr />
-        <a class="last-news loading" href="javascript:void(0)">
-            Načítání...
-        </a>
-        <hr />
         Vítejte na našich webových stránkách!
         <div class="desktop">
             <h2>Kalendář</h2>
-            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Europe%2FPrague&showTabs=0&showCalendars=0&showTz=0&showPrint=1&showNav=1&src=MjNrOWsyM3NqbHY5b2Rmazh0b3BwcGFoanNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%238E24AA" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Europe%2FPrague&showTabs=0&showCalendars=0&showTz=0&showPrint=1&showNav=1&src=MjNrOWsyM3NqbHY5b2Rmazh0b3BwcGFoanNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%238E24AA" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no" loading="lazy"></iframe>
         </div>
         <p><a href="https://calendar.google.com/calendar/u/0/r?cid=23k9k23sjlv9odfk8topppahjs@group.calendar.google.com">Přidejte si kalendář třídy do svého.</a> </p>
         <div>
@@ -27,6 +22,9 @@ import Layout from "../../layouts/Layout.astro";
             <h2>Osobní údaje</h2>
             <p>Stránka neshromažďuje žádné osobní údaje, jen používá systém osobního identifikátoru, pro sledování unikátních návštěv.</p>
         </div>
+        <a class="last-news loading" href="javascript:void(0)">
+            Načítání...
+        </a>
     </div>
 </Layout>
     
