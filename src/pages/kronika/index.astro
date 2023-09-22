@@ -4,8 +4,12 @@ import Layout from "../../layouts/Layout.astro";
 
 <Layout title="Kronika 6. G" description="Internetová verze třídní kroniky">
     <div class="body">
+        <hr />
+        <a class="last-news loading" href="javascript:void(0)">
+            Načítání...
+        </a>
+        <hr />
         Vítejte na našich webových stránkách!
-
         <div class="desktop">
             <h2>Kalendář</h2>
             <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Europe%2FPrague&showTabs=0&showCalendars=0&showTz=0&showPrint=1&showNav=1&src=MjNrOWsyM3NqbHY5b2Rmazh0b3BwcGFoanNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%238E24AA" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
@@ -36,5 +40,36 @@ import Layout from "../../layouts/Layout.astro";
     .news {
         color: green;
         font-weight: 900;
+    }
+</style>
+
+<script is:inline>
+    const msg = '<icon class="rss">&nbsp;&nbsp;&nbsp;&nbsp;</icon> Poslední zpráva ze školy: ';
+    const ln = document.querySelector(".last-news");
+
+    fetch("https://fastgymlit.vercel.app/api/feed").then(r => r.json()).catch(err => {
+        ln.remove();
+    }).then(json => {
+        ln.innerHTML = msg + json[0].title;
+        ln.classList.remove("loading");
+        ln.setAttribute("href", json[0].link)
+    }).catch(err => ln.remove());
+</script>
+
+<style is:inline>
+    .loading {
+        cursor: wait;
+    }
+
+    .last-news {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .rss {
+        margin: 0;
+        background-size: 1rem 1rem !important;
+        user-select: none;
+        background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Rss_font_awesome.svg/768px-Rss_font_awesome.svg.png");
     }
 </style>
