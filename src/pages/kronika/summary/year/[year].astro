@@ -123,10 +123,11 @@ function quoteFix(input) {
             </details>
         </div>
 
-        <hr />
-        Experiment: <a href={"/kronika/summary/download/" + classYear}
-            >stáhnout jako csv</a
-        >
+        <aside>
+            Stažení: <a href={"/kronika/summary/download/" + classYear}
+                >CSV</a
+            >, <a href={"/catchphrases/" + classYear + ".json"}>JSON</a>
+        </aside>
     </div>
 </Layout>
 
@@ -201,5 +202,12 @@ function quoteFix(input) {
     .highlight {
         font-weight: 900;
         color: green;
+    }
+
+    aside {
+        background-color: deepskyblue;
+        padding: 1em;
+        border: 1px solid;
+        border-radius: 12px;
     }
 </style>
