@@ -1,4 +1,5 @@
 {
+{
     "svap": [
         "\"Deset minut denně dělá divy!\"",
         "\"Na můj vkus je tady moc hlučně.\"",
@@ -33,5 +34,8 @@
     "jitp": [
         "Ondra Fikr: \"Paní profesorko, dáte mi tu jedničku za aktivitu?\" Paní profesorka Puchmajerova: \"Tobě? Nikdy.\"",
         "\"Tobias vyrušuje, ale může za to Vašek.\""
+    ],
+    "petp": [
+        "\"Na Péťu hleď\""
     ]
 }
