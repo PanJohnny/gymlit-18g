@@ -1,0 +1,18 @@
+---
+import {OAuthApp} from "octokit";
+import { cookieOptions } from "../../utils";
+const app = new OAuthApp({
+    clientId: import.meta.env.GH_ID,
+    clientSecret: import.meta.env.GH_SECRET,
+    defaultScopes: ["repo"]
+});
+const code = Astro.url.searchParams.get("code");
+
+await app.createToken({
+    code: code
+}).then(value => {
+    Astro.cookies.set("github_token", value.authentication.token, cookieOptions);
+});
+
+return Astro.redirect("/login?auth=" + import.meta.env.SECRET);
+---

@@ -1,0 +1,35 @@
+---
+import {Octokit} from "octokit";
+
+let githubInfo;
+if (Astro.cookies.has("github_token")) {
+    const octokit = new Octokit({auth: Astro.cookies.get("github_token").value});
+
+    const user = await octokit.rest.users.getAuthenticated();
+    githubInfo = user.data;
+}
+---
+<fieldset>
+    <legend>
+        Editor
+    </legend>
+    <h2>{githubInfo ? githubInfo.name : "Chyba při přihlašování"}</h2>
+
+    {githubInfo ? <img alt="avatar"
+                       src={githubInfo.avatar_url}></img> : undefined}
+</fieldset>
+
+<style>
+    fieldset {
+        position: fixed;
+        display: block;
+        right: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+        background-color: var(--background);
+    }
+
+    img {
+        width: 120px;
+    }
+</style>

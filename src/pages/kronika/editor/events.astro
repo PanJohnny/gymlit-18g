@@ -1,32 +1,23 @@
 ---
 import BSearchBundle from "../../../components/BSearchBundle.astro";
 import Layout from "../../../layouts/Layout.astro";
-import {latinClass} from "../../../utils"
 
 const auth = Astro.cookies.get("auth").value;
 if (auth != import.meta.env.SECRET) {
     return Astro.redirect("/login");
-}
-
-const clazz = Astro.url.searchParams.get("class");
-
-let text: string | null = null;
-if (clazz) {
-    text = await fetch("https://raw.githubusercontent.com/PanJohnny/gymlit-18g/main/src/pages/events/" + clazz + ".md").then(b => b.text());
 }
 ---
 
 <Layout title="Úprava událostí" description="Portál editora kroniky">
     <div class="body">
         <div>
-            <p>Tady můžeš upravit události ve formátu markdown. Návod je zde: <a href="https://github.com/PanJohnny/gymlit-18g/tree/main/guides/EVENTS.md" target="_blank" rel="noopener noreferrer">Návod - Jak upravit události?</a></p>
+            <p>Úpravy jsou lepší provádět přímo na GitHubu. Návod je zde: <a href="https://github.com/PanJohnny/gymlit-18g/tree/main/guides/EVENTS.md" target="_blank" rel="noopener noreferrer">Návod - Jak upravit události?</a></p>
             <div class="bsearch">
                 <input
                     type="search"
                     name="class"
                     id="class"
                     placeholder="Ročník"
-                    value={clazz?latinClass(parseInt(clazz)) : null}
                 />
                 <ul class="hidden">
                     <li>Prima</li>
@@ -40,23 +31,12 @@ if (clazz) {
                 </ul>
             </div>
     
-            <input type="button" value="Načíst" role="button" id="load" />
+            <input type="button" value="Otevřít" role="button" id="load" />
         </div>
-
-        <div id="output" class={!clazz?"hidden":null}>
-            <input type="button" value="Ukázat" id="show" role="button" onclick="displayMD();" />
-            <div id="events" set:text={text} contenteditable></div>
-        </div>
-
-        <div class="hidden" id="clazz" data-clazz={clazz}></div>
     </div>
 </Layout>
 
-<script is:inline>
-    function displayMD() {
-        window.open("/kronika/editor/displayMD?class="+document.querySelector("#clazz").getAttribute("data-clazz")+"&md="+encodeURIComponent(document.querySelector("#events").innerText));
-    }
-</script>
+
 
 <style>
     #events {
@@ -71,13 +51,12 @@ if (clazz) {
     }
 
     #show {
-        font-size: large;
-        background-color: coral;
+        background-color: greenyellow;
     }
 </style>
 
 <script>
-    document.querySelector("#load")?.addEventListener("click", (e) => {
+    document.querySelector("#load")?.addEventListener("click", () => {
         const clazz: HTMLInputElement | null = document.querySelector("#class");
 
         // Index of clazz element
@@ -100,7 +79,7 @@ if (clazz) {
             return;
         }
 
-        location.href = "?class=" + clazzIndex;
+        window.open(`https://github.com/PanJohnny/gymlit-18g/edit/main/src/pages/events/${clazzIndex}.md`, "_blank", "norefferer noopener");
     });
 </script>
 

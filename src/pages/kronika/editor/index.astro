@@ -1,5 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
+import LoginInfo from "../../../components/LoginInfo.astro";
 
 const auth = Astro.cookies.get("auth").value;
 if (auth != import.meta.env.SECRET) {
@@ -9,7 +10,7 @@ if (auth != import.meta.env.SECRET) {
 
 <Layout title="Portál editora" description="Portál editora kroniky">
     <div class="body">
-        <p>Všechny editory byly vylepšeny a jsou plně funkční 🥳</p>
+        <LoginInfo/>
         <h2>Nástroje</h2>
         <ul>
             <li>
@@ -133,4 +134,4 @@ if (auth != import.meta.env.SECRET) {
             Děkuji Vám za editování stránek ❤
         </p>
     </div>
-</BetaLayout>
+</Layout>

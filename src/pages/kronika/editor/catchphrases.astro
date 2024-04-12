@@ -2,6 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import teachers from "../../../../public/teachers.json";
 import BSearchBundle from "../../../components/BSearchBundle.astro";
+import LoginInfo from "../../../components/LoginInfo.astro";
 
 const auth = Astro.cookies.get("auth").value;
 if (auth != import.meta.env.SECRET) {
@@ -11,7 +12,10 @@ if (auth != import.meta.env.SECRET) {
 
 <Layout title="Úprava hlášek" description="Portál editora kroniky">
     <div class="body">
-        <p>V případě mazání hlášek nechte pole prázdné. Pro generování JSONu musíte uložit data. Pokud upravujete několik učitelů najednou prosím vždy uložte data před načtení dalšího učitele. Po vygenerování JSONu se vymažou uložená data pro ročník. Všechno se smaže po znovu načtení stránky!</p>
+        <LoginInfo/>
+        <p>
+            Můžete upravovat vždy jeden ročník, při měnění učitele prosím vždy uložte. Po úpravě prosím klikněte na tlačítko commit.
+        </p>
         <div class="bsearch">
             <input
                 type="search"
@@ -55,11 +59,11 @@ if (auth != import.meta.env.SECRET) {
                 style="background-color: orange;"
             />
             <input
-                type="button"
-                id="generateJson"
-                value="Vygenerovat JSON"
-                title="Vygeneruje JSON uložený v prohlížeči"
-                style="background-color: lightblue;"
+                    type="button"
+                    id="commit"
+                    value="Commit"
+                    title="Odešle úpravy"
+                    style="background-color: greenyellow;"
             />
         </div>
     </div>
@@ -114,7 +118,7 @@ if (auth != import.meta.env.SECRET) {
 </style>
 
 <script>
-    function addField(e) {
+    function addField() {
         const results = document.querySelector("#results");
         if (!results) {
             window.alert(
@@ -129,7 +133,7 @@ if (auth != import.meta.env.SECRET) {
         results.appendChild(area);
     }
 
-    function saveLocal(e) {
+    function saveLocal() {
         const results = document.querySelector("#results");
         if (!results || results.children.length == 0) {
             window.alert("Nemůžu uložit hlášky břídile, žádný nejsou!");
@@ -181,7 +185,31 @@ if (auth != import.meta.env.SECRET) {
         saveData(clazzIndex, saved);
     }
 
-    async function generateJson(e) {
+    async function commit() {
+        if(!confirm("Opravdu si přejete uložit a odeslat změny?")) {
+            alert("Můžete pokračovat v úpravách... :)")
+            return;
+        }
+        saveLocal();
+
+        const data = await generateJson();
+        const msg = prompt("Zadejte krátkou smisluplnou zprávu popisující změny (dobrovolné ale doporučené)");
+
+        if (msg && msg.trim().length > 0)
+            data.message = msg;
+        await fetch("/api/commit", {
+            method: "POST",
+            body: JSON.stringify(
+                data
+            )
+        }).then(() => {
+            alert("Úspěšně odesláno");
+        }, () => {
+            alert("Chyba :(");
+        })
+    }
+
+    async function generateJson() {
         const clazz: HTMLInputElement | null = document.querySelector("#class");
 
         // Index of clazz element
@@ -207,7 +235,7 @@ if (auth != import.meta.env.SECRET) {
         // json
         const generated = getSavedData(clazzIndex);
 
-        let data = await fetch("/catchphrases/" + clazzIndex + ".json").then(b => b.json(), e => alert("Chyba při generování obsahu, zkontrolujte přístup k internetu"));
+        let data = await fetch("https://gymlit-18g.vercel.app/catchphrases/" + clazzIndex + ".json").then(b => b.json(), e => alert("Chyba při generování obsahu, zkontrolujte přístup k internetu"));
 
         Object.keys(generated).forEach((k) => {
             data[k] = generated[k];
@@ -215,8 +243,8 @@ if (auth != import.meta.env.SECRET) {
 
         // Reset
         saveData(clazzIndex, {});
-        
-        window.open("/kronika/editor/displayJson?class=" + clazzIndex + "&json=" + encodeURIComponent(JSON.stringify(data, null, "\t")));
+
+        return {raw: JSON.stringify(data, null, "\t"), clazz: clazzIndex, message: `Aktualizovány hlášky pro ${clazzIndex}. G`};
     }   
 
     function getSavedData(year: number) {
@@ -270,7 +298,7 @@ if (auth != import.meta.env.SECRET) {
 
     document.querySelector("#addField")?.addEventListener("click", addField);
     document.querySelector("#saveLocal")?.addEventListener("click", saveLocal);
-    document.querySelector("#generateJson")?.addEventListener("click", generateJson);
+    document.querySelector("#commit")?.addEventListener("click", commit);
 
     // Top level await
     let teachers = await fetch("/teachers.json").then((r) => r.json());
@@ -319,7 +347,7 @@ if (auth != import.meta.env.SECRET) {
                 }
 
                 const phrases = await fetch(
-                    "/catchphrases/" + clazzIndex + ".json"
+                    "https://gymlit-18g.vercel.app/catchphrases/" + clazzIndex + ".json"
                 ).then((b) => b.json());
 
                 const specific = phrases[key];

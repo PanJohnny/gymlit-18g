@@ -1,0 +1,38 @@
+---
+import {Octokit} from "octokit";
+
+if (!Astro.cookies.has("github_token") || Astro.request.method != "POST") {
+    return new Response(undefined, {status: 401});
+
+}
+const octokit = new Octokit({auth: Astro.cookies.get("github_token").value});
+
+
+
+try {
+    const data = await Astro.request.json();
+    // Get the current contents of the file
+    const {data: {sha}} = await octokit.rest.repos.getContent({
+        owner: 'PanJohnny',
+        repo: 'gymlit-18g',
+        path: `public/catchphrases/${data.clazz}.json`
+    });
+
+
+    // Create the commit
+    await octokit.rest.repos.createOrUpdateFileContents({
+        owner: 'PanJohnny',
+        repo: 'gymlit-18g',
+        path: `public/catchphrases/${data.clazz}.json`,
+        message: data.message,
+        content: Buffer.from(data.raw).toString('base64'),
+        sha: sha,
+    });
+
+    console.log('File updated successfully!');
+    return new Response("Success!", {status: 200});
+} catch (error) {
+    console.error('Error updating file:', error);
+    return new Response(error, {status: 413});
+}
+---
