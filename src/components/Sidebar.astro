@@ -272,6 +272,7 @@ import teachers from "../../public/teachers.json";
         .querySelectorAll(".hamburger")
         .forEach((el) => el.addEventListener("click", toggleSidebar));
     if (
+        current &&
         current.parentElement.parentElement.parentElement.nodeName == "DETAILS"
     ) {
         current.parentElement.parentElement.parentElement.setAttribute(
