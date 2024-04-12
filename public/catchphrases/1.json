@@ -1,40 +1,40 @@
 {
-    "svap": [
-        "\"Deset minut denně dělá divy!\"",
-        "\"Na můj vkus je tady moc hlučně.\"",
-        "\"Takže vážení, takhle tedy ne!\"",
-        "\"Dobré ráno!\" (je 12:50)",
-        "\"Nehlaste se, nejprve zapíši.\"",
-        "\"Někomu se tam valí mobil, každý pátek ti to připomínám!\" (mluví na Josefínu)"
-    ],
-    "verb": [
-        "\"Zítra bude velké zkoušení.\"",
-        "\"Šnečku, šnečku vystrč růžky...\"",
-        "\"Vy tady hrajete na těch mobilech, co je teď za hru populární? Abych to mohla doporučit svému dvouletému vnukovi.\"",
-        "\"Hele, nemávej mi tam, já tě vidím. Tady v tom zrcadle (počítači) se to všechno odráží. Já všechno vidím.\"",
-        "\"Biologii zapomeneš, ale mobil ne!\"",
-        "\"Štefanica\" (chtěla říct Štefanča)"
-    ],
-    "janl": [
-        "\"Tak jdeme sportovci.\"",
-        "\"Nemůžete mluvit sprostě, kur**.\""
-    ],
-    "svek": [
-        "\"No vy jste moje holčičky.\"",
-        "\"No vy jste moje oblíbená třída, já vás mám ráda.\"",
-        "\"Pepi\" (první profesor/ka, který/á Josefínu takto pojmenovala)"
-    ],
-    "janb": [
-        "\"Ale já vás nechtěl. Já chtěl septimy a oktávy.\"",
-        "\"Vy nemáte věci, no já na vás stejně nemám náladu.\"",
-        "Martina: \"Pane profesore, já se strašně omlouvám, ale nemám dějepis.\"\nPan profesor Bárta: \"No tak, když se tak strašně omlouváte tak to nevadí.\"",
-        "\"Co je Rosecká deska? Šutr pomalovaný hyeroglifama.\""
-    ],
-    "jitp": [
-        "Ondra Fikr: \"Paní profesorko, dáte mi tu jedničku za aktivitu?\" Paní profesorka Puchmajerova: \"Tobě? Nikdy.\"",
-        "\"Tobias vyrušuje, ale může za to Vašek.\""
-    ],
-    "petp": [
-        "\"Na Péťu hleď\""
-    ]
+	"svap": [
+		"\"Deset minut denně dělá divy!\"",
+		"\"Na můj vkus je tady moc hlučně.\"",
+		"\"Takže vážení, takhle tedy ne!\"",
+		"\"Dobré ráno!\" (je 12:50)",
+		"\"Nehlaste se, nejprve zapíši.\"",
+		"\"Někomu se tam valí mobil, každý pátek ti to připomínám!\" (mluví na Josefínu)"
+	],
+	"verb": [
+		"\"Zítra bude velké zkoušení.\"",
+		"\"Šnečku, šnečku vystrč růžky...\"",
+		"\"Vy tady hrajete na těch mobilech, co je teď za hru populární? Abych to mohla doporučit svému dvouletému vnukovi.\"",
+		"\"Hele, nemávej mi tam, já tě vidím. Tady v tom zrcadle (počítači) se to všechno odráží. Já všechno vidím.\"",
+		"\"Biologii zapomeneš, ale mobil ne!\"",
+		"\"Štefanica\" (chtěla říct Štefanča)"
+	],
+	"janl": [
+		"\"Tak jdeme sportovci.\"",
+		"\"Nemůžete mluvit sprostě, kur**.\""
+	],
+	"svek": [
+		"\"No vy jste moje holčičky.\"",
+		"\"No vy jste moje oblíbená třída, já vás mám ráda.\"",
+		"\"Pepi\" (první profesor/ka, který/á Josefínu takto pojmenovala)"
+	],
+	"janb": [
+		"\"Ale já vás nechtěl. Já chtěl septimy a oktávy.\"",
+		"\"Vy nemáte věci, no já na vás stejně nemám náladu.\"",
+		"Martina: \"Pane profesore, já se strašně omlouvám, ale nemám dějepis.\"\nPan profesor Bárta: \"No tak, když se tak strašně omlouváte tak to nevadí.\"",
+		"\"Co je Rosecká deska? Šutr pomalovaný hyeroglifama.\""
+	],
+	"jitp": [
+		"Ondra Fikr: \"Paní profesorko, dáte mi tu jedničku za aktivitu?\" Paní profesorka Puchmajerova: \"Tobě? Nikdy.\"",
+		"\"Tobias vyrušuje, ale může za to Vašek.\""
+	],
+	"petp": [
+		"\"Na Péťu hleď\""
+	]
 }
