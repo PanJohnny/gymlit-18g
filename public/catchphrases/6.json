@@ -15,7 +15,8 @@
 	],
 	"verk": [
 		"\"Zpíváte jako v hospodě po půlnoci.\"",
-		"\"Paní profesorko, tady Vám něco vypadlo.\" - \"No to vypadlo tobě\" paní profesorce vypadl papír z učebnice, kterou si půjčila"
+		"\"Paní profesorko, tady Vám něco vypadlo.\" - \"No to vypadlo tobě\" paní profesorce vypadl papír z učebnice, kterou si půjčila",
+		"\"Můžu si odskočit na záchod paní profesorko?\" (Tobias) \"A co když ne?!\" (Klínská)"
 	],
 	"ivaz": [
 		"\"Třído, haló...\" (znělo jako: \"Jitko, kr*vo\")",
@@ -27,7 +28,9 @@
 		"\"Mája je prolezlá oktoplazmou, říkáte?\"",
 		"\"Hele mamča\"",
 		"\"Holky vy se musíte vdát, vy máte ty příjmění velmi podobná. [celotřídní smích] Támhle Kryštof už se raduje.\"",
-		"\"Já jsem idiot, já jsem vám dal dvě stejná oddělení vedle sebe.\""
+		"\"Já jsem idiot, já jsem vám dal dvě stejná oddělení vedle sebe.\"",
+		"\"Budeš Májo maturovat z biologie?\" (Weiser) \"Ne, protože mě nezajímá\" (Mája) \"To je škoda, protože bych to hrozně rád viděl.\" (Weiser) [Mája se u prezentování hrozně smála, což všechny rozesmálo, hlavně pana profesora]",
+		"\"Echt, Honzo, to sis nějak nevypočítal, co?\" (Honza si myslel, že když neudělá laborky, tak mu vyjde trojka, ale špatně pochopil pana profesora, a tak mu vyšla čtyřka. Naštěstí, pro něj, se domluvil a jeho známka byla trojka.)"
 	],
 	"marw": [
 		"\"... NATovat na router ...\"",
@@ -37,14 +40,18 @@
 		"\"Ježišmarjá ty jsi snad dítě nebo co?\" (na Jáchyma)",
 		"\"Nebudu nic dávat do vyhledávače, protože se bojím robotů.\"",
 		"\"Za tohle bych ti strhla byt! ... Teda bod!\"",
-		"Kryštof počítá příklad na tabuli a paní profesorka se na něj otočí a dopáleně na něj vykřikla: \"Dej mi to!\""
+		"Kryštof počítá příklad na tabuli a paní profesorka se na něj otočí a dopáleně na něj vykřikla: \"Dej mi to!\"",
+		"\"Nemusím vás překřikovat?!\" (Rozumová) \"Nemusíte...\" (Jáchym) \"Tak drž pusu!\" (Rozumová)"
 	],
 	"jitp": [
 		"\"Já jim pogratuluju, že jsou tupci,\" řekla paní profesorka, když nepomohlo vynadat své třídě, protože se nedostavovala na piškvorky"
 	],
 	"ilos": [
 		"\"Jaká byla motivace Vocílky se stát manažerem Švandy?\" Zeptala se paní profesorka a Karel odvětil: \"Je to buzerant!\" Na to paní profesorka: \"Sice rýmu mám, ale tohle jsem slyšela dobře...\"",
-		"\"Kreténům to přibližovat nebude,\" komentuje Ondra Fikr, proč paní profesorka Skolilová nepřiblížila text na tabuli Tobiasovi, ale Káje ano.\n\"Kroť svůj slovník,\" poznamenala paní profesorka."
+		"\"Kreténům to přibližovat nebude,\" komentuje Ondra Fikr, proč paní profesorka Skolilová nepřiblížila text na tabuli Tobiasovi, ale Káje ano.\"Kroť svůj slovník,\" poznamenala paní profesorka.",
+		"\"Kreténům to přibližovat nebude.\" (Ondřej) [komentuje Ondra, proč paní profesorka nepřiblížila text na tabuli Tobiasovi, ale Káje ano] \"Kroť svůj slovník!\" (Skolilová)",
+		"\"Mně feminismus nevadí...\" (Ondřej o hodině ZSV)",
+		"\"Tenhle člověk mě porazí ve Scrabble se slovem řiť!\" (Kryštof Klíma, který hrál Scrabble s Honzou)"
 	],
 	"zuzk": [
 		"\"Co to máš za pytel?\" \"Ta to je dobrej pytel.\" (na Kryštofa)"
