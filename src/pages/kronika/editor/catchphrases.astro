@@ -193,7 +193,7 @@ if (auth != import.meta.env.SECRET) {
         saveLocal();
 
         const data = await generateJson();
-        const msg = prompt("Zadejte krátkou smisluplnou zprávu popisující změny (dobrovolné ale doporučené)");
+        const msg = prompt("Zadejte krátkou smysluplnou zprávu popisující změny (dobrovolné ale doporučené)");
 
         if (msg && msg.trim().length > 0)
             data.message = msg;
