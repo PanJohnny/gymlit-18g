@@ -64,7 +64,7 @@ const commitInfo = await fetch("https://api.github.com/repos/PanJohnny/gymlit-18
                 </div>
                 <slot />
                 <hr />
-                Poslední aktualizace: {commitInfo && commitInfo["message"]?(<b title={commitInfo["message"]}>{new Date(commitInfo["author"]["date"]).toLocaleString("cs-CZ")}</b>):"CHYBA"} | Kronikář: Filip | Pomocník: Ondra F. | Naprogramoval: Honza | Kód na <a href="https://github.com/PanJohnny/gymlit-18g">GitHubu</a>
+                Poslední aktualizace: {commitInfo && commitInfo["message"]?(<b title={commitInfo["message"]}>{new Date(commitInfo["author"]["date"]).toLocaleString("cs-CZ", {timeZone: "Europe/Prague"})}</b>):"CHYBA"} | Kronikář: Filip | Pomocník: Ondra F. | Naprogramoval: Honza | Kód na <a href="https://github.com/PanJohnny/gymlit-18g">GitHubu</a>
             </div>
         </main>
     </body>
