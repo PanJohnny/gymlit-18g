@@ -1,0 +1,123 @@
+---
+interface Props {
+    columns: Column[],
+    height?:number,
+    color?:string,
+    showEmpty?:boolean,
+    showValues?:boolean
+}
+
+interface Column {
+    title:string,
+    data:number
+}
+
+const { showEmpty, showValues } = Astro.props;
+let { columns, height, color } = Astro.props;
+
+if (!height) {
+    height = 120;
+}
+
+if (!color) {
+    color = 'black';
+}
+
+if (!showEmpty) {
+    columns = columns.filter(coll => coll.data > 0);
+
+}
+
+const max = Math.max(...columns.map(coll => coll.data));
+
+const top = Math.round(max / 10) * 10;
+
+const calcHeight = (data:number) => {
+    return (data / top) * height;
+}
+
+const increments = [0, 0.25, 0.5, 0.75, 1].map(percentage => top * percentage);
+---
+
+<div class="bar-graph">
+    {increments.map(value =>
+            <div class="increment-line" style={`bottom: ${calcHeight(value) + 10}px`}>
+                <span class="increment-label">{value}</span>
+            </div>
+    )}
+    {columns.map(coll =>
+            <div class="graph-column" style={`color: ${color};`}>
+                {showValues ? coll.data : undefined}
+                <div class="data-column" style={`height: ${calcHeight(coll.data)}px; background-color: ${color};`}></div>
+                <div class="title">{coll.title}</div>
+            </div>
+    )}
+</div>
+
+<style>
+    .bar-graph {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        pointer-events: none;
+        width: 100%;
+    }
+
+    .graph-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 10px;
+    }
+
+    .data-column {
+        display: block;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        width: 40px;
+        background-color: black;
+    }
+
+    .title {
+        font-weight: bold;
+        margin-top: 6px;
+        white-space: nowrap;
+    }
+
+    .increment-line {
+        position: absolute;
+        border-top: 1px solid #ccc; /* Light grey line */
+        display: flex;
+        align-items: center;
+        left: -30px;
+        width: calc(100% + 30px);
+    }
+
+    .increment-label {
+        background-color: white;
+        padding: 0 5px;
+        margin-left: 5px;
+        font-size: 0.75rem;
+        left: -5px;
+        position: relative;
+    }
+</style>
+
+<script>
+    function resize() {
+        document.querySelectorAll(".bar-graph").forEach(graph => {
+            // Check if element overflows
+            if (graph.scrollWidth > window.innerWidth*0.7) {
+                if (graph instanceof HTMLDivElement) {
+                    graph.style.transform = "scale(" + (window.innerWidth*0.7 / graph.scrollWidth) + ")";
+                    // make the transform origin the top left corner
+                    graph.style.transformOrigin = "0 0";
+                }
+            }
+        })
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+</script>

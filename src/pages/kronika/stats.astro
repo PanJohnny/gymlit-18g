@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import teachers from "../../../public/teachers.json";
+import BarGraph from "../../components/BarGraph.astro";
 const catchphrases = await Astro.glob("../../../public/catchphrases/*.json");
 
 const cpp = {};
@@ -73,9 +74,7 @@ const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/ana
         </div>
         <div id="hlaskynarocnik">
             <h2>Hlášky na ročník</h2>
-            <ol>
-                {cpy.map((val) => <li class="yearlyc">{val}</li>)}
-            </ol>
+            <BarGraph columns={cpy.map((val, i) => ({title: (i + 1) + ". G", data: val}))} height={200} color="hotpink" showValues={true} />
         </div>
         <div id="ucitele">
             <h2>Evidovaní učitelé</h2>
@@ -90,7 +89,7 @@ const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/ana
             </ol>
         </div>
     </div>
-</BetaLayout>
+</Layout>
 
 <style>
     .body {
