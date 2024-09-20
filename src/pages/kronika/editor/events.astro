@@ -1,5 +1,6 @@
 ---
 import BSearchBundle from "../../../components/BSearchBundle.astro";
+import LoginInfo from "../../../components/LoginInfo.astro";
 import Layout from "../../../layouts/Layout.astro";
 
 const auth = Astro.cookies.get("auth").value;
@@ -33,6 +34,7 @@ if (auth != import.meta.env.SECRET) {
     
             <input type="button" value="Otevřít" role="button" id="load" />
         </div>
+        <LoginInfo/>
     </div>
 </Layout>
 

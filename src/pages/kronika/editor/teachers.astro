@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import teachers from "../../../../public/teachers.json";
+import LoginInfo from "../../../components/LoginInfo.astro";
 
 const auth = Astro.cookies.get("auth").value;
 if (auth != import.meta.env.SECRET) {
@@ -38,6 +39,7 @@ if (auth != import.meta.env.SECRET) {
     <div id="raw" class="hidden">
         {JSON.stringify(teachers)}
     </div>
+    <LoginInfo/>
 </Layout>
 <style>
     #prof {

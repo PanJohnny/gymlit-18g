@@ -20,6 +20,10 @@ if (Astro.cookies.has("github_token")) {
 </fieldset>
 
 <style>
+    fieldset:hover {
+        display: none;
+    }
+
     fieldset {
         position: fixed;
         display: block;
@@ -31,5 +35,11 @@ if (Astro.cookies.has("github_token")) {
 
     img {
         width: 120px;
+    }
+
+    @media (max-width: 1024px) {
+        fieldset {
+            position: relative;
+        }
     }
 </style>
