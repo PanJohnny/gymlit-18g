@@ -78,7 +78,7 @@ function quoteFix(input) {
                             <h3>{teachers[p]}</h3>{" "}
                             <ul>
                                 {phrases[p].map((phrase) => (
-                                    <li
+                                    <li class="quote"
                                         id={
                                             p +
                                             "-" +
@@ -90,7 +90,7 @@ function quoteFix(input) {
                                         }
                                     >
                                         {quoteFix(phrase)}{" "}
-                                        <a
+                                        <a class="report"
                                             href={
                                                 "/kronika/report?text=" +
                                                 quoteFix(phrase) +
@@ -112,7 +112,7 @@ function quoteFix(input) {
                                             title="Nahlásit chybu"
                                             style="color: red; text-decoration: none;"
                                         >
-                                            !
+                                             nahlásit chybu
                                         </a>
                                     </li>
                                 ))}
@@ -185,6 +185,7 @@ function quoteFix(input) {
         font-size: 15px;
         margin-bottom: 1em;
         margin-right: 10px;
+        border-radius: 12px;
     }
 
     summary:hover {
@@ -209,5 +210,18 @@ function quoteFix(input) {
         padding: 1em;
         border: 1px solid;
         border-radius: 12px;
+    }
+
+    .quote:hover > .report {
+        display: inline;
+    }
+
+    .quote {
+        cursor: pointer;
+    }
+
+    .quote > .report {
+        display: none;
+        font-weight: bold;
     }
 </style>

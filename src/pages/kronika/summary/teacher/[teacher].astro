@@ -35,10 +35,25 @@ function quoteFix(input) {
             <ul>
                 {
                     phrases.map((p) => 
-                        (<li>{quoteFix(p)} <a href={"/kronika/report?text=" + quoteFix(p) + "&teacher=" + teacherName + "&return=" + Astro.url.href} title="Nahlásit chybu" style="color: red; text-decoration: none;">!</a></li>)
+                        (<li class="quote">{quoteFix(p)} <a class="report" href={"/kronika/report?text=" + quoteFix(p) + "&teacher=" + teacherName + "&return=" + Astro.url.href} title="Nahlásit chybu" style="color: red; text-decoration: none;"> nahlásti chybu</a></li>)
                     )
                 }
             </ul>
         </div>
     </div>
 </BetaLayout>
+
+<style>
+    .quote:hover > .report {
+        display: inline;
+    }
+
+    .quote {
+        cursor: pointer;
+    }
+
+    .quote > .report {
+        display: none;
+        font-weight: bold;
+    }
+</style>
