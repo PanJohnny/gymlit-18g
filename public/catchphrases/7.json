@@ -1,7 +1,9 @@
 {
 	"zuzk": [
 		"\"Ty se nemáš přihlašovat ty střevo! To mají ostatní poznat.\"",
-		"\"Kde si se vlastně flákal, když si tu nebyl, Kryštofe?\""
+		"\"Kde si se vlastně flákal, když si tu nebyl, Kryštofe?\"",
+		"\"Nejlepší pro nás bylo Tobiasi, když jsi byl v té Anglii.\"",
+		"\"Musíte poslouchat spolužáky, ať potom nejste za blbce.\""
 	],
 	"jitn": [
 		"\"Dnes dáme prostor teroristům.\"",
@@ -9,6 +11,14 @@
 		"\"Vy máte nějakou slabost pro Drákulu?\" (na Tobiase)"
 	],
 	"olgk": [
-		"\"Fernet není špatnej alkohol.\""
+		"\"Fernet není špatnej alkohol.\"",
+		"\"To ne Matěji, to je chemický zločin.\""
+	],
+	"jirw": [
+		"\"Natka na to, že neumí skoro česky, prezentovala docela dobře.\"",
+		"\"Ta Morava, to je tak obrovký handicap...\""
+	],
+	"ilos": [
+		"\"Můžeš mi Tobiasi vysvětlit, proč sis nechal poslat do školy balíček?!\""
 	]
 }
