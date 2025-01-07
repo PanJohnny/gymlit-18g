@@ -9,7 +9,7 @@ const res = await fetch(webhook, {
   body: Astro.body
 });
 
-return new Response(res.body, {
+return new Response(JSON.stringify(await res.body.json()), {
   status: res.status
 });
 ---
