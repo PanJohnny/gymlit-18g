@@ -6,7 +6,7 @@ const res = await fetch(webhook, {
   headers: {
     "Content-Type": "application/json"
   },
-  body: await Astro.request.json()
+  body: JSON.stringify(await Astro.request.json())
 });
 
 return new Response(JSON.stringify(await res.json()), {
