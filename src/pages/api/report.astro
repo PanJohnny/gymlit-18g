@@ -2,6 +2,7 @@
 const webhook = import.meta.env.WEBHOOK;
 
 const res = await fetch(webhook, {
+  method: "POST",
   headers: {
     "Content-Type": "application/json"
   },
