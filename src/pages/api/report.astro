@@ -1,10 +1,14 @@
 ---
 const webhook = import.meta.env.WEBHOOK;
 
-return await fetch(webhook, {
+const res = await fetch(webhook, {
   headers: {
     "Content-Type": "application/json"
   },
   body: Astro.body
+});
+
+return new Response(res.body, {
+  status: res.status
 });
 ---
