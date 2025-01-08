@@ -6,10 +6,10 @@ const res = await fetch(webhook, {
   headers: {
     "Content-Type": "application/json"
   },
-  body: JSON.stringify(await Astro.request.json())
+  body: await Astro.request.blob()
 });
 
-return new Response(JSON.stringify(await res.json()), {
-  status: res.status
+return new Response(await res.text(), {
+  status: res.status == 204 ? 200 : res.status
 });
 ---
