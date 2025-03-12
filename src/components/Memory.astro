@@ -1,0 +1,71 @@
+---
+import teachers from "../../public/teachers.json";
+
+interface Props {
+    title: string;
+    events: string;
+    phrases: any;
+}
+
+let {title, events, phrases} = Astro.props as Props;
+
+let phraseList = [];
+for (let teacher in phrases) {
+    for (let phrase of phrases[teacher]) {
+        phraseList.push({teacher, phrase});
+    }
+}
+
+phraseList.sort(() => Math.random() - 0.5);
+
+// events = events.replaceAll("h1", "h2");
+// events = events.replace(/<hr[^>]*>/gm, "");
+---
+
+<div class="memory">
+    <h2>{title}</h2>
+    <div class="phrases">
+        {phraseList.map(({teacher, phrase}) => (
+                <div class="phrase">
+                    <h4>{teachers[teacher]}</h4>
+                    <p>{phrase}</p>
+                </div>
+        ))}
+    </div>
+</div>
+
+<style>
+    .memory {
+        width: 210mm;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding: 3mm;
+        border: 1px solid black;
+    }
+
+    h2 {
+        margin-bottom: 2px;
+    }
+
+    .phrase {
+        page-break-inside: avoid;
+    }
+
+    .phrase h4 {
+        page-break-after: avoid;
+    }
+
+    .phrase p {
+        page-break-before: avoid;
+    }
+
+    @media print {
+        .memory {
+            page-break-after: always;
+            border: none;
+            padding: 0;
+        }
+    }
+</style>

@@ -1,0 +1,54 @@
+---
+interface Props {
+    title: string;
+    description: string;
+    }
+
+const props = Astro.props as Props;
+---
+
+<!DOCTYPE html>
+<html lang="cs" class="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{props.title}</title>
+    <meta name="title" content={props.title} />
+    <meta name="description" content={props.description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:title" content={props.title} />
+    <meta property="og:description" content={props.description} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:url" content={Astro.url.href} />
+    <meta property="twitter:title" content={props.title} />
+    <meta property="twitter:description" content={props.description} />
+
+    <!-- Icons -->
+    <meta property="og:image" content="https://panjohnny.vercel.app/icon.svg">
+    <meta name="twitter:image" content="https://panjohnny.vercel.app/icon.svg">
+    <link rel="icon" type="image/svg" href="/icon.svg" />
+
+    <!-- Add to home screen -->
+    <meta name='mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+
+    <link rel="sitemap" href="/sitemap-index.xml">
+    <link rel="canonical" href="https://gymlit-18g.vercel.app"/>
+</head>
+<body>
+<slot/>
+</body>
+</html>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+    }
+</style>

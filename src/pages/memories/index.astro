@@ -1,0 +1,76 @@
+---
+import Memories from "../../layouts/Memories.astro";
+import Memory from "../../components/Memory.astro";
+
+let phrases = [];
+let events = [];
+for (let i = 1; i < 8; i++) {
+    const json = await fetch(
+        Astro.url.protocol +
+        "//" +
+        Astro.url.host +
+        "/catchphrases/" +
+        i +
+        ".json"
+    ).then((response) => response.json());
+    phrases.push(json);
+    // const temp = await fetch(
+    //     Astro.url.protocol + "//" + Astro.url.host + "/events/" + i
+    // ).then((b) => b.text());
+    // events.push(temp.split(/<body[^>]*>/)[1].split("</body>")[0]);
+}
+
+function quoteFix(input) {
+    let n = 0;
+    return input.replace(/"/g, (m, i, og) => {
+        return n++ % 2 ? "“" : "„";
+    });
+}
+---
+<Memories title="Vzpomínky" description="Udělejte si výlet do minulosti.">
+    <header>
+        <h1>Vzpomínky</h1>
+        <a href="/kronika">Hlavní strana</a>
+    </header>
+    <main>
+        {phrases.map((p, i) => (
+            <Memory title={i + 1 + ". G"} events={undefined} phrases={p} />
+        ))}
+    </main>
+</Memories>
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: unset;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    @media print {
+        header {
+            display: none;
+        }
+
+        main {
+            display: block;
+        }
+    }
+</style>

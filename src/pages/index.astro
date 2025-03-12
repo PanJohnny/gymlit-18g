@@ -1,15 +1,3 @@
 ---
-import Layout from "../layouts/old/Layout.astro";
-import Card from "../components/Card.astro";
+return Astro.rewrite("/kronika");
 ---
-
-<Layout title="Kronika třídy 6. G">
-	<script is:inline>
-		const old = localStorage.getItem("old");
-		if (old == "true") {
-			location.href = "/old";
-		} else {
-			location.href = "/kronika";
-		}
-	</script>
-</Layout>
