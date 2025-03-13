@@ -20,6 +20,13 @@ phraseList.sort(() => Math.random() - 0.5);
 
 events = events.replace(/<h1[^>]*>[^<\\]*<\/h1>/g, "");
 events = events.replace(/<hr[^>]*>/gm, "");
+
+function quoteFix(input) {
+    let n = 0;
+    return input.replace(/"/g, (m, i, og) => {
+        return n++ % 2 ? "“" : "„";
+    });
+}
 ---
 
 <div class="memory">
@@ -28,7 +35,7 @@ events = events.replace(/<hr[^>]*>/gm, "");
         {phraseList.map(({teacher, phrase}) => (
                 <div class="phrase">
                     <h4>{teachers[teacher]}</h4>
-                    <p>{phrase}</p>
+                    <p>{quoteFix(phrase)}</p>
                 </div>
         ))}
     </div>

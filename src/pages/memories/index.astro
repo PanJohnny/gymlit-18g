@@ -19,13 +19,6 @@ for (let i = 1; i < 8; i++) {
     ).then((b) => b.text());
     events.push(temp.split(/<body[^>]*>/)[1].split("</body>")[0]);
 }
-
-function quoteFix(input) {
-    let n = 0;
-    return input.replace(/"/g, (m, i, og) => {
-        return n++ % 2 ? "“" : "„";
-    });
-}
 ---
 <Memories title="Vzpomínky" description="Udělejte si výlet do minulosti.">
     <header>
