@@ -18,8 +18,8 @@ for (let teacher in phrases) {
 
 phraseList.sort(() => Math.random() - 0.5);
 
-// events = events.replaceAll("h1", "h2");
-// events = events.replace(/<hr[^>]*>/gm, "");
+events = events.replace(/<h1[^>]*>[^<\\]*<\/h1>/g, "");
+events = events.replace(/<hr[^>]*>/gm, "");
 ---
 
 <div class="memory">
@@ -32,6 +32,9 @@ phraseList.sort(() => Math.random() - 0.5);
                 </div>
         ))}
     </div>
+    <div class="events">
+        <div set:html={events} />
+    </div>
 </div>
 
 <style>
@@ -40,32 +43,40 @@ phraseList.sort(() => Math.random() - 0.5);
         height: auto;
         display: flex;
         flex-direction: column;
-        overflow: hidden;
         padding: 3mm;
         border: 1px solid black;
+        page-break-after: right;
+        margin-bottom: 10px;
+    }
+
+    .phrases {
+        page-break-after: always;
     }
 
     h2 {
         margin-bottom: 2px;
     }
 
-    .phrase {
+    :global(h3) {
         page-break-inside: avoid;
     }
 
-    .phrase h4 {
-        page-break-after: avoid;
+    :global(h3::after) {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-bottom: -100px;
     }
 
-    .phrase p {
-        page-break-before: avoid;
+    .phrase, :global(p) {
+        page-break-inside: avoid;
     }
 
     @media print {
         .memory {
-            page-break-after: always;
             border: none;
             padding: 0;
+            margin: 0;
         }
     }
 </style>

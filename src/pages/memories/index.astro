@@ -14,10 +14,10 @@ for (let i = 1; i < 8; i++) {
         ".json"
     ).then((response) => response.json());
     phrases.push(json);
-    // const temp = await fetch(
-    //     Astro.url.protocol + "//" + Astro.url.host + "/events/" + i
-    // ).then((b) => b.text());
-    // events.push(temp.split(/<body[^>]*>/)[1].split("</body>")[0]);
+    const temp = await fetch(
+        Astro.url.protocol + "//" + Astro.url.host + "/events/" + i
+    ).then((b) => b.text());
+    events.push(temp.split(/<body[^>]*>/)[1].split("</body>")[0]);
 }
 
 function quoteFix(input) {
@@ -33,19 +33,28 @@ function quoteFix(input) {
         <a href="/kronika">Hlavní strana</a>
     </header>
     <main>
+        <div class="print-only-page">
+            <h1 style="margin-bottom: 0">Výpis z kroniky</h1>
+            <h2 style="margin-top: 0">2018-2025 G</h2>
+            <h3>Filip Sova a spol.</h3>
+        </div>
+        <div class="print-only-page">
+            <div>
+                <p>V ruce držíte výpis z naší kroniky. Udělejte si cestu o 8 let zpátky a zasmějte se s námi.</p>
+                <p style="text-align: right">Vaši kronikáři</p>
+                <p style="text-align: right; margin-top: 10px">Filip, Honza, Šnek</p>
+            </div>
+        </div>
         {phrases.map((p, i) => (
-            <Memory title={i + 1 + ". G"} events={undefined} phrases={p} />
+                <Memory title={i + 1 + ". G"} events={events[i]} phrases={p}/>
         ))}
+        <div class="print-only-page">
+
+        </div>
     </main>
 </Memories>
 
 <style>
-    main {
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-    }
-
     header {
         display: flex;
         justify-content: space-between;
@@ -64,6 +73,18 @@ function quoteFix(input) {
         width: 100%;
     }
 
+    .print-only-page {
+        width: 210mm;
+        height: 297mm;
+        display: none;
+        flex-direction: column;
+        padding: 3mm;
+        border: 1px solid black;
+        page-break-after: right;
+        align-items: center;
+        justify-content: center;
+    }
+
     @media print {
         header {
             display: none;
@@ -71,6 +92,10 @@ function quoteFix(input) {
 
         main {
             display: block;
+        }
+
+        .print-only-page {
+            display: flex;
         }
     }
 </style>
