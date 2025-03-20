@@ -3,5 +3,5 @@ Astro.cookies.delete("auth");
 Astro.cookies.delete("github_token");
 
 // Check if referer is the same domain, if true return back if false return to /
-Astro.redirect(Astro.request.referrer.includes(Astro.url.host) ? Astro.request.referrer : "/");
+return Astro.redirect(Astro.request.referrer.includes(Astro.url.host) ? Astro.request.referrer : "/");
 ---
