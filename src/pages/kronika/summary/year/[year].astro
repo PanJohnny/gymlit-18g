@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../../layouts/Layout.astro";
 import teachers from "../../../../../public/teachers.json";
+import {latinClass} from "../../../../utils"
 
 const y = Astro.params.year;
 if (!y) return Astro.redirect("/kronika");
@@ -54,6 +55,8 @@ function quoteFix(input) {
         return n++ % 2 ? "“" : "„";
     });
 }
+
+const authorized = Astro.cookies.has("auth")
 ---
 
 <Layout
@@ -76,6 +79,7 @@ function quoteFix(input) {
                     Object.keys(phrases).map((p) => (
                         <div class="teach">
                             <h3>{teachers[p]}</h3>{" "}
+                            {authorized&&classYear!=0? <a href={"/kronika/editor/catchphrases?teacher=" + encodeURIComponent(teachers[p]) + "&year=" + latinClass(classYear)}>Upravit</a> : ""}
                             <ul>
                                 {phrases[p].map((phrase) => (
                                     <li class="quote"

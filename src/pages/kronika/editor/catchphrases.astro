@@ -8,6 +8,9 @@ const auth = Astro.cookies.get("auth").value;
 if (auth != import.meta.env.SECRET) {
     return Astro.redirect("/login");
 }
+
+let teacher = Astro.url.searchParams.get("teacher") ?? "";
+let clazz = Astro.url.searchParams.get("class") ?? "";
 ---
 
 <Layout title="Úprava hlášek" description="Portál editora kroniky">
@@ -21,13 +24,14 @@ if (auth != import.meta.env.SECRET) {
                 name="teacher"
                 id="teach"
                 placeholder="Učitel"
+                value={teacher}
             />
             <ul class="hidden">
                 {Object.keys(teachers).map((k) => <li>{teachers[k]}</li>)}
             </ul>
         </div>
         <div class="bsearch">
-            <input type="search" name="class" id="class" placeholder="Třída"/>
+            <input type="search" name="class" id="class" placeholder="Třída" value={clazz}/>
             <ul class="hidden">
                 <li>Prima</li>
                 <li>Sekunda</li>
