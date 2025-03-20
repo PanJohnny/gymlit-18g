@@ -15,7 +15,8 @@
 	"olgk": [
 		"\"Fernet není špatnej alkohol.\"",
 		"\"To ne Matěji, to je chemický zločin.\"",
-		"\"To jste někde přečetl, ne?\" Zeptala se paní profesorka.\n\"Nene, já tady hraju na počítači hru,\" odvětil Jáchym."
+		"\"To jste někde přečetl, ne?\" Zeptala se paní profesorka.\"Nene, já tady hraju na počítači hru,\" odvětil Jáchym.",
+		"\"Já vyřídím támhlecty zločince.\""
 	],
 	"jirw": [
 		"\"Natka na to, že neumí skoro česky, prezentovala docela dobře.\"",
@@ -38,9 +39,15 @@
 	],
 	"iver": [
 		"\"Filipe... mě už došly slova, já už jenom tleskám.\"",
-		"\"Když opakujeme, tak stejně nedáváte pozor, nebo spíte, ty vole...\""
+		"\"Když opakujeme, tak stejně nedáváte pozor, nebo spíte, ty vole...\"",
+		"\"Vítěz tohoto AZ kvízu vyhrává měsíční plat paní profesorky.\" Prohlásil Honza. Paní profesorka se tomu jen nervózně zasmála.",
+		"\"Proboha, ať nám to zvonění už změní.\""
 	],
 	"ondk": [
-		"\"To tě může zabít, to je víc cool\"(před zapálením fosforu"
+		"\"To tě může zabít, to je víc cool.\" Prohlásil pan profesor před zapálením fosforu."
+	],
+	"tomk": [
+		"\"V učebnách a laboratořích chemie, fyziky a biologie je zakázáno jíst a... Vašku okamžitě tu lahev schovej!\"",
+		"\"Kdybyste tento experiment ukázal před 300 lety, tak by vás upálili.\" Oznámil Kryštof.\n\"Mě by neupálili, já jsem muž.\" Odvětil pan profesor."
 	]
 }
