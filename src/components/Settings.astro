@@ -17,7 +17,6 @@ if (!visible) {
     <div>
         <ol>
             <li><label><input type="checkbox" id="darkMode"> Tmavý režim 🌚</label></li>
-            <li><label><input type="checkbox" id="oldVersion"> Preferovat starou verzi 👴</label></li>
         </ol>
     </div>
     <span id="doneSettings" role="button">Hotovo ✔️</span> <hr />
@@ -66,15 +65,6 @@ if (!visible) {
     });
 
     document.querySelector("#darkMode")["checked"] = localStorage.getItem("mode") == "dark";
-
-    document.querySelector("#oldVersion").addEventListener("change", (e) => {
-        localStorage.setItem("old", e.currentTarget["checked"]);
-        if (e.currentTarget["checked"])
-            if (confirm("Chcete přesměrovat na starou verzi kroniky"))
-                window.location.href = "/old";
-    });
-
-    document.querySelector("#oldVersion")["checked"] = localStorage.getItem("old") == "true";
    
     document.querySelector("#clearData").addEventListener("click", (e) => {
         const cookies = document.cookie.split(";");
