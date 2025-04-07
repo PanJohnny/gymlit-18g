@@ -1,0 +1,100 @@
+---
+interface Props {
+    title: string,
+    description?: string,
+    contentURL: string,
+    author?: string,
+    category: string,
+}
+
+const {title, description, contentURL, author, category} = Astro.props as Props;
+---
+
+<a class="material" data-material-category={category} href={contentURL} target="_blank" rel="noopener noreferrer">
+    <div class="mat-header">
+        <span class="title">{title}</span>
+        {author && <span class="author">{author}</span>}
+    </div>
+    {description && <div class="description">{description}</div>}
+    <div class="mat-footer">
+        <span class="category">{category}</span>
+    </div>
+</a>
+
+<style>
+    .material {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        background-color: #fff;
+        height: 100%;
+    }
+
+    .material:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-color: #ccc;
+    }
+
+    .mat-header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    .title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 4px;
+        color: #333;
+    }
+
+    .author {
+        font-size: 0.85rem;
+        color: #666;
+        font-style: italic;
+    }
+
+    .description {
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    .mat-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: auto;
+    }
+
+    .category {
+        background-color: #f0f0f0;
+        border-radius: 15px;
+        padding: 4px 12px;
+        font-size: 0.8rem;
+        color: #555;
+        display: inline-block;
+    }
+
+    @media (min-width: 768px) {
+        .material {
+            max-width: calc(50% - 32px); /* Polovina šířky - padding a margin */
+            display: inline-flex;
+            flex-direction: column;
+            margin-right: 16px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .material {
+            max-width: calc(33.33% - 32px); /* Třetina šířky - padding a margin */
+        }
+    }
+</style>

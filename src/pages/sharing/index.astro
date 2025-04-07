@@ -1,0 +1,189 @@
+---
+import Memories from "../../layouts/Memories.astro";
+import Material from "../../components/Material.astro";
+import materials from "../../data/materials.json";
+
+// Získání unikátních kategorií z materiálů
+const categories = [...new Set(materials.map(material => material.category))];
+---
+
+<Memories title="Materiály" description="Tato stránka slouží na sdílení materiálů">
+    <main>
+        <h1>
+            Sdílení materiálů
+        </h1>
+        <details open>
+            <summary>Informace o stránce</summary>
+            <p>
+                Tato stránka slouží jako místo, kde můžete sdílet svoje poznámky, výukové pomůcky, vyplněné pracovní listy a podobně.
+            </p>
+            <p>
+                Celý koncept stojí na jedné myšlence - když už tedy tuto věc udělám, proč bych si to nechával jenom sám pro sebe? Naučíte se na test, nejlépe se vám to bude hodit ve vašich dalších studiích, ale co pak s tou prací? Navrhuji vám, abyste, pokud chcete, svojí dřinou pomohli ostatním a ostatní naopak můžou pomoc vám.
+            </p>
+            <p>
+                Můžete vkládat odkazy či nahrávat materiály přímo. Vyberte pak o co se jedná a mi se na to podíváme a na stránku přidáme.
+            </p>
+            <p>
+                Není třeba uvádět jméno, ale jestli chcete, aby vám třeba někdo koupil z vděčnosti čokoládu, tak se nebojte a nemusíte být anonymní.
+            </p>
+            <a href="/sharing/submit" role="button" target="_blank">
+                Nahrát materiál
+            </a>
+        </details>
+
+        <div class="materials-container">
+            <h2>Dostupné materiály</h2>
+
+            <div class="category-filters">
+                <button class="category-btn active" data-category="all">Vše</button>
+                {categories.map(category => (
+                        <button class="category-btn" data-category={category}>{category}</button>
+                ))}
+            </div>
+
+            <div class="materials-list">
+                {materials.map(material => (
+                        <Material
+                                title={material.title}
+                                description={material.description}
+                                contentURL={material.link}
+                                author={material.author}
+                                category={material.category}
+                        />
+                ))}
+            </div>
+        </div>
+    </main>
+</Memories>
+
+<style>
+    main {
+        padding: 10px;
+    }
+
+    a[role="button"] {
+        color: white;
+        background-color: black;
+        padding: 10px;
+        display: inline-block;
+        border-radius: 12px;
+    }
+
+    .materials-container {
+        margin-top: 2rem;
+    }
+
+    .category-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .category-btn {
+        background-color: #f0f0f0;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .category-btn:hover {
+        background-color: #e0e0e0;
+    }
+
+    .category-btn.active {
+        background-color: #333;
+        color: white;
+    }
+
+    details {
+        margin: 20px 0;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        background-color: #f9f9f9;
+        padding: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    details[open] {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    summary {
+        padding: 16px;
+        cursor: pointer;
+        font-weight: bold;
+        position: relative;
+        list-style: none;
+        outline: none;
+        transition: background-color 0.2s;
+        border-radius: 12px;
+    }
+
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    summary::after {
+        content: "+";
+        position: absolute;
+        right: 20px;
+        color: #555;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    details[open] summary::after {
+        content: "-";
+    }
+
+    details[open] summary {
+        border-bottom: 1px solid #e0e0e0;
+        border-radius: 12px 12px 0 0;
+    }
+
+    details p {
+        padding: 0 16px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    details a[role="button"] {
+        margin: 0 16px 16px;
+        display: inline-block;
+        text-decoration: none;
+    }
+</style>
+
+<script>
+    // Po načtení stránky inicializujeme filtrování
+    document.addEventListener('DOMContentLoaded', () => {
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const materials = document.querySelectorAll('.material');
+
+        // Přidání event listenerů na tlačítka kategorií
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+
+                // Aktivace tlačítka
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Filtrování materiálů
+                materials.forEach(material => {
+                    const materialCategory = material.getAttribute('data-material-category');
+
+                    if (category === 'all' || category === materialCategory) {
+                        material.style.display = "";
+                    } else {
+                        material.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>

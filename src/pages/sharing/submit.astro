@@ -1,0 +1,33 @@
+---
+import Memories from "../../layouts/Memories.astro";
+---
+<Memories title="Nahrajte materiál" description="Tato stránka slouží na sdílení materiálů">
+    <main>
+        <h1>Nahrajte materiál</h1>
+        <p>
+            Buď vyplňte dotazník, nebo mi napište na WhatsApp. (Honza)
+        </p>
+        <p>
+            Moc vám děkuju za vaši pomoc. Pokud máte nějaké dotazy, neváhejte se na mě obrátit.
+        </p>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSchmn8Xim8ZMzNUD4_qZO7XczZVdj78inVRyu2MRSUfjdKF6w/viewform?embedded=true"
+                width="640" height="480" frameborder="0" marginheight="0" marginwidth="0">Loading…
+        </iframe>
+    </main>
+</Memories>
+
+<style>
+    main {
+        padding: 10px;
+    }
+</style>
+
+<script>
+    let iframe = document.querySelector("iframe");
+    // Get window width and height and set the iframe to be 90% w and 70% h
+    let w = document.body.offsetWidth;
+    let h = document.body.offsetHeight;
+
+    iframe.width = (w * 0.9).toString();
+    iframe.height = (h * 0.9).toString();
+</script>
