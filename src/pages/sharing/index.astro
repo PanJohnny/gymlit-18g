@@ -104,13 +104,13 @@ const categories = [...new Set(materials.map(material => material.category))];
     }
 
     details {
-        margin: 20px 0;
         border: 1px solid #e0e0e0;
         border-radius: 12px;
         background-color: #f9f9f9;
         padding: 0;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
+        font-size: 0.8rem;
     }
 
     details[open] {
@@ -139,6 +139,7 @@ const categories = [...new Set(materials.map(material => material.category))];
         color: #555;
         font-size: 1.2rem;
         transition: transform 0.3s ease;
+        margin-top: -6px;
     }
 
     details[open] summary::after {
