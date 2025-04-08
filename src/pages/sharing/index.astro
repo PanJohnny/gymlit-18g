@@ -12,7 +12,7 @@ const categories = [...new Set(materials.map(material => material.category))];
         <h1>
             Sdílení materiálů
         </h1>
-        <details open>
+        <details>
             <summary>Informace o stránce</summary>
             <p>
                 Tato stránka slouží jako místo, kde můžete sdílet svoje poznámky, výukové pomůcky, vyplněné pracovní listy a podobně.
@@ -54,6 +54,11 @@ const categories = [...new Set(materials.map(material => material.category))];
             </div>
         </div>
     </main>
+
+    <footer>
+        <a href="/kronika" target="_blank">kronika</a> | <a href="mailto:janstefanca@seznam.cz">kontakt</a> <br>
+        Tato stránka zprostředkovává odkazy bez záruky a odpovědnosti
+    </footer>
 </Memories>
 
 <style>
@@ -156,6 +161,28 @@ const categories = [...new Set(materials.map(material => material.category))];
         display: inline-block;
         text-decoration: none;
     }
+
+    body {
+        min-height: 100vh;
+    }
+
+    footer {
+        margin-top: 2rem;
+        padding: 1rem;
+        background-color: #f0f0f0;
+        border-radius: 12px;
+        text-align: center;
+        bottom: 0;
+        width: calc(100% - 2rem);
+        position: fixed;
+    }
+
+    @media (max-width: 768px) {
+        footer {
+            position: relative;
+            bottom: unset;
+        }
+    }
 </style>
 
 <script>
@@ -186,4 +213,10 @@ const categories = [...new Set(materials.map(material => material.category))];
             });
         });
     });
+
+    // Details open on first visit
+    if (!localStorage.hasOwnProperty("infoViewed")) {
+        document.querySelector("details").setAttribute("open", "true");
+        localStorage.setItem("infoViewed", "true");
+    }
 </script>
