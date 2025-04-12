@@ -15,7 +15,7 @@ if (Astro.request.method == "POST") {
 
             model.save();
 
-            return new Response(JSON.stringify(model.toObject()), {
+            return new Response(JSON.stringify({success: true}), {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -28,7 +28,7 @@ if (Astro.request.method == "POST") {
 
             model.save();
 
-            return new Response(JSON.stringify(model.toObject()), {
+            return new Response(JSON.stringify({success: true}), {
                 headers: {
                     "Content-Type": "application/json",
                 },
