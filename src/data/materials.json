@@ -1,12 +1,5 @@
 [
   {
-    "title": "Zeměpis - Ruský makroregion",
-    "description": "Klopacz „píše\" jako román takže tady jsou výpisky z prezentace (taky bez historického pozadí)",
-    "link": "https://docs.google.com/document/d/1SnZL922NvTYeu7CWC3MH8hkJtH3fJ4Bn/edit?usp=drivesdk&ouid=102608826738690001780&rtpof=true&sd=true",
-    "category": "Poznámky",
-    "author": "Mai"
-  },
-  {
     "title": "Poznámky Honzy a Šneka",
     "description": "Odkaz na poznámky Honza a Ondry. Je to psaný celkem líně, tak to berte s rezervou.",
     "link": "https://obsidian-online-gamma.vercel.app/app/PanJohnny/Notes2024-25/P%C5%99edm%C4%9Bty.md",
@@ -33,5 +26,12 @@
     "link": "https://calendar.google.com/calendar/u/1?cid=ZmZhOGZmMTRmMzgzMjA5Mjc2YjIxM2Y3OTgxZTEyYjIxMjY5NTRkYjFmODU2MDg2NzMzNmFlNjIwY2E2ZWQzOUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
     "category": "Kalendář",
     "author": "Honza"
+  },
+  {
+    "title": "Archivní materiály",
+    "description": "Materiály, které už nejsou aktuální, ale mohly by se hodit.",
+    "link": "/sharing/archive",
+    "category": "Archiv",
+    "author": "Archiv"
   }
 ]
