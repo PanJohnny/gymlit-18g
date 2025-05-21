@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iKlett Book Viewer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #f8f9fa;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 1rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>iKlett Book Viewer</h1>
+  <div id="image-container" class="image-container"></div>
+  <div id="loading" class="loading">Loading more pages...</div>
+
+  <script>
+    let page = 1;
+    let loading = false;
+
+    const container = document.getElementById('image-container');
+    const loadingText = document.getElementById('loading');
+
+    function loadNextPage() {
+      if (loading) return;
+      loading = true;
+
+      const img = new Image();
+      img.src = `https://iklett.cz/books/26/${page}.png`;
+      img.alt = `Page ${page}`;
+      img.className = 'page';
+      img.loading = 'lazy';
+
+      img.onload = () => {
+        container.appendChild(img);
+        page++;
+        loading = false;
+      };
+
+      img.onerror = () => {
+        loadingText.textContent = 'No more pages found.';
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+
+    function handleScroll() {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        loadNextPage();
+      }
+    }
+
+    // Initial load
+    for (let i = 0; i < 3; i++) loadNextPage();
+    window.addEventListener('scroll', handleScroll);
+  </script>
+</body>
+</html>
