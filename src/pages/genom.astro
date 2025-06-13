@@ -1,0 +1,766 @@
+---
+import Memories from "../layouts/Memories.astro";
+---
+<Memories title="Počitadlo dědičnosti" description="Vypočítá za vás dědičnost">
+    <main>
+        <h1>Počitadlo dědičnosti</h1>
+        <p>
+            Tento nástroj vám pomůže vypočítat dědičnost pro různé kombinace rodičů a jejich potomků.
+        </p>
+        <section>
+            <h2>Definujte znaky</h2>
+            <ul id="genoms">
+
+            </ul>
+            <button id="create-character">Vytvořit znak</button>
+        </section>
+        <section>
+            <h2>Možnosti vyhledávače</h2>
+            <label class="oneline">
+                Vyhledat rodiče na základě
+                <select id="search-option">
+                    <option>-- Vyberte možnost --</option>
+                    <option value="trait"> potřebného znaku</option>
+                    <option value="difference"> rozdílnosti s dítětem</option>
+                    <option value="probability"> pravděpodobnosti potřebného znaku</option>
+                    <option value="distribution"> potřebného rozložení pravděpodobnosti znaků mezi populaci</option>
+                </select>
+            </label>
+            <div class="hidden search-option" id="requested-trait">
+                <label>
+                    Potřebný znak:
+                    <select id="trait-select"> <!-- Dynamicky naplněno z genoms -->
+                    </select>
+                </label>
+            </div>
+            <div class="hidden search-option" id="requested-difference">
+                <p>Nemusíte nic dalšího zadávat.</p>
+            </div>
+            <div class="hidden search-option" id="requested-probability">
+                <label>
+                    Znak, který má dominovat:
+                    <select id="dominant-trait-select"> <!-- Dynamicky naplněno z genoms -->
+                    </select>
+                </label>
+                <label>
+                    Potřebná pravděpodobnost: <!-- Probability against other genoms that have other traits -->
+                    <input type="number" id="probability-input-a" min="0" max="4" step="1" value="3"/>:
+                    <input type="number" id="probability-input-b" min="0" max="4" step="1" value="1" />
+                </label>
+            </div>
+            <div class="hidden search-option" id="requested-distribution">
+                <label>
+                    Potřebné rozložení znaků:
+                    <input type="text" id="distribution-input" placeholder="např. A: 50%, B: 25%, C: 25%" />
+                </label>
+                <p>Jedná se o znaky, které budou dominovat např. pokud "Aa" a "A" je dominantní, avšak hledáme "a" je povoleno jen "aa"</p>
+            </div>
+        </section>
+        <button id="search-parents">Hledat rodiče</button>
+        <section>
+            <h2>Výsledky</h2>
+
+            <div id="results">
+                <code>Zde se zobrazí výsledky vyhledávání.</code>
+            </div>
+        </section>
+    </main>
+</Memories>
+
+<style>
+    main {
+        padding: 10px;
+    }
+
+    #genoms {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    :global(#genoms li) {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        border: 2px solid;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    :global(button) {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    :global(button.remove-character) {
+        background-color: #dc3545;
+    }
+
+    :global(button.remove-character):hover {
+        background-color: #c82333;
+    }
+
+    :global(input[type="text"]) {
+        margin-top: 5px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    :global(.trait) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    :global(.trait span) {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    select {
+        margin-top: 5px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    input[type="number"] {
+        width: 100px;
+    }
+
+    input[type="checkbox"] {
+        margin-left: 10px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    label.oneline {
+        /* should mimic the select element - make the one inside larger and include other text in it */
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .oneline select {
+        flex: 1;
+        width: auto;
+        border: 0;
+        background: transparent;
+    }
+
+    :global(option) {
+        padding: 8px;
+    }
+
+    .search-option {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    @media (max-width: 900px) {
+        #genoms {
+            flex-direction: column;
+        }
+
+        :global(#genoms li) {
+            width: calc(100% - 20px); /* Full width minus margin */
+        }
+
+        .trait {
+            flex-direction: column;
+        }
+
+        .trait span {
+            margin-bottom: 5px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: calc(100% - 20px);
+        }
+        label.oneline {
+            width: calc(100% - 20px);
+        }
+        label.oneline select {
+            width: calc(100% - 20px);
+        }
+        .search-option {
+            width: calc(100% - 20px);
+        }
+        .search-option label {
+            width: calc(100% - 20px);
+        }
+    }
+</style>
+
+<script>
+    let genoms = [];
+
+    document.querySelector("#create-character").addEventListener("click", function() {
+         const li = document.createElement("li");
+         // Set the name to the next available character in alphabetical order (no input field)
+            const characters = document.querySelectorAll("#genoms li");
+            const nextChar = String.fromCharCode(65 + characters.length); // A, B, C, ...
+        li.innerHTML = `
+            <div class="trait">
+                <span>${nextChar.toUpperCase()}</span>
+                <input type="text" placeholder="Popis" />
+                <label>
+                    <input type="checkbox" /> plně dominantní
+                </label>
+            </div>
+            <div class="trait">
+                <span>${nextChar.toLowerCase()}</span>
+                <input type="text" placeholder="Popis" />
+            </div>
+            <button class="remove-character">Odstranit</button>
+        `;
+
+        // set custom border color, based on the character
+        li.style.borderColor = `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`;
+
+        document.querySelector("#genoms").appendChild(li);
+
+        genoms.push({
+            name: nextChar,
+            traits: [
+                { dominant: false, description: "", char: nextChar.toUpperCase() },
+                { dominant: false, description: "", char: nextChar.toLowerCase() }
+            ]
+        });
+
+        li.querySelector(".remove-character").addEventListener("click", function() {
+            li.remove();
+            genoms = genoms.filter(g => g.name !== nextChar);
+        });
+
+        // Add event listener to the input fields to update the genoms array
+        li.querySelectorAll("input[type='text']").forEach((input, index) => {
+            input.addEventListener("input", function() {
+                genoms.find(g => g.name === nextChar).traits[index].description = this.value;
+            });
+        });
+
+        li.querySelector("input[type='checkbox']").addEventListener("change", function() {
+            genoms.find(g => g.name === nextChar).traits[0].dominant = this.checked;
+        });
+
+        // Focus the first input field in the new character
+        li.querySelector("input[type='text']").focus();
+    });
+
+    // Function upon page unloads to store into session storage
+    window.addEventListener("beforeunload", function() {
+        sessionStorage.setItem("genoms", JSON.stringify(genoms));
+    });
+
+    // Load genoms from session storage if available
+    window.addEventListener("load", function() {
+        const storedGenoms = sessionStorage.getItem("genoms");
+        if (storedGenoms) {
+            genoms = JSON.parse(storedGenoms);
+            genoms.forEach(g => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <div class="trait">
+                        <span>${g.name.toUpperCase()}</span>
+                        <input type="text" placeholder="Popis" value="${g.traits[0].description}" />
+                        <label>
+                            <input type="checkbox" ${g.traits[0].dominant ? "checked" : ""} /> plně dominantní
+                        </label>
+                    </div>
+                    <div class="trait">
+                        <span>${g.name.toLowerCase()}</span>
+                        <input type="text" placeholder="Popis" value="${g.traits[1].description}" />
+                    </div>
+                    <button class="remove-character">Odstranit</button>
+                `;
+                li.style.borderColor = `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`;
+                document.querySelector("#genoms").appendChild(li);
+
+                li.querySelector(".remove-character").addEventListener("click", function() {
+                    li.remove();
+                    genoms = genoms.filter(item => item.name !== g.name);
+                });
+
+                // Add event listeners to the input fields
+                li.querySelectorAll("input[type='text']").forEach((input, index) => {
+                    input.addEventListener("input", function() {
+                        genoms.find(item => item.name === g.name).traits[index].description = this.value;
+                    });
+                });
+
+                li.querySelector("input[type='checkbox']").addEventListener("change", function() {
+                    genoms.find(item => item.name === g.name).traits[0].dominant = this.checked;
+                });
+            });
+        }
+    });
+
+    // Handle search option change
+    document.querySelector("#search-option").addEventListener("change", function() {
+        const option = this.value;
+        document.querySelectorAll(".search-option").forEach(el => el.classList.add("hidden"));
+
+        if (option === "trait") {
+            document.querySelector("#requested-trait").classList.remove("hidden");
+            const traitSelect = document.querySelector("#trait-select");
+            traitSelect.innerHTML = ""; // Clear previous options
+            genoms.forEach(g => {
+                g.traits.forEach(trait => {
+                    const option = document.createElement("option");
+                    option.value = trait.char;
+                    option.textContent = traitToString(trait);
+                    traitSelect.appendChild(option);
+                });
+            });
+        } else if (option === "difference") {
+            document.querySelector("#requested-difference").classList.remove("hidden");
+        } else if (option === "probability") {
+            document.querySelector("#requested-probability").classList.remove("hidden");
+            const dominantTraitSelect = document.querySelector("#dominant-trait-select");
+            dominantTraitSelect.innerHTML = ""; // Clear previous options
+            genoms.forEach(g => { // @ts-ignore
+                g.traits.forEach(trait => {
+                    const option = document.createElement("option");
+                    option.value = trait.char;
+                    option.textContent = traitToString(trait);
+                    dominantTraitSelect.appendChild(option);
+                });
+            });
+        } else if (option === "distribution") {
+            document.querySelector("#requested-distribution").classList.remove("hidden");
+        }
+    });
+
+    function traitToString(trait:any) {
+        return `${trait.char} (${trait.description}${trait.dominant ? " - dominantní" : ""})`
+    }
+
+    document.querySelector("#search-parents").addEventListener("click", function() {
+        const option = document.querySelector("#search-option").value;
+        const resultsDiv = document.querySelector("#results");
+        resultsDiv.innerHTML = ""; // Clear previous results
+
+        let parents = [];
+        if (option === "trait") {
+            let requestedTrait = document.querySelector("#trait-select").value;
+            parents = findParentsForTrait(requestedTrait);
+
+        } else if (option === "difference") {
+            parents = findParentsForDifference();
+        } else if (option === "probability") {
+            // Get the dominant trait and the probability inputs
+            let dominantTrait = document.querySelector("#dominant-trait-select").value;
+            const probabilityA = parseInt(document.querySelector("#probability-input-a").value);
+            const probabilityB = parseInt(document.querySelector("#probability-input-b").value);
+            // Calculate the parents based on the dominant trait and probabilities
+            parents = findParentsForProbability(dominantTrait, probabilityA, probabilityB);
+        } else if (option === "distribution") {
+            const distributionInput = document.querySelector("#distribution-input").value;
+            const results = findParentsForDistribution(distributionInput);
+
+            if (results.length > 0) {
+                const resultsList = document.createElement("ul");
+
+                results.forEach(result => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<strong>Rodiče:</strong> ${result.parents}<br>
+                           <strong>Genotypový poměr potomků:</strong> ${result.genotypicRatio}`;
+                    resultsList.appendChild(li);
+                });
+
+                resultsDiv.appendChild(resultsList);
+            } else {
+                resultsDiv.innerHTML = "<p>Nenalezeny žádné odpovídající kombinace rodičů.</p>";
+            }
+        }
+
+        if (parents.length > 0) {
+            // Create a list and list the parents
+            const ul = document.createElement("ul");
+            parents.forEach(parent => {
+                const li = document.createElement("li");
+                li.textContent = parent;
+                ul.appendChild(li);
+            });
+            resultsDiv.appendChild(ul);
+        } else {
+            resultsDiv.innerHTML += `<p>Nenalezeni rodiče.</p>`;
+        }
+    });
+
+    function findParentsForTrait(trait): Array<String> {
+        let parents = [];
+        const genom = genoms.filter(genom => genom.name === trait.toUpperCase())[0];
+        // Now when we have the genom with the possible traits, check if the first trait is dominant
+        if (genom) {
+            let firstDominant = genom.traits[0].dominant;
+
+            // Check if the dominant trait matches the requested trait
+            let isTraitDominant = firstDominant && genom.traits[0].char === trait;
+
+            // If trait is dominant all trait combinations containing it must be returned
+            // Create those combinations e.g. Aa, aA, AA
+            if (isTraitDominant || !firstDominant) {
+                // Return only strings of the combinations
+                let chars = genom.traits.map(t => t.char);
+                parents = [
+                    trait + trait, // AA/aa
+                    chars[0] + chars[1], // Aa
+                    chars[1] + chars[0] // aA
+                ];
+            } else {
+                // The first is dominant and this one is not, so only combination of this one produces the trait 100%
+                parents = [genom.traits[1].char + genom.traits[1].char]; // aa
+            }
+        }
+
+        return parents;
+    }
+
+    function findParentsForDifference(): Array<String> {
+        let parents = [];
+        // This function should find 2 parents that have different traits than the child
+        // For example:
+        // A - dominant then valid parents for child would be: Aa, Aa (no need for having the A in both positions) the child would be aa
+        // B - not dominant then valid parents for child would be: BB bb - this is because the child would need to be a mix: Bb
+        // This method counts only with 1 genom
+
+        const genom = genoms[0]; // Assuming we are looking for parents of the first genom
+        if (!genom) return parents;
+        // Check if the first trait is dominant
+        let firstDominant = genom.traits[0].dominant;
+        if (firstDominant) {
+            parents = [
+                genom.traits[0].char + genom.traits[1].char + " + " + genom.traits[0].char + genom.traits[1].char, // Aa, // Aa
+            ]
+        } else {
+            parents = [
+                genom.traits[0].char + genom.traits[0].char + " + " + genom.traits[1].char + genom.traits[1].char, // AA, // aa
+            ]
+        }
+
+        return parents;
+    }
+
+    function findParentsForProbability(dominantTrait, probabilityA, probabilityB) {
+        let parents = [];
+
+        // Najdeme genom, který obsahuje požadovaný znak
+        const genom = genoms.find(g => g.traits.some(t => t.char === dominantTrait));
+        if (!genom) return parents;
+
+        // Určíme, který znak je dominantní a který recesivní
+        const dominantTraitObj = genom.traits.find(t => t.char === dominantTrait);
+        const isUpperCase = dominantTrait === dominantTrait.toUpperCase();
+        const isDominant = isUpperCase && genom.traits[0].dominant;
+
+        // Vytvoříme všechny možné kombinace rodičů (AA, Aa, aA, aa)
+        const A = genom.traits[0].char;
+        const a = genom.traits[1].char;
+
+        // Všechny možné genotypy rodičů
+        const parentGenotypes = [
+            `${A}${A}`, // AA
+            `${A}${a}`, // Aa
+            `${a}${A}`, // aA
+            `${a}${a}`  // aa
+        ];
+
+        // Otestujeme všechny možné kombinace rodičů
+        for (let i = 0; i < parentGenotypes.length; i++) {
+            for (let j = 0; j < parentGenotypes.length; j++) {
+                const parent1 = parentGenotypes[i];
+                const parent2 = parentGenotypes[j];
+
+                // Vytvoříme potomky
+                const children = getPossibleChildren(parent1, parent2);
+
+                // Spočítáme dominantní a recesivní fenotypy u potomků
+                let dominantCount = 0;
+                let nonDominantCount = 0;
+
+                children.forEach(child => {
+                    // Pokud je znak dominantní a alespoň jeden alel je dominantní, nebo pokud není dominantní a oba jsou recesivní
+                    if ((isDominant && child.includes(A)) || (!isDominant && child === `${a}${a}`)) {
+                        dominantCount++;
+                    } else {
+                        nonDominantCount++;
+                    }
+                });
+
+                // Kontrola požadovaného poměru
+                if (dominantCount * probabilityB === nonDominantCount * probabilityA) {
+                    parents.push(`${parent1} + ${parent2}`);
+                }
+            }
+        }
+
+        return parents;
+    }
+
+    // Pomocná funkce pro získání všech možných potomků z kombinace dvou rodičů
+    function getPossibleChildren(parent1, parent2) {
+        const children = [];
+
+        // První rodič může dát první nebo druhý alel
+        const p1a1 = parent1[0];
+        const p1a2 = parent1[1];
+
+        // Druhý rodič může dát první nebo druhý alel
+        const p2a1 = parent2[0];
+        const p2a2 = parent2[1];
+
+        // Všechny možné kombinace
+        children.push(`${p1a1}${p2a1}`);
+        children.push(`${p1a1}${p2a2}`);
+        children.push(`${p1a2}${p2a1}`);
+        children.push(`${p1a2}${p2a2}`);
+
+        return children;
+    }
+
+    function findParentsForDistribution(distributionInput) {
+        const results = [];
+
+        // Parsování vstupu
+        // Očekáváme formát: "A: 70%, B: 30%" nebo "fialové dlouhé: 96, bílé dlouhé: 32"
+        const distributionPairs = distributionInput.split(',').map(pair => {
+            const [trait, countOrPercentage] = pair.trim().split(':').map(item => item.trim());
+            let value = parseInt(countOrPercentage);
+            if (countOrPercentage.includes('%')) {
+                value = parseFloat(countOrPercentage) / 100;
+            }
+            return { trait, value };
+        });
+
+        // Zpracování hodnot na poměry
+        const total = distributionPairs.reduce((sum, pair) => sum + pair.value, 0);
+        const ratios = distributionPairs.map(pair => ({
+            trait: pair.trait,
+            ratio: pair.value / total
+        }));
+
+        // Pro každý pár genomů zkontrolujeme všechny možné kombinace
+        for (const genom1 of genoms) {
+            for (const genom2 of genoms) {
+                // Pro každý genom zkontrolujeme všechny možné genotypy rodičů
+                const parent1Genotypes = createGenotypes(genom1);
+                const parent2Genotypes = createGenotypes(genom2);
+
+                for (const p1 of parent1Genotypes) {
+                    for (const p2 of parent2Genotypes) {
+                        for (const p3 of parent1Genotypes) {
+                            for (const p4 of parent2Genotypes) {
+                                // Zkontrolujeme kombinaci obou rodičů
+                                const parent1 = p1 + p3;
+                                const parent2 = p2 + p4;
+
+                                // Získáme všechny možné potomky
+                                const allChildren = getAllPossibleChildren(parent1, parent2);
+
+                                // Spočítáme fenotypy potomků
+                                const phenotypes = calculatePhenotypes(allChildren);
+
+                                // Porovnáme s požadovanými poměry
+                                if (matchesRatios(phenotypes, ratios)) {
+                                    results.push({
+                                        parents: `${parent1} × ${parent2}`,
+                                        genotypicRatio: calculateGenotypicRatio(allChildren)
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+
+    // Vytvoření možných genotypů pro genom
+    function createGenotypes(genom) {
+        return genom.traits.map(t => t.char);
+    }
+
+    // Získání všech možných potomků pro dva rodiče s více geny
+    function getAllPossibleChildren(parent1, parent2) {
+        const children = [];
+
+        // Rozdělíme genomy rodičů na jednotlivé znaky
+        const p1Genes = [];
+        const p2Genes = [];
+
+        for (let i = 0; i < parent1.length; i += 2) {
+            p1Genes.push(parent1.substr(i, 2));
+        }
+
+        for (let i = 0; i < parent2.length; i += 2) {
+            p2Genes.push(parent2.substr(i, 2));
+        }
+
+        // Vytvoříme všechny možné kombinace genů pro každý pár znaků
+        const geneCombinations = [];
+
+        for (let i = 0; i < p1Genes.length; i++) {
+            const p1Gene = p1Genes[i];
+            const p2Gene = p2Genes[i];
+
+            const combinations = getPossibleChildren(p1Gene, p2Gene);
+            geneCombinations.push(combinations);
+        }
+
+        // Vytvoříme všechny možné kombinace genů
+        const combineGenes = (current, index) => {
+            if (index === geneCombinations.length) {
+                children.push(current);
+                return;
+            }
+
+            for (const gene of geneCombinations[index]) {
+                combineGenes(current + gene, index + 1);
+            }
+        };
+
+        combineGenes("", 0);
+
+        return children;
+    }
+
+    // Výpočet fenotypů pro potomky
+    function calculatePhenotypes(children) {
+        const phenotypes = {};
+
+        children.forEach(child => {
+            const phenotype = childToPhenotype(child);
+            phenotypes[phenotype] = (phenotypes[phenotype] || 0) + 1;
+        });
+
+        // Převedeme na poměry
+        const total = children.length;
+        const phenotypeRatios = {};
+
+        for (const [phenotype, count] of Object.entries(phenotypes)) {
+            phenotypeRatios[phenotype] = count / total;
+        }
+
+        return phenotypeRatios;
+    }
+
+    // Převod genotypu dítěte na fenotyp
+    function childToPhenotype(child) {
+        let phenotype = "";
+
+        for (let i = 0; i < child.length; i += 2) {
+            const gene = child.substr(i, 2);
+            const genChar = gene[0].toUpperCase();
+            const genom = genoms.find(g => g.traits.some(t => t.char.toUpperCase() === genChar));
+
+            if (!genom) continue;
+
+            const isDominant = genom.traits[0].dominant;
+            const dominantChar = genom.traits[0].char;
+            const recessiveChar = genom.traits[1].char;
+
+            // Zjistíme fenotyp pro tento gen
+            let trait;
+            if (isDominant && gene.includes(dominantChar)) {
+                // Dominantní znak se projeví, pokud je alespoň jeden alel dominantní
+                trait = dominantChar.toUpperCase();
+            } else {
+                // Recesivní znak se projeví, pouze pokud jsou oba alely recesivní
+                trait = recessiveChar;
+            }
+
+            phenotype += trait;
+        }
+
+        return phenotype;
+    }
+
+    // Porovnání dvou sad fenotypových poměrů
+    function matchesRatios(actualRatios, expectedRatios) {
+        // Převedeme očekávané poměry na formát, který můžeme porovnat
+        const simplifiedExpected = {};
+        for (const ratio of expectedRatios) {
+            simplifiedExpected[ratio.trait] = ratio.ratio;
+        }
+
+        // Tolerance pro porovnání poměrů (kvůli plovoucím desetinným číslům)
+        const tolerance = 0.01;
+
+        // Porovnáme poměry pro každý fenotyp
+        for (const [phenotype, ratio] of Object.entries(actualRatios)) {
+            const expectedRatio = simplifiedExpected[phenotype];
+
+            // Pokud pro tento fenotyp nemáme očekávaný poměr, nebo se příliš liší
+            if (expectedRatio === undefined || Math.abs(ratio - expectedRatio) > tolerance) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Výpočet genotypového poměru u potomků
+    function calculateGenotypicRatio(children) {
+        const genotypes = {};
+
+        children.forEach(child => {
+            genotypes[child] = (genotypes[child] || 0) + 1;
+        });
+
+        // Najdeme největší společný dělitel pro zjednodušení poměrů
+        const counts = Object.values(genotypes);
+        let gcd = counts.reduce((a, b) => gcdCalculator(a, b));
+
+        // Vytvoříme zjednodušený poměr jako řetězec
+        const ratio = Object.entries(genotypes)
+            .map(([genotype, count]) => `${genotype}: ${count / gcd}`)
+            .join(', ');
+
+        return ratio;
+    }
+
+    // Výpočet největšího společného dělitele
+    function gcdCalculator(a, b) {
+        if (!b) return a;
+        return gcdCalculator(b, a % b);
+    }
+</script>
