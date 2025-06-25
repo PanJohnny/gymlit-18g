@@ -7,9 +7,32 @@ import Layout from "../../layouts/Layout.astro";
         <p>
             Vítejte na našich webových stránkách!
         </p>
-        <p>
-            <b>Novinka!</b> sdílejte své studijní materiály a podívejte se na ostatní, více <a href="/sharing" target="_blank">zde</a>
-        </p>
+        <div class="happy">
+            <h2>
+                Hezké prázdniny!
+            </h2>
+            <p>
+                Přejeme všem krásné prázdniny!
+            </p>
+            <ul>
+                <li>
+                    <a href="/memories">
+                        Dejte si výlet do minulosti a podívejte se na vše co v této kronice je!
+                    </a>
+                    <div class="arrow">
+                        →
+                    </div>
+                </li>
+                <li>
+                    <a href="/kronika/summary/year/7">
+                        Nebo se podívejte co jsme zapsali za poslední rok.
+                    </a>
+                    <div class="arrow">
+                        →
+                    </div>
+                </li>
+            </ul>
+        </div>
         <div>
             <h2 id="funkce">Funkce</h2>
             <p>Pomocí navigace (lupička) se můžete rychle pohybovat po stránce. Můžete se podívat na statistiky a to i ty o návštěvnosti. Červené vykřičníky u hlášek po kliknutí otevřou prostředek pro nahlašování chyb, nebo jen pro kontakt. Informace o poslední aktualizaci stránek naleznete, pod každou stránkou.</p>
@@ -39,20 +62,49 @@ import Layout from "../../layouts/Layout.astro";
         color: green;
         font-weight: 900;
     }
+
+    .happy {
+        background-color: #f0f8ff;
+        color: black;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        border: 1px solid #ccc;
+    }
+
+    .happy ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .happy li {
+        margin: 0.5rem 0;
+        font-weight: bold;
+        padding: 5px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        background-color: #ffeaef;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .happy li a {
+        color: #007bff;
+        text-decoration: none;
+        flex: 1;
+    }
+
+    .happy li .arrow {
+        color: #555;
+        padding-right: 1px;
+        transition: padding-right 0.3s ease;
+    }
+
+    .happy li:hover .arrow {
+        padding-right: 0;
+    }
 </style>
-
-<script is:inline>
-    const msg = '<icon class="rss">&nbsp;&nbsp;&nbsp;&nbsp;</icon> Poslední zpráva ze školy: ';
-    const ln = document.querySelector(".last-news");
-
-    fetch("https://fastgymlit.vercel.app/api/feed").then(r => r.json()).catch(err => {
-        ln.remove();
-    }).then(json => {
-        ln.innerHTML = msg + json[0].title;
-        ln.classList.remove("loading");
-        ln.setAttribute("href", json[0].link)
-    }).catch(err => ln.remove());
-</script>
 
 <style is:inline>
     .loading {
@@ -71,3 +123,16 @@ import Layout from "../../layouts/Layout.astro";
         background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Rss_font_awesome.svg/768px-Rss_font_awesome.svg.png");
     }
 </style>
+
+<script is:inline>
+    const msg = '<icon class="rss">&nbsp;&nbsp;&nbsp;&nbsp;</icon> Poslední zpráva ze školy: ';
+    const ln = document.querySelector(".last-news");
+
+    fetch("https://fastgymlit.vercel.app/api/feed").then(r => r.json()).catch(err => {
+        ln.remove();
+    }).then(json => {
+        ln.innerHTML = msg + json[0].title;
+        ln.classList.remove("loading");
+        ln.setAttribute("href", json[0].link)
+    }).catch(err => ln.remove());
+</script>
