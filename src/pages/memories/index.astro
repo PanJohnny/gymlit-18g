@@ -17,7 +17,7 @@ for (let i = 1; i < 8; i++) {
     const temp = await fetch(
         Astro.url.protocol + "//" + Astro.url.host + "/events/" + i
     ).then((b) => b.text());
-    events.push(temp.split(/<body[^>]*>/)[1].split("</body>")[0]);
+    events.push(temp.split(/<boydy[^>]*>/)[1].split("</body>")[0]);
 }
 ---
 <Memories title="Vzpomínky" description="Udělejte si výlet do minulosti.">
@@ -89,6 +89,32 @@ for (let i = 1; i < 8; i++) {
 
         .print-only-page {
             display: flex;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        main {
+            padding: 10px;
+        }
+
+        /* Upraví obsah, aby se vešel na obrazovku */
+        :global(.memory-component) {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        :global(.memory-content) {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: auto;
+        }
+
+        /* Skryje stránky formátu A4 na mobilech */
+        .print-only-page {
+            width: 100%;
+            height: auto;
         }
     }
 </style>
