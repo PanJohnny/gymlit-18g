@@ -1,6 +1,7 @@
 ---
 import Memories from "../../layouts/Memories.astro";
 import Memory from "../../components/Memory.astro";
+import teachers from "../../../public/teachers.json";
 
 let phrases = [];
 let events = [];
@@ -23,6 +24,7 @@ for (let i = 1; i < 8; i++) {
 <Memories title="Vzpomínky" description="Udělejte si výlet do minulosti.">
     <header>
         <h1>Vzpomínky</h1>
+        <a href="javascript:print()">Tisk/export</a>
         <a href="/kronika">Hlavní strana</a>
     </header>
     <main>
