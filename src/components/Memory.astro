@@ -33,7 +33,7 @@ function quoteFix(input) {
     <h2>{title}</h2>
     <div class="phrases">
         {phraseList.map(({teacher, phrase}) => (
-                <div class="phrase">
+                <div class="phrase" data-said-by={teacher}>
                     <h4>{teachers[teacher]}</h4>
                     <p>{quoteFix(phrase)}</p>
                 </div>

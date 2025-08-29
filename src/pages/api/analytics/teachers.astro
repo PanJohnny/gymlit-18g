@@ -1,0 +1,63 @@
+---
+const catchphrases = await Astro.glob("../../../../public/catchphrases/*.json");
+import teachers from "../../../../public/teachers.json";
+
+const cpp = {};
+
+Object.keys(teachers).forEach(t => {
+    cpp[t] = 0;
+})
+
+catchphrases.forEach(phrases => {
+    Object.keys(phrases).forEach(id => {
+        cpp[id] += phrases[id].length;
+    })
+});
+
+let sortable = [];
+for (var vehicle in cpp) {
+    // @ts-ignore
+    sortable.push([vehicle, cpp[vehicle]]);
+}
+
+sortable.sort(function(a, b) {
+    return b[1] - a[1];
+});
+
+sortable.pop();
+
+const series = sortable.map(s => s[1]);
+
+let catchCount = 0;
+
+series.forEach(s => {
+    catchCount += s;
+});
+
+const cpy = [];
+
+let i = 0;
+catchphrases.forEach(phrases => {
+    // @ts-ignore
+    cpy.push(0);
+
+    Object.values(phrases).forEach(v => {
+        if (v != undefined && v.length != undefined) // @ts-ignore
+            cpy[i] += v.length;
+    })
+
+    cpy[i] = {yearDescription:(2018 + i) + "/" + (19+i), classIndex: i, className: (i + 1) + ". G", count: cpy[i]};
+
+    i++;
+});
+
+return new Response(JSON.stringify({
+    byTeacher: sortable.map(s => ({id: s[0], name: teachers[s[0]], count: s[1], truePosition: series.indexOf(s[1]) + 1})),
+    totalCatchphrases: catchCount,
+    byYear: cpy,
+}), {
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+---

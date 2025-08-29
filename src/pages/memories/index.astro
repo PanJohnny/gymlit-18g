@@ -24,7 +24,7 @@ for (let i = 1; i < 8; i++) {
 <Memories title="Vzpomínky" description="Udělejte si výlet do minulosti.">
     <header>
         <h1>Vzpomínky</h1>
-        <a href="javascript:print()">Tisk/export</a>
+        <a href="javascript:void(0)" id="print-button">Tisk/export</a>
         <a href="/kronika">Hlavní strana</a>
     </header>
     <main>
@@ -32,8 +32,12 @@ for (let i = 1; i < 8; i++) {
             <h1 style="margin-bottom: 0">Výpis z kroniky</h1>
             <h2 style="margin-top: 0">2018-2025 G</h2>
             <h3>Filip Sova a spol.</h3>
+            <div>
+                <p id="created-for">
+                </p>
+            </div>
         </div>
-        <div class="print-only-page">
+        <div class="print-only-page" id="preamble">
             <div>
                 <p>V ruce držíte výpis z naší kroniky. Udělejte si cestu o 8 let zpátky a zasmějte se s námi.</p>
                 <p style="text-align: right">Vaši kronikáři</p>
@@ -47,6 +51,38 @@ for (let i = 1; i < 8; i++) {
 
         </div>
     </main>
+
+    <dialog id="print-dialog">
+        <form method="dialog">
+            <h2>Možnosti pro tisk/export</h2>
+
+            <label>
+                <input type="checkbox" id="include-events" checked>
+                Zahrnout události
+            </label>
+
+            <!-- section for picking one teacher to include their quotes only, enabled with checkbox -->
+            <label>
+                <input type="checkbox" id="filter-teacher" autocomplete="off">
+                Vytvořit výpis pro učitele
+            </label>
+
+            <label hidden id="teacher-select-container">Učitel: <select id="teacher-select">
+                {Object.entries(teachers).map(([key, name]) => (
+                        <option value={key}>{name}</option>
+                ))}
+            </select>
+            </label>
+
+            <label>
+                Osobní věnování:
+                <textarea rows="1" cols="30" id="created-for-input" placeholder="Věnování"></textarea>
+                (dobrovolné)
+            </label>
+
+            <input type="submit" value="Hotovo"/>
+        </form>
+    </dialog>
 </Memories>
 
 <style>
@@ -68,18 +104,6 @@ for (let i = 1; i < 8; i++) {
         width: 100%;
     }
 
-    .print-only-page {
-        width: 210mm;
-        height: 297mm;
-        display: none;
-        flex-direction: column;
-        padding: 3mm;
-        border: 1px solid black;
-        page-break-after: right;
-        align-items: center;
-        justify-content: center;
-    }
-
     @media print {
         header {
             display: none;
@@ -99,4 +123,322 @@ for (let i = 1; i < 8; i++) {
             display: block;
         }
     }
+
+    dialog {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+    }
+
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    dialog form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #created-for {
+        font-style: italic;
+        margin-top: 20px;
+    }
 </style>
+
+<style is:global>
+    .print-only-page {
+        width: 210mm;
+        height: 297mm;
+        display: none;
+        flex-direction: column;
+        padding: 3mm;
+        border: 1px solid black;
+        page-break-after: right;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .teacher-results {
+        background-color: #f8f8f8;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .teacher-stats {
+        width: 90%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .teacher-stats h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 10px;
+    }
+
+    .teacher-profile {
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .teacher-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: #4a86e8;
+        color: white;
+        font-size: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+    }
+
+    .teacher-info {
+        flex: 1;
+    }
+
+    .teacher-info h3 {
+        font-size: 28px;
+        margin: 0 0 10px 0;
+    }
+
+    .position {
+        font-size: 18px;
+        color: #666;
+        margin: 5px 0;
+    }
+
+    .count, .percentage {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    .ranking {
+        margin-top: 40px;
+    }
+
+    .ranking h4 {
+        margin-bottom: 15px;
+        color: #444;
+    }
+
+    .ranking-chart {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .ranking-item {
+        display: flex;
+        align-items: center;
+        background-color: #f5f5f5;
+        padding: 10px;
+        border-radius: 6px;
+        transition: opacity 0.3s;
+    }
+
+    .ranking-item .position {
+        width: 30px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .ranking-item .name {
+        width: 150px;
+        font-weight: 500;
+    }
+
+    .ranking-item .bar {
+        flex: 1;
+        height: 12px;
+        background-color: #4a86e8;
+        border-radius: 6px;
+        margin: 0 15px;
+    }
+
+    .ranking-item .count {
+        font-weight: 500;
+        min-width: 40px;
+        text-align: right;
+    }
+
+    @media print {
+        .teacher-results {
+            display: flex;
+            background-color: white !important;
+        }
+
+        .teacher-stats {
+            box-shadow: none;
+        }
+
+        .print-only-page {
+            display: flex;
+        }
+    }
+</style>
+
+<script>
+    const printDialog = document.querySelector("#print-dialog") as HTMLDialogElement;
+    const filterTeacherCheckbox = document.querySelector("#filter-teacher") as HTMLInputElement;
+    const teacherSelect = document.querySelector("#teacher-select") as HTMLSelectElement;
+
+    document.querySelector("#print-button").addEventListener("click", () => {
+        printDialog.showModal();
+    });
+
+    printDialog.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const includeEvents = (document.querySelector("#include-events") as HTMLInputElement).checked;
+        document.querySelectorAll(".events").forEach(el => {
+            (el as HTMLElement).style.display = includeEvents ? "" : "none";
+        });
+        if (filterTeacherCheckbox.checked) {
+            const teacher = teacherSelect.value;
+            const teacherName = teacherSelect.options[teacherSelect.selectedIndex].text;
+
+            document.querySelectorAll(".phrase").forEach(el => {
+                if (el.getAttribute("data-said-by") === teacher) {
+                    (el as HTMLElement).style.display = ""; // remove the name
+                    el.querySelector("h4").style.display = "none";
+                } else {
+                    (el as HTMLElement).style.display = "none";
+                }
+            });
+
+            // also remove the years where there are no phrases visible
+            document.querySelectorAll(".memory").forEach(memory => {
+                const visiblePhrases = memory.querySelectorAll(".phrase:not([style*='display: none'])");
+                if (visiblePhrases.length === 0) {
+                    (memory as HTMLElement).style.display = "none";
+                } else {
+                    (memory as HTMLElement).style.display = "";
+                }
+            });
+
+            // Získat data o učitelích z API
+            const statsResponse = await fetch("/api/analytics/teachers");
+            const stats = await statsResponse.json();
+
+            const teacherStats = stats.byTeacher.find(t => t.id === teacher);
+            const teacherIndex = teacherStats.truePosition;
+            // Najít sousední učitele v žebříčku (max 3)
+            const neighborTeachers = [];
+            const startIndex = Math.max(0, teacherIndex - 3);
+            const endIndex = Math.min(stats.byTeacher.length - 1, teacherIndex + 3);
+
+            for (let i = startIndex; i <= endIndex; i++) {
+                neighborTeachers.push({
+                    ...stats.byTeacher[i],
+                    distance: Math.abs(i - teacherIndex)
+                });
+            }
+
+
+            // Vytvořit stránku s výsledky
+            const preamble = document.querySelector("#preamble");
+            const resultsPage = document.createElement("div");
+            resultsPage.className = "print-only-page teacher-results";
+
+            // Vytvořit medaili podle pozice
+            let medal = "";
+            if (teacherIndex === 1) {
+                medal = "🥇";
+            } else if (teacherIndex === 2) {
+                medal = "🥈";
+            } else if (teacherIndex === 3) {
+                medal = "🥉";
+            } else if (teacherIndex === 4) {
+                medal = "🏅";
+            } else if (teacherIndex <= 10) {
+                medal = "🎖️";
+            } else {
+                medal = "📜";
+            }
+
+            let percentage = ((teacherStats.count / stats.totalCatchphrases) * 100).toFixed(2);
+
+            resultsPage.innerHTML = `
+            <div class="teacher-stats">
+                <h2>Vaše umístění v žebříčku hlášek</h2>
+                <div class="teacher-profile">
+                    <div class="teacher-avatar">${medal}</div>
+                    <div class="teacher-info">
+                        <h3>${teacherName}<h3>
+                        <p class="position">${teacherIndex}. místo v žebříčku</p>
+                        <p class="count">Celkem hlášek: <strong>${teacherStats.count}</strong></p>
+                        <p class="percentage">To je <strong>${percentage} %</strong> ze všech hlášek</p>
+                    </div>
+                </div>
+                
+                <div class="ranking">
+                    <h4>Porovnání s ostatními</h4>
+                    <div class="ranking-chart">
+                        ${neighborTeachers.map(t => `
+                            <div class="ranking-item" style="opacity: ${1 - (t.distance * 0.2)}">
+                                <span class="position">${t.truePosition}.</span>
+                                <span class="name">${t.name}</span>
+                                <span class="bar" style="width: ${(t.count / stats.byTeacher[0].count) * 100}%"></span>
+                                <span class="count">${t.count}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+
+            // Vložit stránku za preamble
+            preamble.after(resultsPage);
+        } else {
+            document.querySelectorAll(".phrase").forEach(el => {
+                (el as HTMLElement).style.display = "";
+            });
+        }
+
+        const createdForInput = document.querySelector("#created-for-input") as HTMLTextAreaElement;
+
+        const createdFor = createdForInput.value.trim();
+        const createdForP = document.querySelector("#created-for") as HTMLParagraphElement;
+        if (createdFor.length > 0) {
+            createdForP.textContent = "Věnováno " + createdFor;
+        }
+
+        printDialog.close();
+        window.print();
+
+        document.querySelectorAll(".events").forEach(el => {
+            (el as HTMLElement).style.display = "";
+        });
+
+        document.querySelectorAll(".phrase").forEach(el => {
+            (el as HTMLElement).style.display = "";
+            el.querySelector("h4").style.display = "";
+        });
+
+        document.querySelectorAll(".memory").forEach(memory => {
+            (memory as HTMLElement).style.display = "";
+        });
+
+        // Odstranit stránku s výsledky učitele po tisku
+        const resultsPage = document.querySelector(".teacher-results");
+        if (resultsPage) {
+            resultsPage.remove();
+        }
+
+        createdForP.textContent = "";
+    })
+
+    filterTeacherCheckbox.addEventListener("change", () => {
+        teacherSelect.parentElement.hidden = !filterTeacherCheckbox.checked;
+    });
+</script>
