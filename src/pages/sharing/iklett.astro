@@ -26,6 +26,7 @@ import Memories from "../../layouts/Memories.astro";
         padding: 10px;
         display: flex;
         flex-direction: column;
+        gap: 10px;
     }
     input, select, [role="button"] {
         padding: 3px;
@@ -50,11 +51,11 @@ import Memories from "../../layouts/Memories.astro";
     transition: background 0.2s, box-shadow 0.2s;
     display: inline-block;
     margin-top: 10px;
+    text-decoration: none !important;
 }
 #out:hover:not(.disabled) {
     background-color: #a0a3e0;
     box-shadow: 0 4px 8px rgba(0,0,0,0.14);
-    text-decoration: none;
 }
 </style>
 
