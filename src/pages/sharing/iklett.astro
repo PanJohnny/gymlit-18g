@@ -1,0 +1,60 @@
+---
+import Memories from "../../layouts/Memories.astro";
+---
+<Memories title="iklett poslech" description="Otevřte poslech z učebnice na iklett">
+    <main>
+        <h1>Otevřít poslech z učebnice</h1>
+        <p>
+            Vyberte učebnici a zadejte číslo poslechu
+        </p>
+        <label for="book">Vyberte učebnici</label>
+        <select id="book">
+            <option value="138352">Aventura Nueva 1</option>
+            <option value="159976">Aventura Nueva 2</option>
+            <option value="26">Aventura Nueva 3</option>
+        </select>
+        <label for="number">Zadejte číslo poslechu</label>
+        <input type="text" id="number" placeholder="1-2"/>
+        <a href="#" disabled role="button" id="out" target="_blank" rel="norefferer no opener">Otevřít poslech</a>
+
+         <p>Stránka pouze poskytuje odkazy na volně dostupné soubory</o>
+    </main>
+</Memories>
+
+<style>
+    main {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    input, select, [role="button"] {
+        padding: 3px;
+        border: 1px solid;
+        border-radius: 3px;
+        border-color: inherit;
+    }
+    [disabled] {
+       filter: grayscale(1);
+    }
+    #out {
+        background-color: #babdf5;
+    }
+</style>
+
+<script>
+const book = document.querySelector("#book");
+const num = document.querySelector("#number");
+const out = document.querySelector(
+document.querySelectorAll("#book, #number").for each(e=>e.addEventListener("input", (ignored) =>
+{
+if (num.value && num.value.length>0) {
+    let n = num.value;
+    if(n.includes("-")) n = n.replaceAll("-", "_");
+    let b = book.value;
+    out.href = "https://iklett.cz/books/" + b + "/" + n + ".mp3";
+    out.disabled = false;
+} else {
+    out.disabled = true;
+}
+}));
+</script>
