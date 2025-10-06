@@ -38,8 +38,24 @@ import Memories from "../../layouts/Memories.astro";
        pointer-events: none;
     }
     #out {
-        background-color: #babdf5;
-    }
+    background-color: #babdf5;
+    border: none;
+    border-radius: 4px;
+    color: #222;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+    transition: background 0.2s, box-shadow 0.2s;
+    display: inline-block;
+    margin-top: 10px;
+}
+#out:hover:not(.disabled) {
+    background-color: #a0a3e0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.14);
+    text-decoration: none;
+}
 </style>
 
 <script>
