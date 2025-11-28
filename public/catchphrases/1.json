@@ -4,12 +4,10 @@
 		"\"Na můj vkus je tady moc hlučně.\"",
 		"\"Takže vážení, takhle tedy ne!\"",
 		"\"Dobré ráno!\" (je 12:50)",
-		"\"Nehlaste se, nejprve zapíši.\"",
-		"\"Někomu se tam valí mobil, každý pátek ti to připomínám!\" (mluví na Josefínu)"
+		"\"Nehlaste se, nejprve zapíši.\""
 	],
 	"verb": [
-		"\"Zítra bude velké zkoušení.\"",
-		"\"Šnečku, šnečku vystrč růžky...\"",
+		"\"Šnečku, šnečku vystrč růžky…\"",
 		"\"Vy tady hrajete na těch mobilech, co je teď za hru populární? Abych to mohla doporučit svému dvouletému vnukovi.\"",
 		"\"Hele, nemávej mi tam, já tě vidím. Tady v tom zrcadle (počítači) se to všechno odráží. Já všechno vidím.\"",
 		"\"Biologii zapomeneš, ale mobil ne!\"",
@@ -17,7 +15,7 @@
 	],
 	"janl": [
 		"\"Tak jdeme sportovci.\"",
-		"\"Nemůžete mluvit sprostě, kur**.\""
+		"\"Nemůžete mluvit sprostě, kurva.\""
 	],
 	"svek": [
 		"\"No vy jste moje holčičky.\"",
@@ -27,11 +25,11 @@
 	"janb": [
 		"\"Ale já vás nechtěl. Já chtěl septimy a oktávy.\"",
 		"\"Vy nemáte věci, no já na vás stejně nemám náladu.\"",
-		"Martina: \"Pane profesore, já se strašně omlouvám, ale nemám dějepis.\"\nPan profesor Bárta: \"No tak, když se tak strašně omlouváte tak to nevadí.\"",
+		"\"Pane profesore, já se strašně omlouvám, ale nemám dějepis.\" Omlouvala se Martina. Pan profesor odvětil: \"No tak, když se tak strašně omlouváte tak to nevadí.\"",
 		"\"Co je Rosecká deska? Šutr pomalovaný hyeroglifama.\""
 	],
 	"jitp": [
-		"Ondra Fikr: \"Paní profesorko, dáte mi tu jedničku za aktivitu?\" Paní profesorka Puchmajerova: \"Tobě? Nikdy.\"",
+		"\"Paní profesorko, dáte mi tu jedničku za aktivitu?\" Zeptal se Ondra Fikr. \"Tobě? Nikdy.\"",
 		"\"Tobias vyrušuje, ale může za to Vašek.\""
 	],
 	"petp": [

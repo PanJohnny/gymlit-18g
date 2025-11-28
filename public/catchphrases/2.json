@@ -1,8 +1,21 @@
 {
-    "ivaz": ["\"Proč se držíte?\"","\"2+2=4, ne 5\""],
-    "hanv": ["\"Vola nech doma a o biologii budeš klikovat!\"","\"Holky, no že to s těma klukama vydržíte!\"","\"To je dobře, že jde Honzovi aspoň něco, když ne biologie.\""],
-    "verk": ["\"Filipe, ten film se jmenuje Drž hubu!\" (jediné, co ale bylo slyšet - \"Filipe, drž hubu\")","\"Ondro, můžeš mít doma naháče (nahaté morče).\""],
-    "hans": ["Egor: \"Paní profesorko, já jsem si zapomněl sešit.\" Paní profesorko Šafaříková: \"Ty nějaký máš?\""],
-    "svap": ["\"Řekněte Tobiasovi, ať za mnou, až dotelefonuje, přijde do mého kabinetu!\" Ondra Fikr: \"Tobiasi! Příroda volá!\""],
-    "janl": ["\"Johnnymu jde florbal!\" (o 5 vteřin později zasekává Johnny florbalový míček na stropě tělocvičny)"]
+  "ivaz": [
+    "\"Proč se držíte?\"",
+    "\"2+2=4, ne 5\""
+  ],
+  "hanv": [
+    "\"Vola nech doma a o biologii budeš klikovat!\"",
+    "\"Holky, no že to s těma klukama vydržíte!\"",
+    "\"To je dobře, že jde Honzovi aspoň něco, když ne biologie.\""
+  ],
+  "verk": [
+    "\"Filipe, ten film se jmenuje Drž hubu!\" Informoval paní profesorka, ale bylo slyšet pouze: \"Filipe, drž hubu.\"",
+    "\"Ondro, můžeš mít doma naháče (nahaté morče).\""
+  ],
+  "hans": [
+    "\"Paní profesorko, já jsem si zapomněl sešit.\" Omluvil se Egor. \"Ty nějaký máš?\""
+  ],
+  "janl": [
+    "\"Johnnymu jde florbal!\" O 5 vteřin později zasekává Johnny florbalový míček na stropě tělocvičny."
+  ]
 }
