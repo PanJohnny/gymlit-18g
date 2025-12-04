@@ -331,11 +331,19 @@ for (let i = 1; i <= 8; i++) {
             const stats = await statsResponse.json();
 
             const teacherStats = stats.byTeacher.find(t => t.id === teacher);
-            const teacherIndex = teacherStats.truePosition;
+            const teacherPos = teacherStats.truePosition;
+            const teacherIndex = stats.byTeacher.indexOf(teacherStats);
             // Najít sousední učitele v žebříčku (max 3)
             const neighborTeachers = [];
-            const startIndex = Math.max(0, teacherIndex - 3);
-            const endIndex = Math.min(stats.byTeacher.length - 1, teacherIndex + 3);
+            let startIndex = Math.max(0, teacherIndex - 3);
+            let endIndex = Math.min(stats.byTeacher.length - 1, teacherIndex + 3);
+
+            // Pokud je učitel na začátku nebo na konci, upravit rozsah
+            if (teacherIndex <= 3) {
+                endIndex = Math.min(stats.byTeacher.length - 1, endIndex + (3 - teacherIndex + 1));
+            } else if (teacherIndex >= stats.byTeacher.length - 4) {
+                startIndex = Math.max(0, startIndex - (3 - (stats.byTeacher.length - teacherIndex)));
+            }
 
             for (let i = startIndex; i <= endIndex; i++) {
                 neighborTeachers.push({
@@ -352,15 +360,15 @@ for (let i = 1; i <= 8; i++) {
 
             // Vytvořit medaili podle pozice
             let medal = "";
-            if (teacherIndex === 1) {
+            if (teacherPos === 1) {
                 medal = "🥇";
-            } else if (teacherIndex === 2) {
+            } else if (teacherPos === 2) {
                 medal = "🥈";
-            } else if (teacherIndex === 3) {
+            } else if (teacherPos === 3) {
                 medal = "🥉";
-            } else if (teacherIndex === 4) {
+            } else if (teacherPos === 4) {
                 medal = "🏅";
-            } else if (teacherIndex <= 10) {
+            } else if (teacherPos <= 10) {
                 medal = "🎖️";
             } else {
                 medal = "📜";
@@ -375,7 +383,7 @@ for (let i = 1; i <= 8; i++) {
                     <div class="teacher-avatar">${medal}</div>
                     <div class="teacher-info">
                         <h3>${teacherName}<h3>
-                        <p class="position">${teacherIndex}. místo v žebříčku</p>
+                        <p class="position">${teacherPos}. místo v žebříčku</p>
                         <p class="count">Celkem hlášek: <strong>${teacherStats.count}</strong></p>
                         <p class="percentage">To je <strong>${percentage} %</strong> ze všech hlášek</p>
                     </div>
