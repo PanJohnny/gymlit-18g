@@ -1,0 +1,158 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+// check if success or error in query params
+const success = Astro.url.searchParams.has("success");
+const error = Astro.url.searchParams.has("error");
+---
+<Layout title="Hlasování" description="Velké hlasování o nejlepší hlášku">
+    <div class="body">
+        {success && <div class="success-message">Hlas odevzdán!</div>}
+        {error && <div class="error-message">Něco se pokazilo. Napište prosím Honzovi.</div>}
+        <p>Ve dvoukolovém hlasování budeme vybírat nejlepší zapsanou hlášku za posledních osm let. V prvním kole budeme přijímat nominace, ve druhém už půjde o všechno.</p>
+        <p>Každý hlasuje pouze jednou a jeho hlas je vázaný na jeho jméno. Odevzdané hlasy budeme kontrolovat.</p>
+        <h2>První kolo - nominace</h2>
+        <div class="countdown-overlay">
+            <a href="/vote/nominate" class="button large">
+                Hlasovat v prvním kole
+            </a>
+            <div class="countdown" data-time="2025-12-04T18:32:00Z">
+                <div>
+                    <span class="number days" >00</span>
+                    <span class="label">dní</span>
+                </div>
+                <div>
+                    <span class="number hours" id="hours">00</span>
+                    <span class="label">hodin</span>
+                </div>
+                <div>
+                    <span class="number minutes" id="minutes">00</span>
+                    <span class="label">minut</span>
+                </div>
+                <div>
+                    <span class="number seconds" id="seconds">00</span>
+                    <span class="label">sekund</span>
+                </div>
+            </div>
+        </div>
+        <h2>Druhé kolo - sestavení žebříčku hlášek</h2>
+        <p>Druhé kolo bude vyhlášeno</p>
+    </div>
+</Layout>
+
+<style>
+    .countdown-overlay {
+        height: 50px;
+        position: relative;
+    }
+
+    .countdown {
+        display: flex;
+        gap: 15px;
+        position: absolute;
+        background-color: var(--light);
+        border: solid black 1px;
+        border-radius: 3px;
+        padding: 3px;
+        top: 0;
+    }
+
+    .countdown div {
+        text-align: center;
+    }
+
+    .number {
+        font-size: 2em;
+        font-weight: bold;
+    }
+
+    .label {
+        font-size: 0.9em;
+        color: #666;
+    }
+
+    .button {
+        background-color: dodgerblue;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        display: inline-block;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .large {
+        font-size: 1.3em;
+        padding: 10px 20px;
+    }
+
+    .success-message {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #c3e6cb;
+    }
+
+    .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+
+<script>
+    const countdownElement = document.querySelector('.countdown');
+    const targetTime = new Date(countdownElement.getAttribute('data-time')).getTime();
+
+    const correctLabels = {
+        days: ['den', 'dny', 'dní'],
+        hours: ['hodina', 'hodiny', 'hodin'],
+        minutes: ['minuta', 'minuty', 'minut'],
+        seconds: ['sekunda', 'sekundy', 'sekund']
+    };
+
+    function getCorrectLabel(number, labels) {
+        if (number === 1) {
+            return labels[0];
+        } else if (number >= 2 && number <= 4) {
+            return labels[1];
+        } else {
+            return labels[2];
+        }
+    }
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = targetTime - now;
+
+        if (distance < 0) {
+            countdownElement.remove();
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownElement.querySelector('.days').innerText = String(days).padStart(2, '0');
+        countdownElement.querySelector('.hours').innerText = String(hours).padStart(2, '0');
+        countdownElement.querySelector('.minutes').innerText = String(minutes).padStart(2, '0');
+        countdownElement.querySelector('.seconds').innerText = String(seconds).padStart(2, '0');
+
+        // update the labels
+        countdownElement.querySelector('.days').nextElementSibling.innerText = getCorrectLabel(days, correctLabels.days);
+        countdownElement.querySelector('.hours').nextElementSibling.innerText = getCorrectLabel(hours, correctLabels.hours);
+        countdownElement.querySelector('.minutes').nextElementSibling.innerText = getCorrectLabel(minutes, correctLabels.minutes);
+        countdownElement.querySelector('.seconds').nextElementSibling.innerText = getCorrectLabel(seconds, correctLabels.seconds);
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>

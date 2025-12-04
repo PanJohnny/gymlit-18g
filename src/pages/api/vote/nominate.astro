@@ -1,0 +1,43 @@
+---
+const openBy = new Date("2025-12-04T18:32:00Z");
+if (new Date() < openBy || Astro.request.method !== "POST") {
+    return Astro.redirect("/vote");
+}
+
+const form = await Astro.request.formData();
+
+if (!form.get("name") || !form.get("agree") || !form.get("phrases")) {
+    return Astro.redirect("/vote?error");
+}
+
+const webhook = import.meta.env.WEBHOOK;
+
+const embed = {
+    title: "New Nomination",
+    description: `**Name:** ${form.get("name")}\n**Voted for**:\n${form.get("phrases").join("\n")}`,
+    color: 5814783,
+    timestamp: new Date().toISOString(),
+};
+
+const res = await fetch(webhook, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        content: null,
+        embeds: [embed],
+        username: "Nomination Bot",
+        avatar_url: "https://i.imgur.com/H6WKmno.jpeg",
+        attachments: [],
+    })
+});
+
+// Redirect to /vote?success or /vote?error based on the response status
+return new Response("", {
+    status: res.status == 204 ? 302 : 400,
+    headers: {
+        Location: res.status == 204 ? "/vote?success" : "/vote?error"
+    }
+});
+---
