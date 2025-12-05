@@ -13,8 +13,8 @@ if (!form.get("name") || !form.get("agree") || !form.get("phrases[]")) {
 const webhook = import.meta.env.WEBHOOK;
 let phrases = form.getAll("phrases[]");
 const embed = {
-    title: "New Nomination",
-    description: `**Name:** ${form.get("name")}\n**Voted for**:\n${phrases.join("\n")}`,
+    title: `Nominace: **${form.get("name")}**`,
+    description: phrases.join("\n\n"),
     color: 5814783,
     timestamp: new Date().toISOString(),
 };
