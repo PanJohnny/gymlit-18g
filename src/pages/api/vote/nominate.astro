@@ -6,15 +6,15 @@ if (new Date() < openBy || Astro.request.method !== "POST") {
 
 const form = await Astro.request.formData();
 
-if (!form.get("name") || !form.get("agree") || !form.get("phrases")) {
+if (!form.get("name") || !form.get("agree") || !form.get("phrases[]")) {
     return Astro.redirect("/vote?error");
 }
 
 const webhook = import.meta.env.WEBHOOK;
-
+let phrases = form.getAll("phrases[]");
 const embed = {
     title: "New Nomination",
-    description: `**Name:** ${form.get("name")}\n**Voted for**:\n${form.get("phrases").join("\n")}`,
+    description: `**Name:** ${form.get("name")}\n**Voted for**:\n${phrases.join("\n")}`,
     color: 5814783,
     timestamp: new Date().toISOString(),
 };

@@ -222,7 +222,7 @@ for (let byYear of Object.values(all)) {
                     // add input type hidden with name phrases[] and value phrase
                     const hiddenInput = document.createElement("input");
                     hiddenInput.type = "hidden";
-                    hiddenInput.name = "phrases";
+                    hiddenInput.name = "phrases[]";
                     hiddenInput.value = phrase;
                     li.appendChild(hiddenInput);
 
