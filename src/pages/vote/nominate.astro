@@ -246,6 +246,7 @@ for (let byYear of Object.values(all)) {
             }
             availablePhrases.innerHTML = "";
             phraseItems.forEach(item => {
+                item.style.marginBottom = "0.5em";
                 availablePhrases.appendChild(item);
             });
         });
