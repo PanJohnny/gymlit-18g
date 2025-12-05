@@ -17,12 +17,15 @@ function quoteFix(input) {
 }
 
 let phrasesByTeacher = {};
+let numOfQuotes = 0;
 for (let byYear of Object.values(all)) {
     const json = await byYear();
 
     for (let [teacher, phrases] of Object.entries(json)) {
+        if (teacher === "default") continue;
         if (!phrasesByTeacher[teacher]) phrasesByTeacher[teacher] = new Set();
         Object.values(phrases).forEach(p => phrasesByTeacher[teacher].add(quoteFix(p + "")));
+        numOfQuotes += phrases.length;
     }
 }
 ---
@@ -30,7 +33,7 @@ for (let byYear of Object.values(all)) {
     <div class="body">
         <h1>První kolo - nominace</h1>
         <a href="/vote">Zpět do kroniky</a>
-        <p>V tomto kole můžete nominovat svou oblíbenou hlášku, která bude zařazena do finálního hlasování o nejlepší hlášku za posledních osm let. Hlášky mohou nominovat všichni studenti třídy 8. G.</p>
+        <p>V tomto kole můžete nominovat své oblíbené hlášky. 10 hlášek (případně víc) s nejvíce nominacemi se pak utkají v souboji ve finále.</p>
         <h2>Jak nominovat hlášku</h2>
         <ol>
             <li>Vyberte až 20 hlášek, které chcete nominovat tím, že je označíte hvězdičkou. Chcete vyhledat nějakou konkrétní hlášku? Klikněte ve svém prohlížeči na tři tečky a vyberte vyhledat na stránce.</li>
@@ -38,7 +41,9 @@ for (let byYear of Object.values(all)) {
             <li>Odešlete svůj návrh kliknutím na tlačítko "Nominovat".</li>
         </ol>
         <div class="phrases-list">
-            <h3>Dostupné hlášky:</h3>
+            <h3>Dostupné hlášky ({numOfQuotes}):</h3>
+            <p>Hlášky můžete zamíchat, aby bylo vaše hlasování méně biased</p>
+            <button id="shuffle">Zamíchat všechny hlášky a odstranit jména</button>
             <ul id="available-phrases">
                 {
                     Object.entries(phrasesByTeacher).map(([teacher, phrases]) => (
@@ -49,7 +54,7 @@ for (let byYear of Object.values(all)) {
                                     Array.from(phrases).map(phrase => (
                                         <li class="phrase-item">
                                             <label>
-                                                <p class="phrase-text">{phrase}</p>
+                                                <span class="phrase-text">{phrase}</span>
                                                 <button class="select-phrase" data-phrase={phrase} role="checkbox" aria-checked="false" data-teacher={teacher}>★</button>
                                             </label>
                                         </li>
@@ -179,6 +184,8 @@ for (let byYear of Object.values(all)) {
         const selectedPhrases = document.getElementById("selected-phrases");
         const selectedCountDisplay = document.getElementById("selected-count");
 
+        const shuffle = document.getElementById("shuffle");
+
         availablePhrases.addEventListener("click", (event) => {
             if (event.target.classList.contains("select-phrase")) {
                                 const button = event.target;
@@ -229,6 +236,18 @@ for (let byYear of Object.values(all)) {
                     selectedPhrases.appendChild(li);
                 }
             }
+        });
+
+        shuffle.addEventListener("click", () => {
+            const phraseItems = Array.from(availablePhrases.querySelectorAll(".phrase-item"));
+            for (let i = phraseItems.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [phraseItems[i], phraseItems[j]] = [phraseItems[j], phraseItems[i]];
+            }
+            availablePhrases.innerHTML = "";
+            phraseItems.forEach(item => {
+                availablePhrases.appendChild(item);
+            });
         });
     });
 </script>
