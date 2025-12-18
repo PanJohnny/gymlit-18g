@@ -1,5 +1,5 @@
 ---
-const openBy = new Date("2025-12-19T09:00:00Z");
+const openBy = new Date("2025-12-19T08:00:00Z");
 if (new Date() < openBy || Astro.request.method !== "POST") {
     return Astro.redirect("/vote");
 }
@@ -37,7 +37,7 @@ const res = await fetch(webhook, {
 return new Response("", {
     status: res.status == 204 ? 302 : 400,
     headers: {
-        Location: res.status == 204 ? "/vote?success" : "/vote?error"
+        Location: res.status == 204 ? "/vote?success" : "/vote?error&raw=" + encodeURIComponent(JSON.stringify(embed))
     }
 });
 ---

@@ -2,7 +2,7 @@
 import Memories from "../../layouts/Memories.astro";
 import teachers from "../../../public/teachers.json";
 
-const openBy = new Date("2025-12-19T09:00:00Z");
+const openBy = new Date("2025-12-19T08:00:00Z");
 if (new Date() < openBy) {
     return Astro.redirect("/vote");
 }
@@ -68,6 +68,7 @@ for (let byYear of Object.values(all)) {
 
         </div>
         <div id="nomination-form">
+            <p style="color: red; font-weight: bold">Hlasování bude uzavřeno v sobotu 20.12, ve 20:00.</p>
             <form action="/api/vote/nominate" method="POST">
                 <h3>Vybrané hlášky:</h3>
                 <ul id="selected-phrases">
