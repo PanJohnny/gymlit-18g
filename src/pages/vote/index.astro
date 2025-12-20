@@ -4,41 +4,21 @@ import Layout from "../../layouts/Layout.astro";
 // check if success or error in query params
 const success = Astro.url.searchParams.has("success");
 const error = Astro.url.searchParams.has("error");
+const closed = Astro.url.searchParams.has("closed");
 
 let raw = Astro.url.searchParams.get("raw");
 ---
 <Layout title="Hlasování" description="Velké hlasování o nejlepší hlášku">
     <div class="body">
         {success && <div class="success-message">Hlas odevzdán!</div>}
+        {closed && <div class="error-message">Hlasování uzavřeno. Pokud vidíte tuto zprávu po odeslání hlasu, tak hlas nebyl započítán.</div>}
         {error && <div class="error-message">Něco se pokazilo. Napište prosím Honzovi a pošlete mu následující text:
         <pre>{raw}</pre></div>}
         <p>Ve dvoukolovém hlasování budeme vybírat nejlepší zapsanou hlášku za posledních osm let. V prvním kole budeme přijímat nominace, ve druhém už půjde o všechno.</p>
         <p>Každý hlasuje pouze jednou a jeho hlas je vázaný na jeho jméno. Odevzdané hlasy budeme kontrolovat.</p>
         <h2>První kolo - nominace</h2>
         <p>Nominujte až 20 hlášek na postup do dalšího kola. 10 (případně víc) nejvíce nominovaných hlášek postoupý do dalšího kola. Kdyby náhodoou tento systém nefungoval, tak uděláme nejhůř ještě jedno kolo.</p>
-        <div class="countdown-overlay">
-            <a href="/vote/nominate" class="button large">
-                Hlasovat v prvním kole
-            </a>
-            <div class="countdown" data-time="2025-12-19T08:00:00Z">
-                <div>
-                    <span class="number days" >00</span>
-                    <span class="label">dní</span>
-                </div>
-                <div>
-                    <span class="number hours" id="hours">00</span>
-                    <span class="label">hodin</span>
-                </div>
-                <div>
-                    <span class="number minutes" id="minutes">00</span>
-                    <span class="label">minut</span>
-                </div>
-                <div>
-                    <span class="number seconds" id="seconds">00</span>
-                    <span class="label">sekund</span>
-                </div>
-            </div>
-        </div>
+        <strong style="color: red">Hlasování uzavřeno</strong>
         <p>Hlasování bude otevřeno v pátek 19.12. v 9:00 a uzavřeno v sobotu 20.12. ve 20:00.</p>
         <h2>Druhé kolo - sestavení žebříčku hlášek</h2>
         <p>Deset (může se změnit v závislosti na výsledky prvního kola) hlášek s nejvíce nominacemi postoupí do finále. V tomto kole budete přidělovat body jednotlivým hláškám, ty pak budou seřazeny podle celkového počtu bodů.</p>
