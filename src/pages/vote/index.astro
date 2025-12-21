@@ -10,25 +10,63 @@ let raw = Astro.url.searchParams.get("raw");
 ---
 <Layout title="Hlasování" description="Velké hlasování o nejlepší hlášku">
     <div class="body">
-        {success && <div class="success-message">Hlas odevzdán!</div>}
-        {closed && <div class="error-message">Hlasování uzavřeno. Pokud vidíte tuto zprávu po odeslání hlasu, tak hlas nebyl započítán.</div>}
-        {error && <div class="error-message">Něco se pokazilo. Napište prosím Honzovi a pošlete mu následující text:
-        <pre>{raw}</pre></div>}
-        <p>Ve dvoukolovém hlasování budeme vybírat nejlepší zapsanou hlášku za posledních osm let. V prvním kole budeme přijímat nominace, ve druhém už půjde o všechno.</p>
+        {success &&
+                <div class="success-message">Hlas odevzdán!</div>}
+        {closed &&
+                <div class="error-message">Hlasování uzavřeno. Pokud vidíte tuto zprávu po odeslání hlasu, tak hlas
+                    nebyl započítán.
+                </div>}
+        {error &&
+                <div class="error-message">Něco se pokazilo. Napište prosím Honzovi a pošlete mu následující text:
+                    <pre>{raw}</pre>
+                </div>}
+        <p>Ve dvoukolovém hlasování budeme vybírat nejlepší zapsanou hlášku za posledních osm let. V prvním kole budeme
+            přijímat nominace, ve druhém už půjde o všechno.</p>
         <p>Každý hlasuje pouze jednou a jeho hlas je vázaný na jeho jméno. Odevzdané hlasy budeme kontrolovat.</p>
         <h2>První kolo - nominace</h2>
-        <p>Nominujte až 20 hlášek na postup do dalšího kola. 10 (případně víc) nejvíce nominovaných hlášek postoupý do dalšího kola. Kdyby náhodoou tento systém nefungoval, tak uděláme nejhůř ještě jedno kolo.</p>
-        <strong style="color: red">Hlasování uzavřeno</strong>
-        <p>Hlasování bude otevřeno v pátek 19.12. v 9:00 a uzavřeno v sobotu 20.12. ve 20:00.</p>
+        <strong>Postupující hlášky:</strong>
+        <ul>
+            <li>
+                „Odstup Satane od tabule!“ Řekla zvýšeným hlasem paní profesorka Rozumová Filipovi, který se dopustil na
+                tabuli mnoha matematických zločinů. 6
+            </li>
+            <li>
+                „Mohli bychom nocovat ve škole, ALE BEZ ALKOHOLU. Říkejte tomu předsudky nebo drby, já tomu říkám
+                fakta.“ 5
+            </li>
+            <li>
+                „Před chvílí jsem se ohnula a už nenarovnala, takže teď tady chodím jak Kvasimódo.“ 5
+            </li>
+            <li>
+                „Jestli sis opravdu četl biologii pod tou lavicí, tak tu tužku sežeru, to uvidíš,“ oznámil pan profesor
+                Lorenc Václavovi. 4
+            </li>
+            <li>
+                „Pořád se tady napájíš a ještě u toho mlaskáš“ Ososčil pan profesor Tobiase. 4
+            </li>
+            <li>
+                „Kdo z vás neví, kde jsou Pardubice?“. Nikdo nezvedl ruku. „Pardubice jsou přeci na Moravě.“ 4
+            </li>
+            <li>
+                „Ty zločinče, kam vede ta kolmice, všichni to vědí, že jsi zločinec.“ 4
+            </li>
+            <li>
+                „Ale já vás nechtěl. Já chtěl septimy a oktávy.“ 4
+            </li>
+            <li>
+                „Svět se zbláznil a já proti tomu bojuju!“ 4
+            </li>
+        </ul>
         <h2>Druhé kolo - sestavení žebříčku hlášek</h2>
-        <p>Deset (může se změnit v závislosti na výsledky prvního kola) hlášek s nejvíce nominacemi postoupí do finále. V tomto kole budete přidělovat body jednotlivým hláškám, ty pak budou seřazeny podle celkového počtu bodů.</p>
+        <p>V tomto kole budete přidělovat body jednotlivým hláškám, ty pak budou seřazeny podle celkového počtu
+            bodů.</p>
         <div class="countdown-overlay">
             <a href="/vote/rate" class="button large">
                 Hlasovat v druhém kole
             </a>
             <div class="countdown" data-time="2025-12-22T08:00:00Z">
                 <div>
-                    <span class="number days" >00</span>
+                    <span class="number days">00</span>
                     <span class="label">dní</span>
                 </div>
                 <div>
