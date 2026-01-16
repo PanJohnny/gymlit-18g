@@ -67,18 +67,25 @@ for (let i = 1; i <= 8; i++) {
                 Vytvořit výpis pro učitele
             </label>
 
-            <label hidden id="teacher-select-container">Učitel: <select id="teacher-select">
-                {Object.entries(teachers).map(([key, name]) => (
-                        <option value={key}>{name}</option>
-                ))}
-            </select>
-            </label>
+            <div hidden id="teacher-select-container">
+                <label>
+                    <input type="checkbox" id="filter-only" checked>
+                    Pouze hlášky učitele
+                </label>
 
-            <label>
-                Osobní věnování:
-                <textarea rows="1" cols="30" id="created-for-input" placeholder="Věnování"></textarea>
-                (dobrovolné)
-            </label>
+                <label>Učitel: <select id="teacher-select">
+                    {Object.entries(teachers).map(([key, name]) => (
+                            <option value={key}>{name}</option>
+                    ))}
+                </select>
+                </label>
+
+                <label>
+                    Osobní věnování:
+                    <textarea rows="1" cols="30" id="created-for-input" placeholder="Věnování"></textarea>
+                    (dobrovolné)
+                </label>
+            </div>
 
             <input type="submit" value="Hotovo"/>
         </form>
@@ -86,6 +93,15 @@ for (let i = 1; i <= 8; i++) {
 </Memories>
 
 <style>
+    #teacher-select-container {
+        display: flex;
+        flex-direction: column;
+        background-color: lavender;
+        border-radius: 12px;
+        padding: 16px;
+        gap: 10px;
+    }
+
     header {
         display: flex;
         justify-content: space-between;
@@ -307,14 +323,17 @@ for (let i = 1; i <= 8; i++) {
             const teacher = teacherSelect.value;
             const teacherName = teacherSelect.options[teacherSelect.selectedIndex].text;
 
-            document.querySelectorAll(".phrase").forEach(el => {
-                if (el.getAttribute("data-said-by") === teacher) {
-                    (el as HTMLElement).style.display = ""; // remove the name
-                    el.querySelector("h4").style.display = "none";
-                } else {
-                    (el as HTMLElement).style.display = "none";
-                }
-            });
+            // @ts-ignore
+            if (document.querySelector("#filter-only").checked) {
+                document.querySelectorAll(".phrase").forEach(el => {
+                    if (el.getAttribute("data-said-by") === teacher) {
+                        (el as HTMLElement).style.display = ""; // remove the name
+                        el.querySelector("h4").style.display = "none";
+                    } else {
+                        (el as HTMLElement).style.display = "none";
+                    }
+                });
+            }
 
             // also remove the years where there are no phrases visible
             document.querySelectorAll(".memory").forEach(memory => {
@@ -447,6 +466,6 @@ for (let i = 1; i <= 8; i++) {
     })
 
     filterTeacherCheckbox.addEventListener("change", () => {
-        teacherSelect.parentElement.hidden = !filterTeacherCheckbox.checked;
+        teacherSelect.parentElement.parentElement.hidden = !filterTeacherCheckbox.checked;
     });
 </script>
