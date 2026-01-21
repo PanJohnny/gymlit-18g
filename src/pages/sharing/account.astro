@@ -1,0 +1,182 @@
+---
+import Memories from "../../layouts/Memories.astro";
+
+
+const reqURL = import.meta.env.F_REQ;
+
+const originalIncome = 13050;
+const knownExpenses = {
+    "Temu": 2764,
+    "Shrek Allegro": 162,
+    "Další kostýmy": 240,
+    "Dárek I": 2600,
+    "Dárek R": 1016,
+    "Tisk + přípitek": 1460
+}
+
+const budgets = [
+    {
+        "label": "Kostýmy",
+        "budget": 40000,
+        "used": knownExpenses["Temu"] + knownExpenses["Shrek Allegro"] + knownExpenses["Další kostýmy"]
+    }
+]
+
+let incomeStatistics = {
+    "-1": {
+        "label": "Počáteční vklad",
+        "amount": originalIncome
+    },
+    "101": {
+        "label": "Ples stoly QR",
+        "amount": 0
+    },
+    "102": {
+        "label": "Ples plachta QR",
+        "amount": 0
+    },
+}
+
+const objem = "column1";
+const VS = "column5";
+const comment = "column25";
+
+const apiResponse = await (await fetch(reqURL)).json();
+const account = apiResponse.accountStatement.info;
+
+const transactions = apiResponse.accountStatement.transactionList.transaction;
+
+let transactionsMapped = [];
+
+transactions.forEach(transaction => {
+    if (transaction[objem].value < 0) {
+        return;
+    }
+    transactionsMapped.push({
+        "amount": transaction[objem].value,
+        "comment": transaction[comment] ? transaction[comment].value : "",
+    })
+
+    try {
+        if (!transaction[VS]) {
+            return;
+        }
+        let symbol = transaction[VS].value + "";
+        let intSymbol = parseInt(symbol);
+        if (incomeStatistics[intSymbol + ""]) {
+            incomeStatistics[intSymbol + ""].amount += transaction[objem].value;
+        }
+    } catch (ignored) {
+
+    }
+})
+---
+<Memories title="Účet" description="Výpis z účtu">
+    <main>
+        <section id="header">
+            <h1>Transparentní účet 8. G</h1>
+            <div class="flex-row apart">
+                <div>
+                    <div>
+                        <strong>Číslo účtu:</strong> {account.accountId}/{account.bankId}
+                    </div>
+                    <div>
+                        <strong>Měna:</strong> {account.currency}
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <strong>Zůstatek:</strong> {account.closingBalance} Kč
+                    </div>
+                    <div>
+                        <strong>Počáteční vklad:</strong> {originalIncome} Kč
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <strong>Výsledný stav:</strong> {account.closingBalance - originalIncome} Kč
+                    </div>
+                    <div>
+                        <strong>Na osobu:</strong> {((account.closingBalance - originalIncome)/26).toFixed(2)} Kč
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="income">
+            <h2>Příjmy</h2>
+            <ul>
+                {Object.values(incomeStatistics).map(v => (
+                        <li>
+                            <strong>{v.label}</strong>: {v.amount} Kč
+                        </li>
+                ))}
+            </ul>
+        </section>
+        <section id="expenses">
+            <h2>Útraty</h2>
+            <ul>
+                {Object.keys(knownExpenses).map(key => (
+                        <li>
+                            <strong>{key}</strong>: {knownExpenses[key]} Kč
+                        </li>
+                ))}
+            </ul>
+        </section>
+        <section id="budgeting">
+            <h2>Budgety</h2>
+            {budgets.map(b =>
+                    <div>
+                        <h3>{b.label}</h3>
+                        {b.used} / {b.budget} Kč
+                    </div>
+            )}
+        </section>
+        <section id="transactions">
+            <h2>Příjmové transakce</h2>
+            <p>Teprve budou</p>
+            <ul>
+                {transactionsMapped.map(transaction => (
+                        <li><strong>{transaction.comment}</strong> {transaction.amount}</li>
+                ))}
+            </ul>
+        </section>
+    </main>
+</Memories>
+
+<style>
+    main {
+        padding: 10px;
+    }
+
+    .flex-row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .apart {
+        justify-content: space-between;
+    }
+
+    ul {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+
+        li {
+            background: lightgray;
+            list-style: none;
+            padding: 5px;
+            border: 1px solid black;
+        }
+
+        :not(li:first-child) {
+            border-top: 0;
+        }
+    }
+</style>
+
+<script>
+
+</script>
