@@ -12,7 +12,8 @@ const knownExpenses = {
     "Dárek I": 2600,
     "Dárek R": 1016,
     "Tisk + přípitek": 1460,
-    "Kadibouda": 728
+    "Kadibouda": 728,
+    "Kytka Skolilová": 1250
 }
 
 const budgets = [
@@ -44,7 +45,7 @@ let incomeStatistics = {
 
 const objem = "column1";
 const VS = "column5";
-const comment = "column25";
+const comment = "column16";
 
 const apiResponse = await (await fetch(reqURL)).json();
 const account = apiResponse.accountStatement.info;
@@ -57,11 +58,8 @@ transactions.forEach(transaction => {
     if (transaction[objem].value < 0) {
         return;
     }
-    transactionsMapped.push({
-        "amount": transaction[objem].value,
-        "comment": transaction[comment] ? transaction[comment].value : "",
-    })
 
+    let vsLabel = "";
     try {
         if (!transaction[VS]) {
             return;
@@ -69,11 +67,18 @@ transactions.forEach(transaction => {
         let symbol = transaction[VS].value + "";
         let intSymbol = parseInt(symbol);
         if (incomeStatistics[intSymbol + ""]) {
+            vsLabel = incomeStatistics[intSymbol + ""].label;
             incomeStatistics[intSymbol + ""].amount += transaction[objem].value;
         }
     } catch (ignored) {
 
     }
+
+    transactionsMapped.push({
+        "amount": transaction[objem].value,
+        "comment": transaction[comment] ? transaction[comment].value : "",
+        "category": vsLabel
+    })
 })
 ---
 <Memories title="Účet" description="Výpis z účtu">
@@ -91,7 +96,7 @@ transactions.forEach(transaction => {
                 </div>
                 <div>
                     <div>
-                        <strong>Zůstatek:</strong> {account.closingBalance} Kč
+                        <strong>Zůstatek:</strong> <span style="color: darkgreen">{account.closingBalance}</span> Kč
                     </div>
                     <div>
                         <strong>Počáteční vklad:</strong> {originalIncome} Kč
@@ -99,10 +104,10 @@ transactions.forEach(transaction => {
                 </div>
                 <div>
                     <div>
-                        <strong>Výsledný stav:</strong> {account.closingBalance - originalIncome} Kč
+                        <strong>Reálný výdělek:</strong> {(account.closingBalance - originalIncome).toFixed(2)} Kč
                     </div>
                     <div>
-                        <strong>Na osobu:</strong> {((account.closingBalance - originalIncome)/26).toFixed(2)} Kč
+                        <strong>Na osobu:</strong> {((account.closingBalance - originalIncome) / 26).toFixed(2)} Kč
                     </div>
                 </div>
             </div>
@@ -138,12 +143,22 @@ transactions.forEach(transaction => {
         </section>
         <section id="transactions">
             <h2>Příjmové transakce</h2>
-            <p>Teprve budou</p>
-            <ul>
+            <table>
+                <thead>
+                <tr>
+                    <th>Zdroj</th>
+                    <th>Poznámka</th>
+                    <th>Částka</th>
+                </tr>
+                </thead>
                 {transactionsMapped.map(transaction => (
-                        <li><strong>{transaction.comment}</strong> {transaction.amount}</li>
+                        <tr>
+                            <td>{transaction.category}</td>
+                            <td><strong>{transaction.comment}</strong></td>
+                            <td>{transaction.amount} Kč</td>
+                        </tr>
                 ))}
-            </ul>
+            </table>
         </section>
     </main>
 </Memories>
@@ -179,6 +194,21 @@ transactions.forEach(transaction => {
         :not(li:first-child) {
             border-top: 0;
         }
+    }
+
+    table {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    th {
+        background: lightgray;
+    }
+
+    td, th {
+        padding: 5px;
+        border: 1px solid black;
     }
 </style>
 
