@@ -1,0 +1,123 @@
+---
+import galleryData from "../../data/downscale.json";
+import fullscale from "../../data/fullscale.json";
+import Memories from "../../layouts/Memories.astro";
+
+/** * Create a lookup map from the fullscale data for efficient matching.
+ * We use the 'Name' property as the unique key.
+ */
+const fullscaleMap = new Map(fullscale.map(item => [item.Name, item]));
+
+const combinedGallery = galleryData.map((item) => {
+    const fullMatch = fullscaleMap.get(item.Name.split(".")[0] + ".jpg");
+    return {
+        ...item,
+        // Fallback to the thumbnail ID if no match is found
+        downloadUrl: fullMatch?`https://drive.google.com/uc?export=download&id=${fullMatch.ID}`:"#",
+        // Use provided dimensions or defaults for PhotoSwipe
+        width: item.Width || 1600,
+        height: item.Height || 1067
+    };
+});
+---
+
+<Memories title="Imatrikulace prima" description="Fotogalerie imatrikulace z primy (2019)">
+    <h1 style="padding: 10px">Imatrikulace prima 2019</h1>
+    <div class="gallery-grid" id="my-gallery">
+        {combinedGallery.map((item) => (
+                <a
+                        href={`https://drive.google.com/thumbnail?id=${item.ID}&sz=w1200`}
+                        data-pswp-width={item.width}
+                        data-pswp-height={item.height}
+                        data-download-url={item.downloadUrl}
+                        target="_blank"
+                        class="gallery-item"
+                >
+                    <img
+                            src={`https://drive.google.com/thumbnail?id=${item.ID}&sz=w1200`}
+                            alt={item.Name}
+                            loading="lazy"
+                    />
+                </a>
+        ))}
+    </div>
+</Memories>
+
+<script>
+    import PhotoSwipeLightbox from 'photoswipe/lightbox';
+    import 'photoswipe/style.css';
+
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '#my-gallery',
+        children: 'a',
+        pswpModule: () => import('photoswipe'),
+
+        // FIX 1: Disable preloading to stop multiple concurrent requests
+        preload: [0, 0],
+
+        // FIX 2: Ensure it uses the existing <img> on the page as a placeholder
+        thumbSelector: 'img',
+    });
+
+    // FIX 3: Add a slight delay or filter to high-res loading if needed
+    // This filter ensures PhotoSwipe knows which image to use for the "zoom" transition
+    lightbox.addFilter('thumbEl', (thumbnail, itemData, index) => {
+        return itemData.element.querySelector('img');
+    });
+
+    // Download button logic (kept from before)
+    lightbox.on('uiRegister', function() {
+        lightbox.pswp.ui.registerElement({
+            name: 'download-button',
+            order: 8,
+            isButton: true,
+            tagName: 'a',
+            html: '<svg aria-hidden="true" class="pswp__icn" viewBox="0 0 32 32" width="32" height="32"><path d="M20.5 11.5L16 16l-4.5-4.5m4.5 4.5V5m9 11v8a2 2 0 01-2 2H9a2 2 0 01-2-2v-8" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+            onInit: (el, pswp) => {
+                el.setAttribute('download', '');
+                el.setAttribute('target', '_blank');
+                el.setAttribute('rel', 'noopener');
+                pswp.on('change', () => {
+                    const currLink = pswp.currSlide.data.element.getAttribute('data-download-url');
+                    el.href = currLink;
+                });
+            }
+        });
+    });
+
+    lightbox.init();
+</script>
+
+<style>
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .gallery-item {
+        display: block;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-4px);
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+        aspect-ratio: 3/2;
+        object-fit: cover;
+    }
+
+    /* Customize PhotoSwipe Download Icon color if needed */
+    :global(.pswp__icn) {
+        color: #fff;
+    }
+</style>
