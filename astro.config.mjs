@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 // https://astro.build/config
 import sitemap from "@astrojs/sitemap";
 
@@ -7,7 +7,7 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   output: "server",
   adapter: vercel(),
-  site: 'https://panjohnny.vercel.app',
+  site: 'https://kronika.panjohnny.me',
   integrations: [sitemap({
     filter: (page => page.includes("kronika") && !page.includes("editor"))
   })]
