@@ -1,19 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import top5 from "../../data/top5-phrases.json";
 ---
 
-<Layout title="Kronika 8. G" description="Internetová verze třídní kroniky">
+<Layout title="Kronika 8. G" description="Internetová verze kroniky maturantů 8. G 2026">
     <div class="body">
         <p>
             Vítejte na našich webových stránkách!
         </p>
         <div class="happy">
-            <h2>
-                A sakra
-            </h2>
-            <p>
-                Nový školní rok je tu a ještě k tomu oktáva 
-            </p>
+            <h2>Konec.</h2>
             <ul>
                 <li>
                     <a href="/memories">
@@ -24,36 +20,39 @@ import Layout from "../../layouts/Layout.astro";
                     </div>
                 </li>
                 <li>
-                    <a href="/kronika/summary/year/7">
-                        Podívejte se co bylo v septimě
+                    <a href="/kronika/summary/year/8">
+                        Oktáva
                     </a>
                     <div class="arrow">
                         →
                     </div>
                 </li>
-               <li>
-                    <a href="/kronika/stats">
-                        Iveta Rozumová je oficiálně nejvíc upovídaná!
-                    </a>
-                    <div class="arrow">
-                        →
-                    </div>
-                </li>
-
             </ul>
         </div>
-        <div>
+        <section>
+            <h2>
+                Top 5 hlášek podle naší třídy
+            </h2>
+            <ol>
+                {top5.map((item, i) => (
+                    <li>
+                        {item.phrase} - <a href={"/kronika/summary/teacher/" + item.teacher} target="_blank"><strong>{item.teacher}</strong></a>
+                    </li>
+                ))}
+            </ol>
+        </section>
+        <section>
             <h2 id="funkce">Funkce</h2>
             <p>Pomocí navigace (lupička) se můžete rychle pohybovat po stránce. Můžete se podívat na statistiky a to i ty o návštěvnosti. Červené vykřičníky u hlášek po kliknutí otevřou prostředek pro nahlašování chyb, nebo jen pro kontakt. Informace o poslední aktualizaci stránek naleznete, pod každou stránkou.</p>
-        </div>
-        <div>
+        </section>
+        <section>
             <h2>Preference</h2>
             <p>Aktivujte si tmavý režim, nebo vymažte vaše data.</p>
-        </div>
-        <div>
+        </section>
+        <section>
             <h2>Osobní údaje</h2>
             <p>Stránka neshromažďuje žádné osobní údaje, jen používá systém osobního identifikátoru, pro sledování unikátních návštěv.</p>
-        </div>
+        </section>
         <a class="last-news loading" href="javascript:void(0)">
             Načítání...
         </a>
