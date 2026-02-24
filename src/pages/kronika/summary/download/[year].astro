@@ -1,10 +1,11 @@
 ---
 import teachers from "../../../../../public/teachers.json";
-const y = Astro.params.year;
-if (!y)
+import {quoteFix, getPhrases} from "../../../../utils";
+const yearID = Astro.params.year;
+if (!yearID)
     return Astro.redirect("/kronika");
 
-const classYear: number = +y;
+const classYear: number = +yearID;
 
 if (classYear < 0 || classYear > 8) {
     return new Response(undefined, {
@@ -16,11 +17,12 @@ if (classYear < 0 || classYear > 8) {
 let csv = "Rok,ID Učitele,Učitel,Hláška\n";
 let nl = true;
 
-function insert(s) {
+function insert(s:string) {
     if (!nl) {
         csv += ","
     } else
         nl = false;
+
     csv += '"' + quoteFix(s) + '"';
 }
 
@@ -29,51 +31,13 @@ function newLine() {
     nl = true;
 }
 
-function quoteFix(input) {
-    let n = 0;
-    return (input + "").replace(/"/g, (m, i, og) => {
-        return (n++ % 2) ? "“" : '„';
-    });
-}
+const phrases = await getPhrases(classYear);
 
-let phrases = {};
-
-if (classYear == 0) {
-    for (var i = 1; i <= 8; i++) {
-        const json = await fetch(
-            Astro.url.protocol +
-                "//" +
-                Astro.url.host +
-                "/catchphrases/" +
-                i +
-                ".json"
-        ).then((response) => response.json());
-        Object.keys(json).forEach((k) => {
-            json[k].forEach((p) => {
-                insert(i);
-                insert(k);
-                insert(teachers[k]);
-                insert(p);
-                newLine();
-            });
-        });
-    }
-} else {
-    phrases = await fetch(
-        Astro.url.protocol +
-            "//" +
-            Astro.url.host +
-            "/catchphrases/" +
-            classYear +
-            ".json"
-    ).then((response) => response.json());
-}
-
-Object.keys(phrases).forEach((t) => {
-    phrases[t].forEach((p) => {
-        insert(classYear);
-        insert(t);
-        insert(teachers[t]);
+Object.keys(phrases).forEach((teacherID) => {
+    phrases[teacherID].forEach((p) => {
+        insert(classYear.toString());
+        insert(teacherID);
+        insert(teachers[teacherID]);
         insert(p);
         newLine();
     })

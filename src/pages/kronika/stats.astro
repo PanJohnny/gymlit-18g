@@ -2,24 +2,20 @@
 import Layout from "../../layouts/Layout.astro";
 import teachers from "../../../public/teachers.json";
 import BarGraph from "../../components/BarGraph.astro";
-const catchphrases = await Astro.glob("../../../public/catchphrases/*.json");
+import {getPhrases} from "../../utils";
+const catchphrases = await getPhrases(0);
 
-const cpp = {};
+const catchphrasesPerTeacher = {};
 
-Object.keys(teachers).forEach(t => {
-    cpp[t] = 0;
-})
-
-catchphrases.forEach(phrases => {
-    Object.keys(phrases).forEach(id => {
-        cpp[id] += phrases[id].length;
-    })
+Object.keys(teachers).forEach(teacherID => {
+    let phrases = catchphrases[teacherID];
+    catchphrasesPerTeacher[teacherID] = phrases.length;
 });
 
 let sortable = [];
-for (var vehicle in cpp) {
+for (var vehicle in catchphrasesPerTeacher) {
     // @ts-ignore
-    sortable.push([vehicle, cpp[vehicle]]);
+    sortable.push([vehicle, catchphrasesPerTeacher[vehicle]]);
 }
 
 sortable.sort(function(a, b) {
@@ -36,20 +32,17 @@ series.forEach(s => {
     catchCount += s;
 });
 
-const cpy = [];
+const catchphrasesPerYear = [];
 
-let i = 0;
-catchphrases.forEach(phrases => {
-    // @ts-ignore
-    cpy.push(0);
-    
-    Object.values(phrases).forEach(v => {
-        if (v != undefined && v.length != undefined) // @ts-ignore
-            cpy[i] += v.length;
+for (let i = 1; i < 8; i++) {
+    let phrases = await getPhrases(i);
+    let count = 0;
+    Object.entries(phrases).forEach(([_, phrases]) => {
+        // @ts-ignore
+        count += phrases.length;
     })
-
-    i++;
-});
+    catchphrasesPerYear[i-1] = count;
+}
 
 const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/analytics/all").then(a => a.json());
 ---
@@ -74,7 +67,7 @@ const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/ana
         </div>
         <div id="hlaskynarocnik">
             <h2>Hlášky na ročník</h2>
-            <BarGraph columns={cpy.map((val, i) => ({title: (i + 1) + ". G", data: val}))} height={200} color="hotpink" showValues={true} />
+            <BarGraph columns={catchphrasesPerYear.map((val, i) => ({title: (i + 1) + ". G", data: val}))} height={200} color="hotpink" showValues={true} />
         </div>
         <div id="ucitele">
             <h2>Evidovaní učitelé</h2>

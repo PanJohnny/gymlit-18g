@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../../layouts/Layout.astro";
 import teachers from "../../../../../public/teachers.json";
-import {latinClass} from "../../../../utils"
+import {latinClass, getPhrases, getEvents, quoteFix} from "../../../../utils"
 
 const y = Astro.params.year;
 if (!y) return Astro.redirect("/kronika");
@@ -11,64 +11,37 @@ const classYear: number = +y;
 if (classYear < 0 || classYear > 8) {
     return Astro.redirect("/kronika");
 }
-let events = "";
-let phrases = {};
-if (classYear == 0) {
-    for (var i = 1; i <= 8; i++) {
-        const json = await fetch(
-            Astro.url.protocol +
-                "//" +
-                Astro.url.host +
-                "/catchphrases/" +
-                i +
-                ".json"
-        ).then((response) => response.json());
-        Object.keys(json).forEach((k) => {
-            if (!phrases[k]) phrases[k] = [];
 
-            json[k].forEach((a) => phrases[k].push(a));
-        });
-        const temp = await fetch(
-            Astro.url.protocol + "//" + Astro.url.host + "/events/" + i
-        ).then((b) => b.text());
-        events += temp.split("<body>")[1].split("</body>")[0];
-    }
-} else {
-    phrases = await fetch(
-        Astro.url.protocol +
-            "//" +
-            Astro.url.host +
-            "/catchphrases/" +
-            classYear +
-            ".json"
-    ).then((response) => response.json());
-    events = await fetch(
-        Astro.url.protocol + "//" + Astro.url.host + "/events/" + classYear
-    ).then((b) => b.text());
+/*
+frontmatter: [Getter],
+  file: [Getter],
+  url: [Getter],
+  rawContent: [Getter],
+  compiledContent: [Getter],
+  getHeadings: [Getter],
+  Content: [Getter],
+  default: [Getter]
+  */
 
-    events = events.split("<body>")[1].split("</body>")[0];
-}
-
-function quoteFix(input) {
-    let n = 0;
-    return input.replace(/"/g, (m, i, og) => {
-        return n++ % 2 ? "“" : "„";
-    });
-}
+let events = await getEvents(classYear);
+let phrases = await getPhrases(classYear);
 
 const authorized = Astro.cookies.has("auth")
 ---
 
 <Layout
-    title={"Souhrn " + (classYear != 0 ? classYear + ". G" : "všeho")}
-    description="Souhrn školního roku"
+        title={"Souhrn " + (classYear != 0 ? classYear + ". G" : "všeho")}
+        description="Souhrn školního roku"
 >
     <div class="body">
         <div id="udalosti">
             <details>
                 <summary>Události</summary>
-                <h2>Události</h2>
-                <div set:html={events} />
+                <div>
+                    {events.map((v) => (
+                            <v.Content />
+                    ))}
+                </div>
             </details>
         </div>
         <div id="hlasky">
@@ -77,51 +50,52 @@ const authorized = Astro.cookies.has("auth")
                 <h2>Hlášky</h2>
                 {
                     Object.keys(phrases).map((p) => (
-                        <div class="teach">
-                            <h3>{teachers[p]}</h3>{" "}
-                            {authorized&&classYear!=0? <a href={"/kronika/editor/catchphrases?teacher=" + encodeURIComponent(teachers[p]) + "&class=" + latinClass(classYear)}>Upravit</a> : ""}
-                            <ul>
-                                {phrases[p].map((phrase) => (
-                                    <li class="quote"
-                                        id={
-                                            p +
-                                            "-" +
-                                            btoa(
-                                                encodeURIComponent(
-                                                    phrase.substring(1, 9)
-                                                )
-                                            )
-                                        }
-                                    >
-                                        {quoteFix(phrase)}{" "}
-                                        <a class="report"
-                                            href={
-                                                "/kronika/report?text=" +
-                                                quoteFix(phrase) +
-                                                "&teacher=" +
-                                                teachers[p] +
-                                                "&year=" +
-                                                y +
-                                                "&return=" +
-                                                Astro.url.href +
-                                                encodeURIComponent("#") +
-                                                p +
-                                                "-" +
-                                                btoa(
-                                                    encodeURIComponent(
-                                                        phrase.substring(1, 9)
+                            <div class="teach">
+                                <h3>{teachers[p]}</h3>{" "}
+                                {authorized && classYear != 0 ?
+                                        <a href={"/kronika/editor/catchphrases?teacher=" + encodeURIComponent(teachers[p]) + "&class=" + latinClass(classYear)}>Upravit</a> : ""}
+                                <ul>
+                                    {phrases[p].map((phrase) => (
+                                            <li class="quote"
+                                                id={
+                                                    p +
+                                                    "-" +
+                                                    btoa(
+                                                        encodeURIComponent(
+                                                            phrase.substring(1, 9)
+                                                        )
                                                     )
-                                                )
-                                            }
-                                            title="Nahlásit chybu"
-                                            style="color: red; text-decoration: none;"
-                                        >
-                                             nahlásit chybu
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                                                }
+                                            >
+                                                {quoteFix(phrase)}{" "}
+                                                <a class="report"
+                                                   href={
+                                                       "/kronika/report?text=" +
+                                                       quoteFix(phrase) +
+                                                       "&teacher=" +
+                                                       teachers[p] +
+                                                       "&year=" +
+                                                       y +
+                                                       "&return=" +
+                                                       Astro.url.href +
+                                                       encodeURIComponent("#") +
+                                                       p +
+                                                       "-" +
+                                                       btoa(
+                                                           encodeURIComponent(
+                                                               phrase.substring(1, 9)
+                                                           )
+                                                       )
+                                                   }
+                                                   title="Nahlásit chybu"
+                                                   style="color: red; text-decoration: none;"
+                                                >
+                                                    nahlásit chybu
+                                                </a>
+                                            </li>
+                                    ))}
+                                </ul>
+                            </div>
                     ))
                 }
             </details>
@@ -129,8 +103,8 @@ const authorized = Astro.cookies.has("auth")
 
         <aside>
             Stažení: <a href={"/kronika/summary/download/" + classYear}
-                >CSV</a
-            >, <a href={"/catchphrases/" + classYear + ".json"}>JSON</a>
+        >CSV</a
+        >{classYear != 0 && (<>{", "} <a href={"/catchphrases/" + classYear + ".json"}>JSON</a></>)}
         </aside>
     </div>
 </Layout>
@@ -167,7 +141,7 @@ const authorized = Astro.cookies.has("auth")
                 if (
                     el.hasAttribute("data-scroll-px") &&
                     parseFloat(el.getAttribute("data-scroll-px")) >=
-                        window.scrollY
+                    window.scrollY
                 ) {
                     el.classList.remove("scrolled-past");
                 } else el.classList.add("scrolled-past");
@@ -210,7 +184,7 @@ const authorized = Astro.cookies.has("auth")
     }
 
     aside {
-        background-color: deepskyblue;
+        background-color: #e1b3b3;
         padding: 1em;
         border: 1px solid;
         border-radius: 12px;
@@ -227,5 +201,15 @@ const authorized = Astro.cookies.has("auth")
     .quote > .report {
         display: none;
         font-weight: bold;
+    }
+
+    :global(#udalosti) {
+        h2 {
+            font-size: 1.3em;
+        }
+
+        h3 {
+            font-size: 1.1em;
+        }
     }
 </style>

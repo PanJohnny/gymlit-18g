@@ -1,31 +1,24 @@
 ---
 import Layout from "../../../../layouts/Layout.astro";
 import teachers from "../../../../../public/teachers.json";
-const catchphrases = await Astro.glob("../../../../../public/catchphrases/*.json");
+import {getPhrases, quoteFix} from "../../../../utils";
 
-const t = Astro.params.teacher;
+const teacherID = Astro.params.teacher;
 
-if (!t) {
+const catchphrases = await getPhrases(0);
+
+if (!teacherID) {
     return Astro.redirect("/kronika");
 }
 
-const teacherName = teachers[t];
+const teacherName = teachers[teacherID];
 
 if (!teacherName) {
     return Astro.redirect("/kronika");
 }
 
-let phrases = [];
-catchphrases.forEach((pr) => {// @ts-ignore
-    if (pr[t]) pr[t].forEach((p) => phrases.push(p));
-});
+let phrases = catchphrases[teacherID];
 
-function quoteFix(input) {
-    let n = 0;
-    return input.replace(/"/g, (m, i, og) => {
-        return (n++ % 2) ? "“" : '„';
-    });
-}
 ---
 
 <Layout title={teacherName} description={"Hlášky učitele " + teacherName}>

@@ -2,7 +2,7 @@
 import teachers from "../../public/teachers.json";
 ---
 
-<div class="sidebar dark" data-collapsed={false}>
+<div class="sidebar dark">
     <h2><span class="toggle hamburger">☰</span> Navigace</h2>
     <nav>
         <ul>
@@ -135,7 +135,13 @@ import teachers from "../../public/teachers.json";
         --sidebar-width: 270px;
     }
 
-    .sidebar[data-collapsed="true"] {
+    @media (max-width: 500px) {
+        .sidebar:not(.open-explicit) {
+            display: none;
+        }
+    }
+
+    .sidebar.closed {
         display: none;
     }
 
@@ -245,14 +251,22 @@ import teachers from "../../public/teachers.json";
 </style>
 
 <script>
+    /*
+    two states:
+    - open: if open-explicit not present on phone it will not work
+    - closed
+    this is done in order to not randomly popup on phones
+    */
     const sidebar = document.querySelector(".sidebar");
     window.addEventListener("resize", sizeCheck);
 
+    function isOpened() {
+        return !sidebar.classList.contains("closed");
+    }
+
     function sizeCheck() {
         if (window.innerWidth <= 500) {
-            sidebar.setAttribute("data-collapsed", "true");
-        } else if (sidebar.getAttribute("data-collapsed") == "true") {
-            sidebar.setAttribute("data-collapsed", "false");
+            sidebar.classList.add("closed");
         }
     }
 
@@ -283,17 +297,19 @@ import teachers from "../../public/teachers.json";
     }
 
     function toggleSidebar() {
+        let h1burger = document.querySelector("#h1burger");
         if (
-            !sidebar.getAttribute("data-collapsed") ||
-            sidebar.getAttribute("data-collapsed") == "false"
+            isOpened()
         ) {
-            sidebar.setAttribute("data-collapsed", "true");
+            sidebar.classList.add("closed");
+            sidebar.classList.remove("open-explicit");
             document.querySelector(".main").classList.add("no-margin-left");
-            document.querySelector("#h1burger").classList.remove("hidden");
+            h1burger.classList.remove("hidden");
         } else {
-            sidebar.setAttribute("data-collapsed", "false");
+            sidebar.classList.remove("closed");
+            sidebar.classList.add("open-explicit");
             document.querySelector(".main").classList.remove("no-margin-left");
-            document.querySelector("#h1burger").classList.add("hidden");
+            h1burger.classList.add("hidden");
         }
     }
 </script>

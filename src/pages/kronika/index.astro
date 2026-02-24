@@ -43,6 +43,89 @@ import Layout from "../../layouts/Layout.astro";
             </ul>
         </div>
         <div>
+            <h2>Open Data</h2>
+            <p>Včechna data jsou otevřená a dá se je stáhnout ve formátech JSON či CSV. Pokud chcete vygenerovat PDF brožuru, doporučuji využít <a href="/memories">režim vzpomínek</a> a kliknout na tlačítko uprostřed nahoře.</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>
+                        Název
+                    </th>
+                    <th>
+                        JSON
+                    </th>
+                    <th>
+                        CSV
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Statistiky</td>
+                    <td><a href="/api/analytics/all" download>JSON</a></td>
+                    <td>x</td>
+                </tr>
+                <tr>
+                    <td>Evidence učitelů</td>
+                    <td><a href="/teachers.json" download>JSON</a></td>
+                    <td>x</td>
+                </tr>
+                <tr>
+                    <td>Všechny hlášky</td>
+                    <td>x</td>
+                    <td><a href="/kronika/summary/download/0" download>CSV</a></td>
+                </tr>
+                <tr>
+                    <td>Všechny události</td>
+                    <td colspan="2"><a href="/events/0" download>HTML</a></td>
+                </tr>
+                <tr>
+                    <td>Hlášky jednoho ročníku</td>
+                    <td colspan="2">na stránkách jednotlivých ročníků</td>
+                </tr>
+                <tr>
+                    <td>Události jednoho ročníku</td>
+                    <td colspan="2">jako HTML z adres /events/číslo kde číslo je 1 až 8</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h2>Pomůcky</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>
+                        Název
+                    </th>
+                    <th>
+                        Popis
+                    </th>
+                    <th>
+                        Odkaz
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Počitadlo dědičnosti</td>
+                    <td>jednoduchá kalkulačka dědičných znaků</td>
+                    <td><a href="/sharing/genom">/genom</a></td>
+                </tr>
+                <tr>
+                    <td>Literární žánry</td>
+                    <td>přehled literárních žánrů</td>
+                    <td><a href="/sharing/zanry">/sharing/zanry</a></td>
+                </tr>
+                <tr>
+                    <td>Poslechy ŠJ</td>
+                    <td>urychleně vás odkáže na poslech z učebnice</td>
+                    <td><a href="/sharing/iklett">/sharing/iklett</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
             <h2 id="funkce">Funkce</h2>
             <p>Pomocí navigace (lupička) se můžete rychle pohybovat po stránce. Můžete se podívat na statistiky a to i ty o návštěvnosti. Červené vykřičníky u hlášek po kliknutí otevřou prostředek pro nahlašování chyb, nebo jen pro kontakt. Informace o poslední aktualizaci stránek naleznete, pod každou stránkou.</p>
         </div>
@@ -112,6 +195,30 @@ import Layout from "../../layouts/Layout.astro";
 
     .happy li:hover .arrow {
         padding-right: 0;
+    }
+
+    table {
+        width: 100%;
+        border: 1px solid #ccc;
+    }
+
+    thead {
+        background-color: #ffeaef;
+    }
+
+    tbody {
+        background-color: #f0f8ff;
+    }
+
+    td {
+        text-align: center;
+        padding: 6px;
+    }
+
+    td:nth-child(1) {
+        background-color: #ffeaef;
+        font-weight: bold;
+        max-width: 70px;
     }
 </style>
 
