@@ -34,6 +34,8 @@ function newLine() {
 const phrases = await getPhrases(classYear);
 
 Object.keys(phrases).forEach((teacherID) => {
+    if (!Array.isArray(phrases[teacherID]))
+        return;
     phrases[teacherID].forEach((p) => {
         insert(classYear.toString());
         insert(teacherID);
