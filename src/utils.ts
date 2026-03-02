@@ -73,8 +73,6 @@ export const getEvents = async (yearID: number|string) => {
         }
     } else {
         let eventMd = await events[`/src/pages/events/${yearID}.md`]();
-        console.log(eventMd
-        )
         contents.push(eventMd);
     }
 

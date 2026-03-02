@@ -49,7 +49,7 @@ const authorized = Astro.cookies.has("auth")
                 <summary>Hlášky</summary>
                 <h2>Hlášky</h2>
                 {
-                    Object.keys(phrases).map((p) => (
+                    Object.keys(phrases).map((p) => phrases[p] && (
                             <div class="teach">
                                 <h3>{teachers[p]}</h3>{" "}
                                 {authorized && classYear != 0 ?
