@@ -4,6 +4,7 @@ import teachers from "../../../public/teachers.json";
 import BarGraph from "../../components/BarGraph.astro";
 import {getPhrases} from "../../utils";
 const catchphrases = await getPhrases(0);
+import {PageStatModel} from "../../db";
 
 const catchphrasesPerTeacher = {};
 
@@ -44,7 +45,22 @@ for (let i = 1; i < 8; i++) {
     catchphrasesPerYear[i-1] = count;
 }
 
-const pages = await fetch(Astro.url.protocol + "//" + Astro.url.host + "/api/analytics/all").then(a => a.json());
+async function getPageStats() {
+    let pages = await PageStatModel.find({}).exec();
+
+    let sortable = [];
+    pages.forEach(p => {
+        sortable.push([p, p["visits"]]);
+    });
+
+    sortable.sort(function (a, b) {
+        return b[1] - a[1];
+    });
+
+    return sortable.map(s => s[0]);
+}
+
+const pages = await getPageStats();
 ---
 
 <Layout title="Statistiky" description="Otevřené statistiky naší kroniky a návštěvnosti stránek">
