@@ -46,18 +46,18 @@ for (let i = 1; i < 8; i++) {
 }
 
 async function getPageStats() {
-    let pages = await PageStatModel.find({}).exec();
+    let pagesData = await PageStatModel.find({}).exec();
 
-    let sortable = [];
-    pages.forEach(p => {
-        sortable.push([p, p["visits"]]);
+    let sortstuff = [];
+    pagesData.forEach(p => {
+        sortstuff.push([p, p["visits"]]);
     });
 
-    sortable.sort(function (a, b) {
+    sortstuff.sort(function (a, b) {
         return b[1] - a[1];
     });
 
-    return sortable.map(s => s[0]);
+    return sortstuff.map(s => s[0]);
 }
 
 const pages = await getPageStats();
@@ -73,7 +73,7 @@ const pages = await getPageStats();
             <h2>Počet evidovaných učitelů</h2>
             <h3>{Object.keys(teachers).length}</h3>
             <h2>Informace o sekci</h2>
-            Vítejte na této stránce. Zde se můžete dozvědět statistiky ohledně hlášek. Přibudou ještě statistiky ohledně zápisů do kroniky a další... Možná tu uvidíte grafy 👀.
+            Vítejte na této stránce. Zde se můžete dozvědět statistiky ohledně hlášek.
         </div>
         <div id="hlaskynaucitele">
             <h2>Hlášky na učitele</h2>
