@@ -2,23 +2,18 @@
 import Memories from "../../layouts/Memories.astro";
 import Memory from "../../components/Memory.astro";
 import teachers from "../../../public/teachers.json";
+import {getPhrases, getEvents} from "../../utils";
 
 let phrases = [];
-let events = [];
 for (let i = 1; i <= 8; i++) {
-    const json = await fetch(
-        Astro.url.protocol +
-        "//" +
-        Astro.url.host +
-        "/catchphrases/" +
-        i +
-        ".json"
-    ).then((response) => response.json());
-    phrases.push(json);
-    const temp = await fetch(
-        Astro.url.protocol + "//" + Astro.url.host + "/events/" + i
-    ).then((b) => b.text());
-    events.push(temp.split(/<body[^>]*>/)[1].split("</body>")[0]);
+    phrases[i - 1] = await getPhrases(i);
+}
+
+let eventsFiles = await getEvents(0);
+let events = [];
+
+for (let file of eventsFiles) {
+    events.push(await file.compiledContent());
 }
 ---
 <Memories title="Vzpomínky" description="Udělejte si výlet do minulosti.">
@@ -29,13 +24,16 @@ for (let i = 1; i <= 8; i++) {
     </header>
     <main>
         <div class="print-only-page">
-            <h1 style="margin-bottom: 0">Výpis z kroniky</h1>
-            <h2 style="margin-top: 0">2018-2025 G</h2>
-            <h3>Filip Sova a spol.</h3>
+            <h1 style="margin-bottom: 0; font-size: 50pt">Kronika 8. G</h1>
+            <h2 style="margin-top: 0">2018 – 2026</h2>
+            <h3></h3>
             <div>
                 <p id="created-for">
                 </p>
             </div>
+        </div>
+        <div class="print-only-page">
+
         </div>
         <div class="print-only-page" id="preamble">
             <div>
@@ -44,11 +42,22 @@ for (let i = 1; i <= 8; i++) {
                 <p style="text-align: right; margin-top: 10px">Filip, Honza, Šnek</p>
             </div>
         </div>
-        {phrases.map((p, i) => (
-                <Memory title={i + 1 + ". G"} events={events[i]} phrases={p}/>
+        <div class="print-only-page">
+
+        </div>
+        {phrases.map((data, year) => (
+                <Memory title={year + 1 + ". G"} events={events[year]} phrases={data}/>
         ))}
         <div class="print-only-page">
 
+        </div>
+        <div class="print-only-page">
+            <p>
+                Něco krátkého, co zahřeje u srdce.
+            </p>
+            <strong style="font-size: 30pt">
+                :)
+            </strong>
         </div>
     </main>
 
@@ -81,7 +90,7 @@ for (let i = 1; i <= 8; i++) {
                 </label>
 
                 <label>
-                    Osobní věnování:
+                    Osobní věnování: (Věnováno …)
                     <textarea rows="1" cols="30" id="created-for-input" placeholder="Věnování"></textarea>
                     (dobrovolné)
                 </label>
@@ -131,6 +140,10 @@ for (let i = 1; i <= 8; i++) {
 
         .print-only-page {
             display: flex;
+        }
+
+        * {
+            border: none !important;
         }
     }
 
@@ -301,6 +314,10 @@ for (let i = 1; i <= 8; i++) {
         .print-only-page {
             display: flex;
         }
+
+        * {
+            border: none !important;
+        }
     }
 </style>
 
@@ -440,6 +457,18 @@ for (let i = 1; i <= 8; i++) {
             createdForP.textContent = "Věnováno " + createdFor;
         }
 
+        // if the number of pages is not even, make it even
+        const fixedPagesCount = document.querySelectorAll(".print-only-page:not(.print-padding-page)").length;
+        const visibleMemoriesCount = Array.from(document.querySelectorAll(".memory")).filter(
+            (memory) => (memory as HTMLElement).style.display !== "none"
+        ).length;
+
+        if ((fixedPagesCount + visibleMemoriesCount) % 2 !== 0) {
+            const fillerPage = document.createElement("div");
+            fillerPage.className = "print-only-page print-padding-page";
+            document.querySelector("main")?.appendChild(fillerPage);
+        }
+
         printDialog.close();
         window.print();
 
@@ -461,6 +490,10 @@ for (let i = 1; i <= 8; i++) {
         if (resultsPage) {
             resultsPage.remove();
         }
+
+        // Odstranit případnou doplňkovou stránku pro sudý počet
+        document.querySelectorAll(".print-padding-page").forEach((page) => page.remove());
+
 
         createdForP.textContent = "";
     })
