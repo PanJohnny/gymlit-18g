@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Generátor memu se Skolilovou</title>
+
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /** the result should not go out of smaller screens, although when the screen is big enough, it should be shown in its original size */
+        #container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        #result {
+            width: 100%;
+            height: 100%;
+        }
+
+        input[type=file] {
+            font-size: large;
+            margin-top: 1rem;
+            width: calc(100% - 2rem);
+            height: 100%;
+            outline: none;
+            border: 1px dashed red;
+            padding: 0.5rem;
+        }
+
+        button {
+            font-size: large;
+            width: calc(100% - 2rem);
+            height: 100%;
+            padding: 0.5rem;
+            outline: none;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<h1>Wow!</h1>
+<input type="file" name="photo" id="photo" accept="image/*">
+<div id="container">
+    <canvas id="result"></canvas>
+</div>
+<button id="copy">Kopírovat obrázek</button>
+
+<script>
+    const template = "/images/Skolilova-surprise.png";
+    const posX = 900;
+    const posY = 550;
+    const width = 1225 - posX;
+    const height = 778 - posY;
+    const canvas = document.getElementById("result");
+    const ctx = canvas.getContext("2d");
+
+    const photo = document.getElementById("photo");
+    const copy = document.getElementById("copy");
+
+    let img;
+
+    const templateImage = new Image();
+    templateImage.src = template;
+    templateImage.onload = () => {
+        canvas.width = templateImage.width;
+        canvas.height = templateImage.height;
+
+        // draw image
+        ctx.drawImage(templateImage, 0, 0, templateImage.width, templateImage.height);
+    };
+
+    // This will render the template image on the canvas and the submitted in the defined coordinates scaled appropriately
+    photo.addEventListener("change", () => {
+        // Read the submitted image
+        const file = photo.files[0];
+        img = new Image();
+        img.src = URL.createObjectURL(file);
+
+        img.onload = () => {
+            ctx.drawImage(img, posX, posY, width, height);
+            ctx.drawImage(templateImage, 0, 0);
+            // Draw the submitted image on the canvas in the defined coordinates
+            console.log("drawn image")
+        }
+    });
+
+    copy.addEventListener("click", () => {
+        canvas.toBlob((blob) => {
+            const item = new ClipboardItem({ "image/png": blob });
+            navigator.clipboard.write([item]);
+            copy.innerHTML = "Zkopírováno";
+            setTimeout(() => {
+                copy.innerHTML = "Kopírovat";
+            }, 1000);
+        });
+    })
+
+</script>
+</body>
+</html>
