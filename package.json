@@ -8,13 +8,13 @@
     "astro": "astro"
   },
   "devDependencies": {
-    "astro": "^5.17.2",
+    "astro": "^6.3.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.0",
-    "@astrojs/vercel": "^9.0.4",
+    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/vercel": "^10.0.6",
     "mongoose": "^9.2.1",
     "octokit": "^5.0.5"
   }
