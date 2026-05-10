@@ -3,9 +3,9 @@ import Layout from "../../layouts/Layout.astro";
 import teachers from "../../../public/teachers.json";
 import BarGraph from "../../components/BarGraph.astro";
 import {getPhrases} from "../../utils";
-const catchphrases = await getPhrases(0);
 import {PageStatModel} from "../../db";
 
+const catchphrases = await getPhrases(0);
 const catchphrasesPerTeacher = {};
 
 Object.keys(teachers).forEach(teacherID => {
@@ -13,19 +13,19 @@ Object.keys(teachers).forEach(teacherID => {
     catchphrasesPerTeacher[teacherID] = phrases.length;
 });
 
-let sortable = [];
-for (var vehicle in catchphrasesPerTeacher) {
+let graphData = [];
+for (let vehicle in catchphrasesPerTeacher) {
     // @ts-ignore
-    sortable.push([vehicle, catchphrasesPerTeacher[vehicle]]);
+    graphData.push([vehicle, catchphrasesPerTeacher[vehicle]]);
 }
 
-sortable.sort(function(a, b) {
+graphData.sort(function(a, b) {
     return b[1] - a[1];
 });
 
-sortable.pop();
+graphData.pop();
 
-const series = sortable.map(s => s[1]);
+const series = graphData.map(s => s[1]);
 
 let catchCount = 0;
 
@@ -67,7 +67,7 @@ const pages = await getPageStats();
     <div class="body">
         <div id="zakladni">
             <h2>Nejupovídanější profesor</h2>
-            <h3>{teachers[sortable[0][0]]}</h3>
+            <h3>{teachers[graphData[0][0]]}</h3>
             <h2>Počet zapsaných hlášek</h2>
             <h3>{catchCount}</h3>
             <h2>Počet evidovaných učitelů</h2>
@@ -78,7 +78,7 @@ const pages = await getPageStats();
         <div id="hlaskynaucitele">
             <h2>Hlášky na učitele</h2>
             <ol>
-                {sortable.map((arr) => <li>{teachers[arr[0]] + ": " + arr[1]}</li>)}
+                {graphData.map((arr) => <li>{teachers[arr[0]] + ": " + arr[1]}</li>)}
             </ol>
         </div>
         <div id="hlaskynarocnik">
