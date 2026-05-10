@@ -1,5 +1,24 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const top = [
+    {
+        "teacher": "Iveta Rozumová",
+        "phrase": "„Odstup Satane od tabule!“ řekla zvýšeným hlasem paní profesorka Filipovi, který se opět dopustil dalšího zločinu vůči matematice."
+    },
+    {
+        "teacher": "Iveta Rozumová",
+        "phrase": "„Ty zločinče, kam vede ta kolmice, všichni to vědí, že jsi zločinec.“"
+    },
+    {
+        "teacher": "Jan Bárta",
+        "phrase": "„Ale já vás nechtěl. Já chtěl septimy a oktávy.“"
+    },
+    {
+        "teacher": "Ilona Skolilová",
+        "phrase": "„Mohli bychom nocovat ve škole, ALE BEZ ALKOHOLU. Říkejte tomu předsudky nebo drby, já tomu říkám fakta.“"
+    }
+];
 ---
 
 <Layout title="Kronika 8. G" description="Internetová verze třídní kroniky">
@@ -8,39 +27,40 @@ import Layout from "../../layouts/Layout.astro";
             Vítejte na našich webových stránkách!
         </p>
         <div class="happy">
-            <h2>
-                A sakra
+            <h2 style="font-family: cursive">
+                ne.
             </h2>
-            <p>
-                Nový školní rok je tu a ještě k tomu oktáva 
-            </p>
             <ul>
                 <li>
                     <a href="/memories">
-                        Projeďte si vše co tu je
+                        Zavzpomínejte scrollováním
                     </a>
                     <div class="arrow">
                         →
                     </div>
                 </li>
                 <li>
-                    <a href="/kronika/summary/year/7">
-                        Podívejte se co bylo v septimě
+                    <a href="/kronika/summary/year/8">
+                        Co jsme zapsali za oktávu (skoro nic)
                     </a>
                     <div class="arrow">
                         →
                     </div>
                 </li>
-               <li>
-                    <a href="/kronika/stats">
-                        Iveta Rozumová je oficiálně nejvíc upovídaná!
-                    </a>
-                    <div class="arrow">
-                        →
-                    </div>
-                </li>
-
             </ul>
+        </div>
+        <div>
+            <h2>
+                Gratulace výtězům v anketě o nejlepší hlášku!
+            </h2>
+            <ol>
+                {top.map((v) => (
+                        <li>
+                            <strong>{v.teacher}:</strong> {v.phrase}
+                        </li>
+                ))}
+            </ol>
+            <a href="/diplomy-anketa.pdf" target="_blank">Diplomy ke stažení</a>
         </div>
         <div>
             <h2>Open Data</h2>
